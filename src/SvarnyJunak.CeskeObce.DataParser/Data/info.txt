@@ -1,0 +1,7 @@
+﻿Data o obcích pocházejí z RUIAN
+
+Data o okresech pocházejí odtud:
+http://www.czso.cz/csu/klasifik.nsf/i/ciselnik_okresu_lau1_nuts_2008
+
+Data o počtech obyvatel pocházejí odtud:
+https://www.czso.cz/csu/czso/pocet-obyvatel-v-obcich-k-112015

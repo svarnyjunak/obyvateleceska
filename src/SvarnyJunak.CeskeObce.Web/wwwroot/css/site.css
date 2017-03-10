@@ -36,3 +36,7 @@ textarea {
     display: none
   }
 }
+
+.data-population-progress {
+    display: none;
+}

@@ -1,11 +1,12 @@
 ﻿(function () {
-    var data = [
-        { year: 2000, population: 100 },
-        { year: 2001, population: 102 },
-        { year: 2002, population: 103 }
-    ];
-
-
+    var dataRows = document.querySelectorAll(".data-population-progress>tbody>tr");
+    var data = Array.prototype.map.call(dataRows, function (tr, i) {
+        return {
+            year: Number(tr.children[0].innerText),
+            population: Number(tr.children[1].innerText)
+        };
+    })
+    
     var maxValue = data.reduce(function (result, value) { return result > value.population ? result : value.population }, 0);
     var scale = function (v) { return v * 330 / maxValue; };
 
