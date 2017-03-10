@@ -1,19 +1,15 @@
-﻿// Write your Javascript code.
-(function () {
-    document.querySelector("input#municipality-search").addEventListener("keyup", autocomplete);
-
-    var awesomplete = new Awesomplete(document.querySelector("input#municipality-search"));
-
-    function autocomplete() {
-        var ajax = new XMLHttpRequest();
-        ajax.open("POST", "Home/FindMunicipalities", true);
-        ajax.onload = function () {
-            console.log(JSON.parse(ajax.responseText));
-
-            var list = JSON.parse(ajax.responseText);
-            awesomplete.list = list;
-        };
-        ajax.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        ajax.send("name=" + this.value);
-    }
+﻿(function () {
+    new autoComplete({
+        selector: 'input#municipality-search',
+        source: function (term, response) {
+            var ajax = new XMLHttpRequest();
+            ajax.open("POST", "Home/FindMunicipalities", true);
+            ajax.onload = function () {
+                var data = JSON.parse(ajax.responseText);
+                response(data);
+            };
+            ajax.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            ajax.send("name=" + term);
+        }
+    });
 })();
