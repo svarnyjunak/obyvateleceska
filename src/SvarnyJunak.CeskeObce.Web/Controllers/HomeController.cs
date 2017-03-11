@@ -11,13 +11,13 @@ namespace SvarnyJunak.CeskeObce.Web.Controllers
 {
     public class HomeController : Controller
     {
-        protected MunicipalityRepository MunicipalityRepository { get; set; }
+        protected IMunicipalityRepository MunicipalityRepository { get; set; }
         protected MunicipalityCache MunicipalityCache { get; set; }
 
-        public HomeController()
+        public HomeController(IMunicipalityRepository municipalityRepository)
         {
-            MunicipalityRepository = new MunicipalityRepository();
-            MunicipalityCache = new MunicipalityCache(MunicipalityRepository);
+            MunicipalityRepository = municipalityRepository;
+            MunicipalityCache = new MunicipalityCache(municipalityRepository);
         }
 
         [HttpGet]
