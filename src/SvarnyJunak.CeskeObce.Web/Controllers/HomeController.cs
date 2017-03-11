@@ -35,10 +35,10 @@ namespace SvarnyJunak.CeskeObce.Web.Controllers
             return View(model);
         }
 
-        public IActionResult FindMunicipalities(string name)
+        public JsonResult FindMunicipalities(string name)
         {
             var municipalities = MunicipalityCache.FindByName(name);
-            var data = municipalities.Select(m => m.Name + ", " + m.DistrictName);
+            var data = municipalities.Select(m => m.Name + ", " + m.DistrictName).ToArray();
             return Json(data);
         }
 

@@ -5,6 +5,7 @@ using SvarnyJunak.CeskeObce.Web.Controllers;
 using SvarnyJunak.CeskeObce.Web.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Xunit;
 
@@ -23,7 +24,7 @@ namespace SvarnyJunak.CeskeObce.Web.Test.Controllers
         public void Index_Test()
         {
             var municipality = CreateMunicipality();
-            var populationProgress = new PopulationProgressInMunicipality();
+            var populationProgress = CreatePopulationProgress(municipality);
             _municipalityRepository.GetMunicipalities().Returns(new[] { municipality });
             _municipalityRepository.GetPopulationProgress(municipality.Code).Returns(populationProgress);
 
@@ -37,6 +38,21 @@ namespace SvarnyJunak.CeskeObce.Web.Test.Controllers
             Assert.Equal(populationProgress.PopulationProgress, model.PopulationProgress);
         }
 
+        [Fact]
+        public void FindMunicipalities_Test()
+        {
+            var municipality = CreateMunicipality();
+            _municipalityRepository.GetMunicipalities().Returns(new[] { municipality });
+
+            var controller = new HomeController(_municipalityRepository);
+            var result = controller.FindMunicipalities("křem");
+            Assert.IsType<String[]>(result.Value);
+
+            var model = (String[])result.Value;
+            Assert.Equal(1, model.Length);
+            Assert.Equal("Křemže, Český Krumlov", model.Single());
+        }
+
         private Municipality CreateMunicipality()
         {
             return new Municipality
@@ -44,6 +60,14 @@ namespace SvarnyJunak.CeskeObce.Web.Test.Controllers
                 Code = "1",
                 DistrictName = "Český Krumlov",
                 Name = "Křemže",
+            };
+        }
+
+        private PopulationProgressInMunicipality CreatePopulationProgress(Municipality municipality)
+        {
+            return new PopulationProgressInMunicipality
+            {
+                MunicipalityCode = municipality.Code
             };
         }
     }
