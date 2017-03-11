@@ -20,7 +20,7 @@ namespace SvarnyJunak.CeskeObce.Web.Test.Controllers
         }
 
         [Fact]
-        public void IndexTest()
+        public void Index_Test()
         {
             var municipality = CreateMunicipality();
             var populationProgress = new PopulationProgressInMunicipality();
