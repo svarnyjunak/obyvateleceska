@@ -6,6 +6,11 @@ namespace SvarnyJunak.CeskeObce.Data.Entities
 {
     public class PopulationProgressInMunicipality
     {
+        public PopulationProgressInMunicipality()
+        {
+            PopulationProgress = new PopulationFrame[0];
+        }
+
         /// <summary>
         /// Kód obce
         /// </summary>

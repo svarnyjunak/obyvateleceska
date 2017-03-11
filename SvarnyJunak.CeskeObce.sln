@@ -15,6 +15,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{9834A486
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SvarnyJunak.CeskeObce.DataParser.Test", "src\Tests\SvarnyJunak.CeskeObce.DataParser.Test\SvarnyJunak.CeskeObce.DataParser.Test.csproj", "{E1D72D55-A5F9-44C9-8335-04B63D4D7CB2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SvarnyJunak.CeskeObce.Web.Test", "src\Tests\SvarnyJunak.CeskeObce.Web\SvarnyJunak.CeskeObce.Web.Test.csproj", "{DB740A68-28FA-40B2-8B26-A8F015ED2B19}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,6 +75,18 @@ Global
 		{E1D72D55-A5F9-44C9-8335-04B63D4D7CB2}.Release|x64.Build.0 = Release|Any CPU
 		{E1D72D55-A5F9-44C9-8335-04B63D4D7CB2}.Release|x86.ActiveCfg = Release|Any CPU
 		{E1D72D55-A5F9-44C9-8335-04B63D4D7CB2}.Release|x86.Build.0 = Release|Any CPU
+		{DB740A68-28FA-40B2-8B26-A8F015ED2B19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB740A68-28FA-40B2-8B26-A8F015ED2B19}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB740A68-28FA-40B2-8B26-A8F015ED2B19}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{DB740A68-28FA-40B2-8B26-A8F015ED2B19}.Debug|x64.Build.0 = Debug|Any CPU
+		{DB740A68-28FA-40B2-8B26-A8F015ED2B19}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{DB740A68-28FA-40B2-8B26-A8F015ED2B19}.Debug|x86.Build.0 = Debug|Any CPU
+		{DB740A68-28FA-40B2-8B26-A8F015ED2B19}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB740A68-28FA-40B2-8B26-A8F015ED2B19}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB740A68-28FA-40B2-8B26-A8F015ED2B19}.Release|x64.ActiveCfg = Release|Any CPU
+		{DB740A68-28FA-40B2-8B26-A8F015ED2B19}.Release|x64.Build.0 = Release|Any CPU
+		{DB740A68-28FA-40B2-8B26-A8F015ED2B19}.Release|x86.ActiveCfg = Release|Any CPU
+		{DB740A68-28FA-40B2-8B26-A8F015ED2B19}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -83,5 +97,6 @@ Global
 		{760EAB85-A4D9-4A71-9321-3ABDBFC184C3} = {8989D9CF-0BD1-4936-B52F-337C22BF12EC}
 		{9834A486-6BD7-4C4C-B4C5-9C271AA2B691} = {8989D9CF-0BD1-4936-B52F-337C22BF12EC}
 		{E1D72D55-A5F9-44C9-8335-04B63D4D7CB2} = {9834A486-6BD7-4C4C-B4C5-9C271AA2B691}
+		{DB740A68-28FA-40B2-8B26-A8F015ED2B19} = {9834A486-6BD7-4C4C-B4C5-9C271AA2B691}
 	EndGlobalSection
 EndGlobal

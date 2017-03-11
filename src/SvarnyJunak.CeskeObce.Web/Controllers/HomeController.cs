@@ -21,7 +21,7 @@ namespace SvarnyJunak.CeskeObce.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public ViewResult Index()
         {
             var municipality = MunicipalityCache.GetRandomMunicipality();
             var populationProgress = MunicipalityRepository.GetPopulationProgress(municipality.Code);
