@@ -2,6 +2,7 @@
   "name": "asp.net",
   "private": true,
   "dependencies": {
-    "bootstrap": "3.3.6"
+    "bootstrap": "3.3.6",
+    "javascript-auto-complete": "pixabay-autocompleted#1.0.4"
   }
 }
