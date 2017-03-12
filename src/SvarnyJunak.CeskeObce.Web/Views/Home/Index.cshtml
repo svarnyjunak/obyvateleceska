@@ -33,7 +33,10 @@
     </style>
 }
 
-<input id="municipality-search" />
+@using (Html.BeginForm("SelectMunicipality", "Home", FormMethod.Post, new { id = "select-municipality-form" }))
+{
+    <input id="municipality-search" name="municipalityName" />
+}
 
 <h1>@Model.Municipality.Name</h1>
 <h2>(@Model.Municipality.DistrictName)</h2>

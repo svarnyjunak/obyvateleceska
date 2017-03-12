@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using SvarnyJunak.CeskeObce.Data.Repositories;
 using SvarnyJunak.CeskeObce.Data.Repositories.SerializedJson;
 using SvarnyJunak.CeskeObce.Web.Models;
+using SvarnyJunak.CeskeObce.Data.Entities;
 
 namespace SvarnyJunak.CeskeObce.Web.Controllers
 {
@@ -35,13 +36,52 @@ namespace SvarnyJunak.CeskeObce.Web.Controllers
             return View(model);
         }
 
+        [HttpPost]
+        public ViewResult SelectMunicipality(string municipalityName)
+        {
+            var municipalities = FindMunicipalitiesByNameWithDiscrict(municipalityName);
+
+            if (!municipalities.Any())
+            {
+                throw new Exception("Municipality not found");
+            }
+
+            var municipality = municipalities.First();
+            var populationProgress = MunicipalityRepository.GetPopulationProgress(municipality.Code);
+
+            var model = new MunicipalityPopulationProgressModel
+            {
+                Municipality = municipality,
+                PopulationProgress = populationProgress.PopulationProgress.OrderBy(f => f.Year).ToArray()
+            };
+
+            return View("Index", model);
+        }
+
+        [HttpPost]
         public JsonResult FindMunicipalities(string name)
         {
-            var municipalities = MunicipalityCache.FindByName(name);
+            var municipalities = FindMunicipalitiesByNameWithDiscrict(name);
             var data = municipalities.Select(m => m.Name + ", " + m.DistrictName).ToArray();
             return Json(data);
         }
 
+        private IEnumerable<Municipality> FindMunicipalitiesByNameWithDiscrict(string municipalityName)
+        {
+            IEnumerable<Municipality> municipalities;
+            if (municipalityName.Contains(","))
+            {
+                var parts = municipalityName.Split(',');
+
+                municipalities = MunicipalityCache.FindByNameAndDistrict(parts[0], parts[1]);
+            }
+            else
+            {
+                municipalities = MunicipalityCache.FindByName(municipalityName);
+            }
+
+            return municipalities;
+        }
 
         public IActionResult About()
         {

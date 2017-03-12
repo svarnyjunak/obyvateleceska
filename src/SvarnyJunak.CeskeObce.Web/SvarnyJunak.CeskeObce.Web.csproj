@@ -9,7 +9,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="wwwroot\css\awesomplete.css" />
-    <Content Include="wwwroot\js\awesomplete.js" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="1.0.0" />

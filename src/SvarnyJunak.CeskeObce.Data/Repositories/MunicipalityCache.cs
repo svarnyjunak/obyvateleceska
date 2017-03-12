@@ -25,12 +25,21 @@ namespace SvarnyJunak.CeskeObce.Data.Repositories
         public IEnumerable<Municipality> FindByName(string name)
         {
             return from m in __municipalities
-                   where CompareByName(name.ToUpper().Trim(), m.Name)
+                   where CompareWithoutDiacriticsIfNotProvided(name.ToUpper().Trim(), m.Name)
                    orderby m.Name
                    select m;
         }
 
-        private bool CompareByName(string userString, string municipalityName)
+        public IEnumerable<Municipality> FindByNameAndDistrict(string name, string district)
+        {
+            return from m in __municipalities
+                   where CompareWithoutDiacriticsIfNotProvided(name.ToUpper().Trim(), m.Name) &&
+                         CompareWithoutDiacriticsIfNotProvided(district.ToUpper().Trim(), m.DistrictName)
+                   orderby m.Name
+                   select m;
+        }
+
+        private bool CompareWithoutDiacriticsIfNotProvided(string userString, string municipalityName)
         {
             if (userString.HasDiacritics())
                 return municipalityName.ToUpper().StartsWith(userString);

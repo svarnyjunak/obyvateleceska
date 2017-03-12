@@ -39,13 +39,44 @@ namespace SvarnyJunak.CeskeObce.Web.Test.Controllers
         }
 
         [Fact]
-        public void FindMunicipalities_Test()
+        public void SelectMunicipality_Test()
+        {
+            var municipality = CreateMunicipality();
+            var populationProgress = CreatePopulationProgress(municipality);
+            _municipalityRepository.GetMunicipalities().Returns(new[] { municipality });
+            _municipalityRepository.GetPopulationProgress(municipality.Code).Returns(populationProgress);
+
+            var controller = new HomeController(_municipalityRepository);
+            var result = controller.SelectMunicipality("křemže");
+
+            var model = (MunicipalityPopulationProgressModel)result.Model;
+            Assert.Same(municipality, model.Municipality);
+            Assert.Equal(populationProgress.PopulationProgress, model.PopulationProgress);
+        }
+
+        [Fact]
+        public void FindMunicipalities_PartialNameTest()
         {
             var municipality = CreateMunicipality();
             _municipalityRepository.GetMunicipalities().Returns(new[] { municipality });
 
             var controller = new HomeController(_municipalityRepository);
             var result = controller.FindMunicipalities("křem");
+            Assert.IsType<String[]>(result.Value);
+
+            var model = (String[])result.Value;
+            Assert.Equal(1, model.Length);
+            Assert.Equal("Křemže, Český Krumlov", model.Single());
+        }
+
+        [Fact]
+        public void FindMunicipalities_FullNameWithDistrictTest()
+        {
+            var municipality = CreateMunicipality();
+            _municipalityRepository.GetMunicipalities().Returns(new[] { municipality });
+
+            var controller = new HomeController(_municipalityRepository);
+            var result = controller.FindMunicipalities("křemže, český krumlov");
             Assert.IsType<String[]>(result.Value);
 
             var model = (String[])result.Value;
