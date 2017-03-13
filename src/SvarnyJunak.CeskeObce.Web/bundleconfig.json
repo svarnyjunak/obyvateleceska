@@ -9,8 +9,9 @@
   {
     "outputFileName": "wwwroot/js/site.min.js",
     "inputFiles": [
-      "wwwroot/bin/pixabay-autocompleted/auto-complete.js",
-      "wwwroot/js/site.js"
+        "wwwroot/bin/pixabay-autocompleted/auto-complete.js",
+        "wwwroot/js/search.js",
+        "wwwroot/js/map.js"
     ],
     "minify": {
       "enabled": true,

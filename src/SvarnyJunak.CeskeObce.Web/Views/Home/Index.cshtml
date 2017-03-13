@@ -4,35 +4,52 @@
 
 @model SvarnyJunak.CeskeObce.Web.Models.MunicipalityPopulationProgressModel
 
+<div id="map-canvas">
+</div>
+
 @using (Html.BeginForm("SelectMunicipality", "Home", FormMethod.Post, new { id = "select-municipality-form" }))
 {
     <label for="municipalityName">
         <strong>Zadejte název obce:</strong>
     </label><br />
-    <input id="municipality-search" type="text" name="municipalityName" />
+        <input id="municipality-search" type="text" name="municipalityName" />
 
-    <h1>Vývoj počtu obyvatel v obci @Model.Municipality.Name, @Model.Municipality.DistrictName</h1>
-    <div class="chart">
+        <h1>Vývoj počtu obyvatel v obci @Model.Municipality.Name, @Model.Municipality.DistrictName</h1>
+        <div class="chart">
 
-    </div>
+        </div>
 
-    <table class="data-population-progress">
-        <thead>
-            <tr>
-                <th>Rok</th>
-                <th>Počet obyvatel</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var snapshot in Model.PopulationProgress)
-            {
+        @Html.HiddenFor(m => m.Municipality.Latitude)
+        @Html.HiddenFor(m => m.Municipality.Longitude)
+
+        <table class="data-population-progress">
+            <thead>
                 <tr>
-                    <td class="year">@snapshot.Year</td>
-                    <td class="count">@snapshot.Count</td>
+                    <th>Rok</th>
+                    <th>Počet obyvatel</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var snapshot in Model.PopulationProgress)
+                {
+                    <tr>
+                        <td class="year">@snapshot.Year</td>
+                        <td class="count">@snapshot.Count</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
 }
 
-<script src="~/js/chart.min.js" asp-append-version="true"></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDV4HvcwqamsQayt_E0f3FPVPK4pNnHg0M&amp;sensor=true">
+</script>
+
+<environment names="Development">
+    <script src="~/lib/pixabay-autocompleted/auto-complete.js" asp-append-version="true"></script>
+    <script src="~/js/search.js" asp-append-version="true"></script>
+    <script src="~/js/chart.js" asp-append-version="true"></script>
+    <script src="~/js/map.js" asp-append-version="true"></script>
+</environment>
+<environment names="Staging,Production">
+    <script src="~/js/site.min.js" asp-append-version="true"></script>
+</environment>

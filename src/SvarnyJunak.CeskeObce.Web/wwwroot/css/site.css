@@ -108,3 +108,24 @@ input[type=text] {
             .chart div span:hover {
                 background-color: lightsteelblue;
             }
+
+#map-canvas {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+@media (max-width: 550px) {
+    #map-canvas {
+        visibility: hidden;
+    }
+}
+
+@media (max-height: 700px) {
+    #map-canvas {
+        visibility: hidden;
+    }
+}

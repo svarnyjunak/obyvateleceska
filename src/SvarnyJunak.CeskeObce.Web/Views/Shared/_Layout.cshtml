@@ -26,17 +26,8 @@
             </ul>
         </nav>
     </header>
-    <div class="container body-content">
-        @RenderBody()
-    </div>
-
-    <environment names="Development">
-        <script src="~/lib/pixabay-autocompleted/auto-complete.js" asp-append-version="true"></script>
-        <script src="~/js/site.js" asp-append-version="true"></script>
-    </environment>
-    <environment names="Staging,Production">
-        <script src="~/js/site.min.js" asp-append-version="true"></script>
-    </environment>
+    
+    @RenderBody()
 
     @RenderSection("scripts", required: false)
 </body>
