@@ -1,42 +1,110 @@
-﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+﻿@-ms-viewport {
+    width: device-width;
 }
 
-/* Wrapping element */
-/* Set some basic padding to keep content from hitting the edges */
-.body-content {
-    padding-left: 15px;
-    padding-right: 15px;
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    z-index: -2;
+    font-family: sans-serif;
 }
 
-/* Set widths on the form inputs since otherwise they're 100% wide */
-input,
-select,
-textarea {
-    max-width: 280px;
+header {
+    background-color: #333;
+    color: white;
 }
 
-/* Carousel */
-.carousel-caption p {
-    font-size: 20px;
-    line-height: 1.4;
+    header a {
+        color: white;
+        text-decoration: none;
+        padding-left: 1em;
+        padding-right: 1em;
+    }
+
+    header h2 {
+        font-weight: inherit;
+        line-height: 1.5em;
+        display: inline;
+        font-variant: small-caps;
+    }
+
+h1 {
+    text-align: center;
 }
 
-/* Make .svg files in the carousel display properly in older browsers */
-.carousel-inner .item img[src$=".svg"]
-{
+nav li {
+    display: inline;
+    list-style-type: none;
+}
+
+form {
+    margin-bottom: 4em;
+}
+
+input[type=text] {
     width: 100%;
+    font-size: larger;
+    box-sizing: border-box;
 }
 
-/* Hide/rearrange for smaller screens */
-@media screen and (max-width: 767px) {
-  /* Hide captions */
-  .carousel-caption {
-    display: none
-  }
+.right {
+    float: right;
 }
 
 .data-population-progress {
     display: none;
 }
+
+#select-municipality-form {
+    position: relative;
+    z-index: 0;
+    margin: 60px auto 0;
+    padding: 10px;
+    height: auto;
+    width: 500px;
+    background: white;
+    color: black;
+    border: 1px solid lightgray;
+}
+
+@media (max-width: 500px) {
+    #select-municipality-form {
+        width: 90%;
+    }
+}
+
+@media (min-width: 501px) {
+    #select-municipality-form {
+        border-radius: 5px;
+        border-top-left-radius: 2px;
+        border-top-right-radius: 2px;
+        box-shadow: 5px 5px 5px black;
+        box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+    }
+}
+
+.chart {
+    margin: 5px;
+}
+
+    .chart div {
+        font: 10px sans-serif;
+    }
+
+        .chart div span {
+            font: 10px sans-serif;
+            background-color: steelblue;
+            text-align: right;
+            padding: 3px;
+            margin: 1px;
+            margin-left: 5px;
+            color: white;
+            display: inline-block;
+            width: 0;
+            transition: background .5s ease-out;
+        }
+
+            .chart div span:hover {
+                background-color: lightsteelblue;
+            }

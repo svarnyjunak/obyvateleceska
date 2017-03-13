@@ -4,62 +4,35 @@
 
 @model SvarnyJunak.CeskeObce.Web.Models.MunicipalityPopulationProgressModel
 
-@section head {
-    <style>
-        .chart {
-            margin: 5px;
-        }
-
-        .chart div {
-            font: 10px sans-serif;
-        }
-
-        .chart div span {
-            font: 10px sans-serif;
-            background-color: steelblue;
-            text-align: right;
-            padding: 3px;
-            margin: 1px;
-            margin-left: 5px;
-            color: white;
-            display: inline-block;
-            width: 0;
-            transition: background .5s ease-out;
-        }
-
-        .chart div span:hover {
-            background-color: lightsteelblue;
-        }
-    </style>
-}
-
 @using (Html.BeginForm("SelectMunicipality", "Home", FormMethod.Post, new { id = "select-municipality-form" }))
 {
-    <input id="municipality-search" name="municipalityName" />
-}
+    <label for="municipalityName">
+        <strong>Zadejte název obce:</strong>
+    </label><br />
+    <input id="municipality-search" type="text" name="municipalityName" />
 
-<h1>@Model.Municipality.Name</h1>
-<h2>(@Model.Municipality.DistrictName)</h2>
-<div class="chart">
+    <h1>Vývoj počtu obyvatel v obci @Model.Municipality.Name, @Model.Municipality.DistrictName</h1>
+    <div class="chart">
 
-</div>
+    </div>
 
-<table class="data-population-progress">
-    <thead>
-        <tr>
-            <th>Rok</th>
-            <th>Počet obyvatel</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var snapshot in Model.PopulationProgress)
-        {
+    <table class="data-population-progress">
+        <thead>
             <tr>
-                <td class="year">@snapshot.Year</td>
-                <td class="count">@snapshot.Count</td>
+                <th>Rok</th>
+                <th>Počet obyvatel</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var snapshot in Model.PopulationProgress)
+            {
+                <tr>
+                    <td class="year">@snapshot.Year</td>
+                    <td class="count">@snapshot.Count</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
 
 <script src="~/js/chart.min.js" asp-append-version="true"></script>
