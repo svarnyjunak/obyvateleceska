@@ -10,11 +10,9 @@
     var maxValue = data.reduce(function (result, value) { return result > value.population ? result : value.population }, 0);
     var scale = function (v) { return v * 330 / maxValue; };
 
-    console.log(maxValue);
-
     var chart = document.querySelector(".chart");
     var divs = data.map(function (v) {
-        return "<div>" + v.year + "<span data-width='" + scale(v.population) + "px' style='width: 0;visibility: hidden;transition: width 2s ease-out'>" + v.population + "</div>";
+        return "<div>" + v.year + "<span data-width='" + scale(v.population) + "px' style='width: 0;visibility: hidden;transition: width 2s ease-out'>" + formatNumber(v.population) + "</div>";
     });
 
     chart.innerHTML = divs.join("");
@@ -24,6 +22,10 @@
             s.style.visibility = "initial",
                 s.style.width = s.getAttribute("data-width");
         });
+    }
+
+    function formatNumber(n) {
+        return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
     }
 
     setTimeout(showBars, 500);
