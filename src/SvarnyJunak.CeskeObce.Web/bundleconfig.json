@@ -3,25 +3,16 @@
     "outputFileName": "wwwroot/css/site.min.css",
     "inputFiles": [
         "wwwroot/css/site.css",
-        "wwwroot/bin/pixabay-autocompleted/auto-complete.css"
+        "wwwroot/lib/pixabay-autocompleted/auto-complete.css"
     ]
   },
   {
     "outputFileName": "wwwroot/js/site.min.js",
     "inputFiles": [
-        "wwwroot/bin/pixabay-autocompleted/auto-complete.js",
+        "wwwroot/lib/pixabay-autocompleted/auto-complete.js",
         "wwwroot/js/search.js",
+        "wwwroot/js/chart.js",
         "wwwroot/js/map.js"
-    ],
-    "minify": {
-      "enabled": true,
-      "renameLocals": true
-    }
-  },
-  {
-    "outputFileName": "wwwroot/js/chart.min.js",
-    "inputFiles": [
-      "wwwroot/js/chart.js"
     ],
     "minify": {
       "enabled": true,
