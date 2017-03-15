@@ -9,7 +9,6 @@
     <UserSecretsId>c03e16fd-09da-4dbc-8f56-fca9cbfe5ce7</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="wwwroot\css\awesomplete.css" />
     <Content Include="wwwroot\js\map.js" />
     <Content Include="wwwroot\js\search.js" />
     <Content Include="wwwroot\js\search.min.js" />
