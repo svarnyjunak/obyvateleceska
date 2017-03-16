@@ -9,6 +9,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using SvarnyJunak.CeskeObce.Data.Repositories.SerializedJson;
 using SvarnyJunak.CeskeObce.Data.Repositories;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Http;
 
 namespace SvarnyJunak.CeskeObce.Web
 {
@@ -54,9 +56,38 @@ namespace SvarnyJunak.CeskeObce.Web
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
+                  name: "MunicipalityRoute",
+                  template: "{district}/{name}/{code}",
+                  defaults: new { controller = "Home", action = "Index" },
+                  constraints:
+                      new
+                      {
+                          code =
+                              new MunicipalityRouteConstraint(
+                                  new MunicipalityCache(app.ApplicationServices.GetService<IMunicipalityRepository>()))
+                      }
+                );
+                routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+        }
+
+        public class MunicipalityRouteConstraint : IRouteConstraint
+        {
+            private readonly MunicipalityCache __cache;
+            public MunicipalityRouteConstraint(MunicipalityCache cache)
+            {
+                __cache = cache;
+            }
+
+            public bool Match(HttpContext httpContext, IRouter route, string routeKey, RouteValueDictionary values, RouteDirection routeDirection)
+            {
+                if (!values.ContainsKey(routeKey))
+                    return false;
+
+                return __cache.Contains((string)values[routeKey]);
+            }
         }
     }
 }

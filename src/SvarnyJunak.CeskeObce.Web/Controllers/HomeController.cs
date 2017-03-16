@@ -22,9 +22,9 @@ namespace SvarnyJunak.CeskeObce.Web.Controllers
         }
 
         [HttpGet]
-        public ViewResult Index()
+        public ViewResult Index(string district, string name, string code)
         {
-            var municipality = MunicipalityCache.GetRandomMunicipality();
+            var municipality = code == null ? MunicipalityCache.GetRandomMunicipality() : MunicipalityCache.GetMunicipality(code);
             var populationProgress = MunicipalityRepository.GetPopulationProgress(municipality.Code);
 
             var model = new MunicipalityPopulationProgressModel
@@ -37,7 +37,7 @@ namespace SvarnyJunak.CeskeObce.Web.Controllers
         }
 
         [HttpPost]
-        public ViewResult SelectMunicipality(string municipalityName)
+        public RedirectToActionResult SelectMunicipality(string municipalityName)
         {
             var municipalities = FindMunicipalitiesByNameWithDiscrict(municipalityName);
 
@@ -47,15 +47,7 @@ namespace SvarnyJunak.CeskeObce.Web.Controllers
             }
 
             var municipality = municipalities.First();
-            var populationProgress = MunicipalityRepository.GetPopulationProgress(municipality.Code);
-
-            var model = new MunicipalityPopulationProgressModel
-            {
-                Municipality = municipality,
-                PopulationProgress = populationProgress.PopulationProgress.OrderBy(f => f.Year).ToArray()
-            };
-
-            return View("Index", model);
+            return RedirectToAction("Index", new { district = municipality.DistrictName, name = municipality.Name, code = municipality.Code });
         }
 
         [HttpPost]
