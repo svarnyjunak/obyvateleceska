@@ -11,6 +11,9 @@ using SvarnyJunak.CeskeObce.Data.Repositories.SerializedJson;
 using SvarnyJunak.CeskeObce.Data.Repositories;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Localization;
+using System.Globalization;
+using Microsoft.AspNetCore.Mvc.Razor;
 
 namespace SvarnyJunak.CeskeObce.Web
 {
@@ -31,8 +34,9 @@ namespace SvarnyJunak.CeskeObce.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
+            services.AddMvc().AddViewLocalization(LanguageViewLocationExpanderFormat.SubFolder);
             services.AddTransient<IMunicipalityRepository, MunicipalityRepository>();
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -70,6 +74,14 @@ namespace SvarnyJunak.CeskeObce.Web
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
+            });
+
+            var supportedCultures = new[] { new CultureInfo("cs-CZ") };
+            app.UseRequestLocalization(new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new RequestCulture("cs-CZ"),
+                SupportedCultures = supportedCultures,
+                SupportedUICultures = supportedCultures
             });
         }
 
