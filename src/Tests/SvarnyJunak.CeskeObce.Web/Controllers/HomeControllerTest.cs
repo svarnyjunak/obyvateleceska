@@ -1,4 +1,6 @@
-﻿using NSubstitute;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
+using NSubstitute;
 using SvarnyJunak.CeskeObce.Data.Entities;
 using SvarnyJunak.CeskeObce.Data.Repositories;
 using SvarnyJunak.CeskeObce.Web.Controllers;
@@ -14,11 +16,14 @@ namespace SvarnyJunak.CeskeObce.Web.Test.Controllers
 {
     public class HomeControllerTest
     {
-        private IMunicipalityRepository _municipalityRepository;
+        private readonly IMunicipalityRepository _municipalityRepository;
+        private readonly IStringLocalizer<HomeController> _localizer;
 
         public HomeControllerTest()
         {
             _municipalityRepository = Substitute.For<IMunicipalityRepository>();
+            _localizer = Substitute.For<IStringLocalizer<HomeController>>();
+            _localizer.GetString(String.Empty).ReturnsForAnyArgs(c => new LocalizedString(c.Arg<string>(), c.Arg<string>()));
         }
 
         [Fact]
@@ -28,7 +33,7 @@ namespace SvarnyJunak.CeskeObce.Web.Test.Controllers
             _municipalityRepository.GetMunicipalities().Returns(municipalities);
             _municipalityRepository.GetPopulationProgress(null).ReturnsForAnyArgs(c => CreatePopulationProgress(c.Arg<string>()));
 
-            var controller = new HomeController(_municipalityRepository);
+            var controller = new HomeController(_municipalityRepository, _localizer);
             var result = controller.Index(null, null, "19");
 
             Assert.IsType<MunicipalityPopulationProgressModel>(result.Model);
@@ -45,7 +50,7 @@ namespace SvarnyJunak.CeskeObce.Web.Test.Controllers
             _municipalityRepository.GetMunicipalities().Returns(new[] { municipality });
             _municipalityRepository.GetPopulationProgress(municipality.Code).Returns(populationProgress);
 
-            var controller = new HomeController(_municipalityRepository);
+            var controller = new HomeController(_municipalityRepository, _localizer);
             var result = controller.Index(null, null, null);
 
             Assert.IsType<MunicipalityPopulationProgressModel>(result.Model);
@@ -63,13 +68,39 @@ namespace SvarnyJunak.CeskeObce.Web.Test.Controllers
             _municipalityRepository.GetMunicipalities().Returns(new[] { municipality });
             _municipalityRepository.GetPopulationProgress(municipality.Code).Returns(populationProgress);
 
-            var controller = new HomeController(_municipalityRepository);
-            var result = controller.SelectMunicipality("křemže");
+            var controller = new HomeController(_municipalityRepository, _localizer);
+            var result = controller.SelectMunicipality("křemže", null);
 
-            Assert.Equal("Index", result.ActionName);
-            Assert.Equal(municipality.Code, result.RouteValues["code"]);
-            Assert.Equal(municipality.DistrictName, result.RouteValues["district"]);
-            Assert.Equal(municipality.Name, result.RouteValues["name"]);
+            Assert.IsType<RedirectToActionResult>(result);
+
+            var redirectResult = (RedirectToActionResult)result;
+            Assert.Equal("Index", redirectResult.ActionName);
+            Assert.Equal(municipality.Code, redirectResult.RouteValues["code"]);
+            Assert.Equal(municipality.DistrictName, redirectResult.RouteValues["district"]);
+            Assert.Equal(municipality.Name, redirectResult.RouteValues["name"]);
+        }
+
+        [Fact]
+        public void SelectMunicipality_NotFoundTest()
+        {
+            var municipality = CreateMunicipality();
+            var populationProgress = CreatePopulationProgress(municipality.Code);
+            _municipalityRepository.GetMunicipalities().Returns(new[] { municipality });
+            _municipalityRepository.GetPopulationProgress(municipality.Code).Returns(populationProgress);
+
+            var controller = new HomeController(_municipalityRepository, _localizer);
+            var result = controller.SelectMunicipality("not existing municipality", "1");
+
+            Assert.IsType<ViewResult>(result);
+
+            var viewResult = (ViewResult)result;
+            var model = (MunicipalityPopulationProgressModel)viewResult.Model;
+            Assert.Same(municipality, model.Municipality);
+            Assert.Equal("not existing municipality", model.MunicipalityNameSearch);
+
+            var modelState = controller.ViewData.ModelState;
+            Assert.True(modelState.ContainsKey("MunicipalityNameSearch"), "Error in model state is missing.");
+            Assert.True(modelState.ContainsKey("MunicipalityNameSearch"), "Error in model state is missing.");
         }
 
         [Fact]
@@ -78,7 +109,7 @@ namespace SvarnyJunak.CeskeObce.Web.Test.Controllers
             var municipality = CreateMunicipality();
             _municipalityRepository.GetMunicipalities().Returns(new[] { municipality });
 
-            var controller = new HomeController(_municipalityRepository);
+            var controller = new HomeController(_municipalityRepository, _localizer);
             var result = controller.FindMunicipalities("křem");
             Assert.IsType<String[]>(result.Value);
 
@@ -93,7 +124,7 @@ namespace SvarnyJunak.CeskeObce.Web.Test.Controllers
             var municipality = CreateMunicipality();
             _municipalityRepository.GetMunicipalities().Returns(new[] { municipality });
 
-            var controller = new HomeController(_municipalityRepository);
+            var controller = new HomeController(_municipalityRepository, _localizer);
             var result = controller.FindMunicipalities("křemže, český krumlov");
             Assert.IsType<String[]>(result.Value);
 

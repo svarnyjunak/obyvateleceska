@@ -7,6 +7,7 @@ using SvarnyJunak.CeskeObce.Data.Repositories;
 using SvarnyJunak.CeskeObce.Data.Repositories.SerializedJson;
 using SvarnyJunak.CeskeObce.Web.Models;
 using SvarnyJunak.CeskeObce.Data.Entities;
+using Microsoft.Extensions.Localization;
 
 namespace SvarnyJunak.CeskeObce.Web.Controllers
 {
@@ -14,36 +15,35 @@ namespace SvarnyJunak.CeskeObce.Web.Controllers
     {
         protected IMunicipalityRepository MunicipalityRepository { get; set; }
         protected MunicipalityCache MunicipalityCache { get; set; }
+        private readonly IStringLocalizer<HomeController> _localizer;
 
-        public HomeController(IMunicipalityRepository municipalityRepository)
+        public HomeController(IMunicipalityRepository municipalityRepository, IStringLocalizer<HomeController> localizer)
         {
             MunicipalityRepository = municipalityRepository;
             MunicipalityCache = new MunicipalityCache(municipalityRepository);
+            _localizer = localizer;
         }
 
         [HttpGet]
         public ViewResult Index(string district, string name, string code)
         {
-            var municipality = code == null ? MunicipalityCache.GetRandomMunicipality() : MunicipalityCache.GetMunicipality(code);
-            var populationProgress = MunicipalityRepository.GetPopulationProgress(municipality.Code);
-
-            var model = new MunicipalityPopulationProgressModel
-            {
-                Municipality = municipality,
-                PopulationProgress = populationProgress.PopulationProgress.OrderBy(f => f.Year).ToArray()
-            };
-
+            var model = code == null ? CreateRandomModel() : CreateModelByCode(code);
             return View(model);
         }
 
         [HttpPost]
-        public RedirectToActionResult SelectMunicipality(string municipalityName)
+        public IActionResult SelectMunicipality(string municipalityName, string currentMunicipalityCode)
         {
             var municipalities = FindMunicipalitiesByNameWithDiscrict(municipalityName);
 
             if (!municipalities.Any())
             {
-                throw new Exception("Municipality not found");
+                var model = CreateModelByCode(currentMunicipalityCode);
+                model.MunicipalityNameSearch = municipalityName;
+
+                var errorMessage = Resources.Controllers.HomeController.No_municipality_found_;
+                ModelState.AddModelError(nameof(model.MunicipalityNameSearch), errorMessage);
+                return View("Index", model);
             }
 
             var municipality = municipalities.First();
@@ -73,6 +73,30 @@ namespace SvarnyJunak.CeskeObce.Web.Controllers
             }
 
             return municipalities;
+        }
+
+        private MunicipalityPopulationProgressModel CreateModelByCode(string code)
+        {
+            var municipality = MunicipalityCache.GetMunicipality(code);
+            var populationProgress = MunicipalityRepository.GetPopulationProgress(code);
+
+            return new MunicipalityPopulationProgressModel
+            {
+                Municipality = municipality,
+                PopulationProgress = populationProgress.PopulationProgress.ToArray()
+            };
+        }
+
+        private MunicipalityPopulationProgressModel CreateRandomModel()
+        {
+            var municipality = MunicipalityCache.GetRandomMunicipality();
+            var populationProgress = MunicipalityRepository.GetPopulationProgress(municipality.Code);
+
+            return new MunicipalityPopulationProgressModel
+            {
+                Municipality = municipality,
+                PopulationProgress = populationProgress.PopulationProgress.ToArray()
+            };
         }
 
         public IActionResult About()

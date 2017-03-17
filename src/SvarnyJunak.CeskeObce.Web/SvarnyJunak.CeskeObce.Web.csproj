@@ -32,6 +32,11 @@
     <ProjectReference Include="..\SvarnyJunak.CeskeObce.Data\SvarnyJunak.CeskeObce.Data.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="Resources\Controllers\HomeController.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>HomeController.resx</DependentUpon>
+    </Compile>
     <Compile Update="Resources\Views\Home\Index.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -39,6 +44,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Update="Resources\Controllers\HomeController.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>HomeController.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Update="Resources\Views\Home\Index.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Index.Designer.cs</LastGenOutput>
