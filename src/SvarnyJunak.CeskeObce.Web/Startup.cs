@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using System.Globalization;
 using Microsoft.AspNetCore.Mvc.Razor;
+using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 
 namespace SvarnyJunak.CeskeObce.Web
 {
@@ -26,6 +27,12 @@ namespace SvarnyJunak.CeskeObce.Web
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
+
+            if (env.IsDevelopment())
+            {
+                builder.AddApplicationInsightsSettings(developerMode: true);
+            }
+
             Configuration = builder.Build();
         }
 
@@ -34,6 +41,7 @@ namespace SvarnyJunak.CeskeObce.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddApplicationInsightsTelemetry(Configuration);
             services.AddMvc().AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix);
             services.AddTransient<IMunicipalityRepository, MunicipalityRepository>();
             services.AddLocalization(options => options.ResourcesPath = "Resources");
