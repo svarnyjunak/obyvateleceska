@@ -28,9 +28,6 @@ namespace SvarnyJunak.CeskeObce.DataParser
             var municipalities = GetMunicipalities().ToArray();
             __storer.StorePopulationProgress(GetPopulationProgress());
             __storer.StoreMunicipalities(municipalities);
-
-            var sitemapBuilder = new SiteMapBuilder();
-            File.WriteAllText("C:\\Temp\\sitemap.xml", sitemapBuilder.Build("http://www.obyvateleceska.cz", municipalities));
         }
 
         private IEnumerable<Municipality> GetMunicipalities()
