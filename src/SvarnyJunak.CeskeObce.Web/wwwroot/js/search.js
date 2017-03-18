@@ -1,4 +1,6 @@
 ﻿(function () {
+    document.getElementById("municipality-search").focus();
+
     new autoComplete({
         minChars: 1,
         selector: 'input#municipality-search',
