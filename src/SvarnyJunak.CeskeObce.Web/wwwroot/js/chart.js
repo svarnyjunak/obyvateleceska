@@ -5,9 +5,9 @@
             year: Number(tr.children[0].innerText),
             population: Number(tr.children[1].innerText)
         };
-    })
+    });
     
-    var maxValue = data.reduce(function (result, value) { return result > value.population ? result : value.population }, 0);
+    var maxValue = data.reduce(function (result, value) { return result > value.population ? result : value.population; }, 0);
     var scale = function (v) { return v * 330 / maxValue; };
 
     var chart = document.querySelector(".chart");

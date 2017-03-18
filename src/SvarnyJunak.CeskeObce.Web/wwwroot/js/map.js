@@ -11,7 +11,7 @@
             center: center,
             zoom: 14,
             mapTypeId: google.maps.MapTypeId.HYBRID,
-            disableDefaultUI: true,
+            disableDefaultUI: true
         };
         new google.maps.Map(mapElement, mapOptions);
     }
