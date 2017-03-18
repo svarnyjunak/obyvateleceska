@@ -34,7 +34,7 @@ namespace SvarnyJunak.CeskeObce.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().AddViewLocalization(LanguageViewLocationExpanderFormat.SubFolder);
+            services.AddMvc().AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix);
             services.AddTransient<IMunicipalityRepository, MunicipalityRepository>();
             services.AddLocalization(options => options.ResourcesPath = "Resources");
         }

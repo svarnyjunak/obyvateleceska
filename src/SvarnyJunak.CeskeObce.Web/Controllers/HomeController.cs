@@ -41,7 +41,7 @@ namespace SvarnyJunak.CeskeObce.Web.Controllers
                 var model = CreateModelByCode(currentMunicipalityCode);
                 model.MunicipalityNameSearch = municipalityName;
 
-                var errorMessage = Resources.Controllers.HomeController.No_municipality_found_;
+                var errorMessage = Resources.Controllers_HomeController.No_municipality_found_;
                 ModelState.AddModelError(nameof(model.MunicipalityNameSearch), errorMessage);
                 return View("Index", model);
             }

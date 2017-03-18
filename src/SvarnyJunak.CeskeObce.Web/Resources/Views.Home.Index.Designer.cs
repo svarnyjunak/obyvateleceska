@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SvarnyJunak.CeskeObce.Web.Resources.Controllers {
+namespace SvarnyJunak.CeskeObce.Web.Resources {
     using System;
     using System.Reflection;
     
@@ -23,14 +23,14 @@ namespace SvarnyJunak.CeskeObce.Web.Resources.Controllers {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class HomeController {
+    internal class Views_Home_Index {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal HomeController() {
+        internal Views_Home_Index() {
         }
         
         /// <summary>
@@ -40,7 +40,7 @@ namespace SvarnyJunak.CeskeObce.Web.Resources.Controllers {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SvarnyJunak.CeskeObce.Web.Resources.Controllers.HomeController", typeof(HomeController).GetTypeInfo().Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SvarnyJunak.CeskeObce.Web.Resources.Views.Home.Index", typeof(Views_Home_Index).GetTypeInfo().Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -62,11 +62,38 @@ namespace SvarnyJunak.CeskeObce.Web.Resources.Controllers {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Obec nenalezena..
+        ///   Looks up a localized string similar to Zadejte název obce:.
         /// </summary>
-        internal static string No_municipality_found_ {
+        internal static string MunicipalitySearchLabel {
             get {
-                return ResourceManager.GetString("No municipality found.", resourceCulture);
+                return ResourceManager.GetString("MunicipalitySearchLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Počet obyvatel.
+        /// </summary>
+        internal static string Population {
+            get {
+                return ResourceManager.GetString("Population", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vývoj počtu obyvatel v obci {0}, {1}.
+        /// </summary>
+        internal static string PopulationProgressInMunicipality {
+            get {
+                return ResourceManager.GetString("PopulationProgressInMunicipality", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rok.
+        /// </summary>
+        internal static string Year {
+            get {
+                return ResourceManager.GetString("Year", resourceCulture);
             }
         }
     }

@@ -32,25 +32,25 @@
     <ProjectReference Include="..\SvarnyJunak.CeskeObce.Data\SvarnyJunak.CeskeObce.Data.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="Resources\Controllers\HomeController.Designer.cs">
+    <Compile Update="Resources\Controllers.HomeController.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>HomeController.resx</DependentUpon>
+      <DependentUpon>Controllers.HomeController.resx</DependentUpon>
     </Compile>
-    <Compile Update="Resources\Views\Home\Index.Designer.cs">
+    <Compile Update="Resources\Views.Home.Index.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>Index.resx</DependentUpon>
+      <DependentUpon>Views.Home.Index.resx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Update="Resources\Controllers\HomeController.resx">
+    <EmbeddedResource Update="Resources\Controllers.HomeController.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>HomeController.Designer.cs</LastGenOutput>
+      <LastGenOutput>Controllers.HomeController.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Home\Index.resx">
+    <EmbeddedResource Update="Resources\Views.Home.Index.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Index.Designer.cs</LastGenOutput>
+      <LastGenOutput>Views.Home.Index.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
 </Project>
