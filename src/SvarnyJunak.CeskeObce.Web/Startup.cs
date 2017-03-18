@@ -60,6 +60,11 @@ namespace SvarnyJunak.CeskeObce.Web
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
+                  name: "Sitemap",
+                  template: "sitemap.xml",
+                  defaults: new { controller = "Sitemap", action = "Index" });
+
+                routes.MapRoute(
                   name: "MunicipalityRoute",
                   template: "{district}/{name}/{code}",
                   defaults: new { controller = "Home", action = "Index" },
