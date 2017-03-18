@@ -18,8 +18,10 @@
     chart.innerHTML = divs.join("");
 
     function showBars() {
-        document.querySelectorAll(".chart div .bar").forEach(function (s) {
-            s.style.visibility = "initial",
+        var bars = document.querySelectorAll(".chart div .bar");
+        var barsArray = Array.prototype.slice.call(bars);
+        barsArray.forEach(function (s) {
+            s.style.visibility = "visible";
             s.style.width = s.getAttribute("data-width");
         });
     }
