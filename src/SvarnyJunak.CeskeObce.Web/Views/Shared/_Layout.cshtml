@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - SvarnyJunak.CeskeObce.Web</title>
+    <title>@ViewData["Title"]</title>
 
     <environment names="Development">
         <link rel="stylesheet" href="~/lib/pixabay-autocompleted/auto-complete.css" />
@@ -22,9 +22,7 @@
         <a href="@Url.Action("Index", "Home")"><h2>Obyvatelé česka</h2></a>
         <nav class="right">
             <ul>
-                <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-                <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
+                <li><a asp-area="" asp-controller="Home" asp-action="About">O aplikaci</a></li>
             </ul>
         </nav>
     </header>

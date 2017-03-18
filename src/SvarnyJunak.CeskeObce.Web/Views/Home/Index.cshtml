@@ -1,10 +1,11 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
-@using Microsoft.AspNetCore.Mvc.Localization;
+﻿@using Microsoft.AspNetCore.Mvc.Localization;
 
 @inject IViewLocalizer Localizer
 @model SvarnyJunak.CeskeObce.Web.Models.MunicipalityPopulationProgressModel
+
+@{
+    ViewData["Title"] = Model.Municipality.Name + " - " + Localizer["MunicipalityPopulationTitle"].Value;
+}
 
 <div id="map-canvas">
 </div>
