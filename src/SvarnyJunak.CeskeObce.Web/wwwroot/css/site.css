@@ -90,29 +90,35 @@ input[type=text] {
 
     .chart div {
         font: 10px sans-serif;
+        height: 20px;
     }
 
-        .chart div span {
-            font: 10px sans-serif;
-            background-color: steelblue;
-            text-align: right;
-            padding: 3px;
-            margin: 1px;
-            margin-left: 5px;
-            color: white;
-            display: inline-block;
-            width: 0;
-            transition: background .5s ease-out;
-        }
+    .chart .year-caption {
+        width: 3em;
+        display: inline-block;
+    }
 
-            .chart div span:hover {
-                background-color: lightsteelblue;
-            }
+    .chart .bar {
+        font: 10px sans-serif;
+        background-color: steelblue;
+        text-align: right;
+        padding: 3px;
+        color: white;
+        display: inline-block;
+        width: 0;
+        height: 11px;
+        transition: background .5s ease-out;
+    }
+
+        .chart .bar:hover {
+            background-color: lightsteelblue;
+        }
 
 .validation-summary-errors {
     color: red;
     margin-top: .5em;
 }
+
     .validation-summary-errors ul {
         padding: 0;
         margin: 0;

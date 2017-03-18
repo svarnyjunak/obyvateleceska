@@ -12,15 +12,15 @@
 
     var chart = document.querySelector(".chart");
     var divs = data.map(function (v) {
-        return "<div>" + v.year + "<span data-width='" + scale(v.population) + "px' style='width: 0;visibility: hidden;transition: width 2s ease-out'>" + formatNumber(v.population) + "</div>";
+        return "<div><span class='year-caption'>" + v.year + "</span><span class='bar' data-width='" + scale(v.population) + "px' style='width: 0;visibility: hidden;transition: width 2s ease-out'>" + formatNumber(v.population) + "</div>";
     });
 
     chart.innerHTML = divs.join("");
 
     function showBars() {
-        document.querySelectorAll(".chart div span").forEach(function (s) {
+        document.querySelectorAll(".chart div .bar").forEach(function (s) {
             s.style.visibility = "initial",
-                s.style.width = s.getAttribute("data-width");
+            s.style.width = s.getAttribute("data-width");
         });
     }
 
