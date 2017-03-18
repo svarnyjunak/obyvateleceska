@@ -62,6 +62,15 @@ namespace SvarnyJunak.CeskeObce.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Počet obyvatel v obci.
+        /// </summary>
+        internal static string MunicipalityPopulationTitle {
+            get {
+                return ResourceManager.GetString("MunicipalityPopulationTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Zadejte název obce:.
         /// </summary>
         internal static string MunicipalitySearchLabel {
