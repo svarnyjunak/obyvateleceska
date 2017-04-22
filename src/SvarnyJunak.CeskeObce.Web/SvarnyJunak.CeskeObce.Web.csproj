@@ -17,6 +17,7 @@
     <Content Include="wwwroot\robots.txt" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Joonasw.AspNetCore.SecurityHeaders" Version="1.0.1" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="1.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="1.1.2" />

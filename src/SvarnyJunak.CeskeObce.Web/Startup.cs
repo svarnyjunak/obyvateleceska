@@ -15,6 +15,8 @@ using Microsoft.AspNetCore.Localization;
 using System.Globalization;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
+using Joonasw.AspNetCore.SecurityHeaders;
+using SvarnyJunak.CeskeObce.Web.Middlewares;
 
 namespace SvarnyJunak.CeskeObce.Web
 {
@@ -60,6 +62,14 @@ namespace SvarnyJunak.CeskeObce.Web
             }
             else
             {
+                app.UseHttpsEnforcement();
+                app.UseHsts(new HstsOptions
+                {
+                    Seconds = 30 * 24 * 60 * 60,
+                    IncludeSubDomains = false,
+                    Preload = false
+                });
+
                 app.UseExceptionHandler("/Home/Error");
             }
 
