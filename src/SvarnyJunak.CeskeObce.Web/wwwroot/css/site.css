@@ -52,6 +52,10 @@ input[type=text] {
     float: right;
 }
 
+.autocomplete-suggestions .autocomplete-suggestion {
+    line-height: 3em;
+}
+
 .data-population-progress {
     display: none;
 }
