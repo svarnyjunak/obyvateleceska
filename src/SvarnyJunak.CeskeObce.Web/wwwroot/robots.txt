@@ -1,0 +1,4 @@
+﻿#www.obyvateleceska.cz
+User-agent: *
+Sitemap: http://www.obyvateleceska.cz/sitemap.xml
+Disallow:
