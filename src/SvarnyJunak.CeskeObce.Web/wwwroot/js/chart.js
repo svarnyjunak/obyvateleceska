@@ -8,7 +8,8 @@
     });
     
     var maxValue = data.reduce(function (result, value) { return result > value.population ? result : value.population; }, 0);
-    var scale = function (v) { return v * 330 / maxValue; };
+    var maxWidth = getBarMaxWidth();
+    var scale = function (v) { return v * maxWidth / maxValue; };
 
     var chart = document.querySelector(".chart");
     var divs = data.map(function (v) {
@@ -31,5 +32,11 @@
     }
 
     setTimeout(showBars, 500);
+
+    function getBarMaxWidth() {
+        var defaultMaxWidth = 330;
+        var currentWidth = document.querySelector(".chart").offsetWidth - 40;
+        return defaultMaxWidth < currentWidth ? defaultMaxWidth : currentWidth;
+    }
 
 })();
