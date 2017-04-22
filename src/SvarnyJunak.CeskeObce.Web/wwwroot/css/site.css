@@ -63,13 +63,15 @@ input[type=text] {
 #select-municipality-form, #info {
     position: relative;
     z-index: 0;
-    margin: 60px auto 0;
     padding: 10px;
     height: auto;
     width: 500px;
     background: white;
     color: black;
-    border: 1px solid lightgray;
+}
+
+#select-municipality-form h1 {
+    margin-top: 2em;
 }
 
 @media (max-width: 500px) {
@@ -84,13 +86,18 @@ input[type=text] {
         border-top-left-radius: 2px;
         border-top-right-radius: 2px;
     }
-    
+
     #select-municipality-form {
         border-radius: 5px;
         border-top-left-radius: 2px;
         border-top-right-radius: 2px;
         box-shadow: 5px 5px 5px black;
         box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+    }
+
+    #select-municipality-form, #info {
+        margin: 60px auto 0;
+        border: 1px solid lightgray;
     }
 }
 
@@ -147,7 +154,7 @@ input[type=text] {
     z-index: -1;
 }
 
-@media (max-width: 550px) {
+@media (max-width: 500px) {
     #map-canvas {
         visibility: hidden;
     }
