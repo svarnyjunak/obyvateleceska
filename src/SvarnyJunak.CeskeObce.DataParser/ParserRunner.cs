@@ -56,6 +56,7 @@ namespace SvarnyJunak.CeskeObce.DataParser
             population.AddPopulationData(GetData("./Data/population_2014.xlsx", sheetName), 2014);
             population.AddPopulationData(GetData("./Data/population_2015.xlsx", sheetName), 2015);
             population.AddPopulationData(GetData("./Data/population_2016.xlsx", sheetName), 2016);
+            population.AddPopulationData(GetData("./Data/population_2017.xlsx", sheetName), 2017);
 
             var progress = population.ComputePopulationProgressInMunicipalities().ToArray();
             return progress;
