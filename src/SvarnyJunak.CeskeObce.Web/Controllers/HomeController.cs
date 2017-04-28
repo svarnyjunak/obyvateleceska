@@ -60,19 +60,19 @@ namespace SvarnyJunak.CeskeObce.Web.Controllers
 
         private IEnumerable<Municipality> FindMunicipalitiesByNameWithDiscrict(string municipalityName)
         {
-            IEnumerable<Municipality> municipalities;
+            if (municipalityName == null)
+            {
+                return new Municipality[0];
+            }
+
             if (municipalityName.Contains(","))
             {
                 var parts = municipalityName.Split(',');
 
-                municipalities = MunicipalityCache.FindByNameAndDistrict(parts[0], parts[1]);
-            }
-            else
-            {
-                municipalities = MunicipalityCache.FindByName(municipalityName);
+                return MunicipalityCache.FindByNameAndDistrict(parts[0], parts[1]);
             }
 
-            return municipalities;
+            return MunicipalityCache.FindByName(municipalityName);
         }
 
         private MunicipalityPopulationProgressModel CreateModelByCode(string code)

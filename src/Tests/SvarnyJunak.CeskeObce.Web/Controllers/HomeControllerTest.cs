@@ -104,6 +104,23 @@ namespace SvarnyJunak.CeskeObce.Web.Test.Controllers
         }
 
         [Fact]
+        public void SelectMunicipality_NullTest()
+        {
+            var municipality = CreateMunicipality();
+            var populationProgress = CreatePopulationProgress(municipality.Code);
+            _municipalityRepository.GetMunicipalities().Returns(new[] { municipality });
+            _municipalityRepository.GetPopulationProgress(municipality.Code).Returns(populationProgress);
+
+            var controller = new HomeController(_municipalityRepository, _localizer);
+            var result = controller.SelectMunicipality(null, "1");
+
+            Assert.IsType<ViewResult>(result);
+            var viewResult = (ViewResult)result;
+            var model = (MunicipalityPopulationProgressModel)viewResult.Model;
+            Assert.Same(municipality, model.Municipality);
+        }
+
+        [Fact]
         public void FindMunicipalities_PartialNameTest()
         {
             var municipality = CreateMunicipality();
