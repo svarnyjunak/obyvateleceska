@@ -32,10 +32,10 @@ namespace SvarnyJunak.CeskeObce.Web
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
 
-            //if (env.IsDevelopment())
-            //{
-            //    builder.AddApplicationInsightsSettings(developerMode: true);
-            //}
+            if (env.IsDevelopment())
+            {
+                builder.AddApplicationInsightsSettings(developerMode: true);
+            }
 
             SetupApplicationInsights();
 
