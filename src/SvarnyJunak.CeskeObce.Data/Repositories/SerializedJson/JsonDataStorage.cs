@@ -9,12 +9,12 @@ using SvarnyJunak.CeskeObce.Data.Utils;
 
 namespace SvarnyJunak.CeskeObce.Data.Repositories.SerializedJson
 {
-    public class MunicipalityDataStorer : IMunicipalityDataStorer
+    public class JsonDataStorage : IMunicipalityDataStorer
     {
         private readonly IDataSerializer __serializer;
         private readonly string __path;
 
-        public MunicipalityDataStorer(IDataSerializer serializer, string path)
+        public JsonDataStorage(IDataSerializer serializer, string path)
         {
             __serializer = serializer;
             __path = path;

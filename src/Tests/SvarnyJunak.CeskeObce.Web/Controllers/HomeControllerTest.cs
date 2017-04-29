@@ -16,12 +16,12 @@ namespace SvarnyJunak.CeskeObce.Web.Test.Controllers
 {
     public class HomeControllerTest
     {
-        private readonly IMunicipalityRepository _municipalityRepository;
+        private readonly IDataLoader _dataLoader;
         private readonly IStringLocalizer<HomeController> _localizer;
 
         public HomeControllerTest()
         {
-            _municipalityRepository = Substitute.For<IMunicipalityRepository>();
+            _dataLoader = Substitute.For<IDataLoader>();
             _localizer = Substitute.For<IStringLocalizer<HomeController>>();
             _localizer.GetString(String.Empty).ReturnsForAnyArgs(c => new LocalizedString(c.Arg<string>(), c.Arg<string>()));
         }
@@ -30,10 +30,10 @@ namespace SvarnyJunak.CeskeObce.Web.Test.Controllers
         public void Index_SpecificMunicipalityTest()
         {
             var municipalities = CreateMunicipalities(20).ToArray();
-            _municipalityRepository.GetMunicipalities().Returns(municipalities);
-            _municipalityRepository.GetPopulationProgress(null).ReturnsForAnyArgs(c => CreatePopulationProgress(c.Arg<string>()));
+            _dataLoader.GetMunicipalities().Returns(municipalities);
+            _dataLoader.GetPopulationProgress(null).ReturnsForAnyArgs(c => CreatePopulationProgress(c.Arg<string>()));
 
-            var controller = new HomeController(_municipalityRepository, _localizer);
+            var controller = new HomeController(_dataLoader, _localizer);
             var result = controller.Index(null, null, "19");
 
             Assert.IsType<MunicipalityPopulationProgressModel>(result.Model);
@@ -47,10 +47,10 @@ namespace SvarnyJunak.CeskeObce.Web.Test.Controllers
         {
             var municipality = CreateMunicipality();
             var populationProgress = CreatePopulationProgress(municipality.Code);
-            _municipalityRepository.GetMunicipalities().Returns(new[] { municipality });
-            _municipalityRepository.GetPopulationProgress(municipality.Code).Returns(populationProgress);
+            _dataLoader.GetMunicipalities().Returns(new[] { municipality });
+            _dataLoader.GetPopulationProgress(municipality.Code).Returns(populationProgress);
 
-            var controller = new HomeController(_municipalityRepository, _localizer);
+            var controller = new HomeController(_dataLoader, _localizer);
             var result = controller.Index(null, null, null);
 
             Assert.IsType<MunicipalityPopulationProgressModel>(result.Model);
@@ -65,10 +65,10 @@ namespace SvarnyJunak.CeskeObce.Web.Test.Controllers
         {
             var municipality = CreateMunicipality();
             var populationProgress = CreatePopulationProgress(municipality.Code);
-            _municipalityRepository.GetMunicipalities().Returns(new[] { municipality });
-            _municipalityRepository.GetPopulationProgress(municipality.Code).Returns(populationProgress);
+            _dataLoader.GetMunicipalities().Returns(new[] { municipality });
+            _dataLoader.GetPopulationProgress(municipality.Code).Returns(populationProgress);
 
-            var controller = new HomeController(_municipalityRepository, _localizer);
+            var controller = new HomeController(_dataLoader, _localizer);
             var result = controller.SelectMunicipality("křemže", null);
 
             Assert.IsType<RedirectToActionResult>(result);
@@ -85,10 +85,10 @@ namespace SvarnyJunak.CeskeObce.Web.Test.Controllers
         {
             var municipality = CreateMunicipality();
             var populationProgress = CreatePopulationProgress(municipality.Code);
-            _municipalityRepository.GetMunicipalities().Returns(new[] { municipality });
-            _municipalityRepository.GetPopulationProgress(municipality.Code).Returns(populationProgress);
+            _dataLoader.GetMunicipalities().Returns(new[] { municipality });
+            _dataLoader.GetPopulationProgress(municipality.Code).Returns(populationProgress);
 
-            var controller = new HomeController(_municipalityRepository, _localizer);
+            var controller = new HomeController(_dataLoader, _localizer);
             var result = controller.SelectMunicipality("not existing municipality", "1");
 
             Assert.IsType<ViewResult>(result);
@@ -108,10 +108,10 @@ namespace SvarnyJunak.CeskeObce.Web.Test.Controllers
         {
             var municipality = CreateMunicipality();
             var populationProgress = CreatePopulationProgress(municipality.Code);
-            _municipalityRepository.GetMunicipalities().Returns(new[] { municipality });
-            _municipalityRepository.GetPopulationProgress(municipality.Code).Returns(populationProgress);
+            _dataLoader.GetMunicipalities().Returns(new[] { municipality });
+            _dataLoader.GetPopulationProgress(municipality.Code).Returns(populationProgress);
 
-            var controller = new HomeController(_municipalityRepository, _localizer);
+            var controller = new HomeController(_dataLoader, _localizer);
             var result = controller.SelectMunicipality(null, "1");
 
             Assert.IsType<ViewResult>(result);
@@ -124,9 +124,9 @@ namespace SvarnyJunak.CeskeObce.Web.Test.Controllers
         public void FindMunicipalities_PartialNameTest()
         {
             var municipality = CreateMunicipality();
-            _municipalityRepository.GetMunicipalities().Returns(new[] { municipality });
+            _dataLoader.GetMunicipalities().Returns(new[] { municipality });
 
-            var controller = new HomeController(_municipalityRepository, _localizer);
+            var controller = new HomeController(_dataLoader, _localizer);
             var result = controller.FindMunicipalities("křem");
             Assert.IsType<String[]>(result.Value);
 
@@ -139,9 +139,9 @@ namespace SvarnyJunak.CeskeObce.Web.Test.Controllers
         public void FindMunicipalities_FullNameWithDistrictTest()
         {
             var municipality = CreateMunicipality();
-            _municipalityRepository.GetMunicipalities().Returns(new[] { municipality });
+            _dataLoader.GetMunicipalities().Returns(new[] { municipality });
 
-            var controller = new HomeController(_municipalityRepository, _localizer);
+            var controller = new HomeController(_dataLoader, _localizer);
             var result = controller.FindMunicipalities("křemže, český krumlov");
             Assert.IsType<String[]>(result.Value);
 

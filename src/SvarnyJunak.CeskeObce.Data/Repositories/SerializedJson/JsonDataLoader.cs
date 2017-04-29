@@ -6,16 +6,16 @@ using SvarnyJunak.CeskeObce.Data.Utils;
 
 namespace SvarnyJunak.CeskeObce.Data.Repositories.SerializedJson
 {
-    public class MunicipalityRepository : IMunicipalityRepository
+    public class JsonDataLoader : IDataLoader
     {
-        static MunicipalityRepository()
+        static JsonDataLoader()
         {
             Init();
         }
 
         protected static void Init()
         {
-            var dataLoader = new DataLoader();
+            var dataLoader = new JsonResources();
             var serializer = new JsonDataSerializer();
             CachedMunicipalities = serializer.Read<Municipality[]>(dataLoader.LoadMunicipalities());
             CachedPopulationProggress = serializer.Read<IEnumerable<PopulationProgressInMunicipality>>(dataLoader.LoadProgress());
@@ -29,6 +29,7 @@ namespace SvarnyJunak.CeskeObce.Data.Repositories.SerializedJson
             return CachedMunicipalities.ToArray();
         }
 
+        // todo: Move this to repository
         public PopulationProgressInMunicipality GetPopulationProgress(string municipalityCode)
         {
             var result = (from p in CachedPopulationProggress where p.MunicipalityCode == municipalityCode select p).ToArray();

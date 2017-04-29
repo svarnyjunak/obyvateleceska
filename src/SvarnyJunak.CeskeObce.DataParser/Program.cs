@@ -8,7 +8,7 @@ class Program
     static void Main(string[] args)
     {
         var jsonDataSerializer = new JsonDataSerializer();
-        var storer = new MunicipalityDataStorer(jsonDataSerializer, "C:\\Temp\\");
+        var storer = new JsonDataStorage(jsonDataSerializer, "C:\\Temp\\");
         var runner = new ParserRunner(storer);
 
         runner.Run();

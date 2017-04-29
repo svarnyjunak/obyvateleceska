@@ -15,17 +15,17 @@ namespace SvarnyJunak.CeskeObce.Web.Controllers
 {
     public class SitemapController : Controller
     {
-        private IMunicipalityRepository _municipalityRepository;
+        private IDataLoader _dataLoader;
 
-        public SitemapController(IMunicipalityRepository municipalityRepository)
+        public SitemapController(IDataLoader dataLoader)
         {
-            _municipalityRepository = municipalityRepository;
+            _dataLoader = dataLoader;
         }
 
         [HttpGet]
         public FileContentResult Index()
         {
-            var municipalities = _municipalityRepository.GetMunicipalities();
+            var municipalities = _dataLoader.GetMunicipalities();
             var urls = municipalities.Select(m => CreateUrl(Url, m));
 
             XNamespace xmlns = "http://www.sitemaps.org/schemas/sitemap/0.9";

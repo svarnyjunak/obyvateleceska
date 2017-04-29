@@ -19,6 +19,7 @@ using Joonasw.AspNetCore.SecurityHeaders;
 using SvarnyJunak.CeskeObce.Web.Middlewares;
 using Microsoft.ApplicationInsights.Extensibility;
 using SvarnyJunak.CeskeObce.Web.Middlewares.ApplicationInsights;
+using SvarnyJunak.CeskeObce.Data.Repositories.Queries;
 
 namespace SvarnyJunak.CeskeObce.Web
 {
@@ -56,7 +57,7 @@ namespace SvarnyJunak.CeskeObce.Web
         {
             services.AddApplicationInsightsTelemetry(Configuration);
             services.AddMvc().AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix);
-            services.AddTransient<IMunicipalityRepository, MunicipalityRepository>();
+            services.AddTransient<IDataLoader, JsonDataLoader>();
             services.AddLocalization(options => options.ResourcesPath = "Resources");
         }
 
@@ -110,7 +111,7 @@ namespace SvarnyJunak.CeskeObce.Web
                       {
                           code =
                               new MunicipalityRouteConstraint(
-                                  new MunicipalityCache(app.ApplicationServices.GetService<IMunicipalityRepository>()))
+                                  new MunicipalityRepository(app.ApplicationServices.GetService<IDataLoader>()))
                       }
                 );
                 routes.MapRoute(
@@ -137,8 +138,8 @@ namespace SvarnyJunak.CeskeObce.Web
 
         public class MunicipalityRouteConstraint : IRouteConstraint
         {
-            private readonly MunicipalityCache __cache;
-            public MunicipalityRouteConstraint(MunicipalityCache cache)
+            private readonly MunicipalityRepository __cache;
+            public MunicipalityRouteConstraint(MunicipalityRepository cache)
             {
                 __cache = cache;
             }
@@ -148,7 +149,12 @@ namespace SvarnyJunak.CeskeObce.Web
                 if (!values.ContainsKey(routeKey))
                     return false;
 
-                return __cache.Contains((string)values[routeKey]);
+                var query = new QueryMunicipalityByCode
+                {
+                    Code = (string)values[routeKey]
+                };
+
+                return __cache.Exists(query);
             }
         }
     }

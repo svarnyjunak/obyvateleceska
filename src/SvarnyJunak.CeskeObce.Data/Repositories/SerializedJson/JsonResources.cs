@@ -6,7 +6,7 @@ using System.Text;
 
 namespace SvarnyJunak.CeskeObce.Data.Repositories.SerializedJson
 {
-    public class DataLoader
+    public class JsonResources
     {
         public string LoadMunicipalities()
         {
@@ -20,7 +20,7 @@ namespace SvarnyJunak.CeskeObce.Data.Repositories.SerializedJson
 
         private string LoadEmbededFile(string embededFileName)
         {
-            var type = typeof(DataLoader);
+            var type = typeof(JsonResources);
             var assembly = type.GetTypeInfo().Assembly;
             using (var stream = assembly.GetManifestResourceStream(type.Namespace + "." + embededFileName))
             using (var reader = new StreamReader(stream))

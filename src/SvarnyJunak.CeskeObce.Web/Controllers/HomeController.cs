@@ -8,19 +8,20 @@ using SvarnyJunak.CeskeObce.Data.Repositories.SerializedJson;
 using SvarnyJunak.CeskeObce.Web.Models;
 using SvarnyJunak.CeskeObce.Data.Entities;
 using Microsoft.Extensions.Localization;
+using SvarnyJunak.CeskeObce.Data.Repositories.Queries;
 
 namespace SvarnyJunak.CeskeObce.Web.Controllers
 {
     public class HomeController : Controller
     {
-        protected IMunicipalityRepository MunicipalityRepository { get; set; }
-        protected MunicipalityCache MunicipalityCache { get; set; }
+        protected IDataLoader DataLoader { get; set; }
+        protected MunicipalityRepository MunicipalityRepository { get; set; }
         private readonly IStringLocalizer<HomeController> _localizer;
 
-        public HomeController(IMunicipalityRepository municipalityRepository, IStringLocalizer<HomeController> localizer)
+        public HomeController(IDataLoader dataLoader, IStringLocalizer<HomeController> localizer)
         {
-            MunicipalityRepository = municipalityRepository;
-            MunicipalityCache = new MunicipalityCache(municipalityRepository);
+            DataLoader = dataLoader;
+            MunicipalityRepository = new MunicipalityRepository(dataLoader);
             _localizer = localizer;
         }
 
@@ -65,20 +66,31 @@ namespace SvarnyJunak.CeskeObce.Web.Controllers
                 return new Municipality[0];
             }
 
+            IQuery<Municipality> query;
             if (municipalityName.Contains(","))
             {
                 var parts = municipalityName.Split(',');
-
-                return MunicipalityCache.FindByNameAndDistrict(parts[0], parts[1]);
+                query = new QueryMunicipalityByNameAndDistrict
+                {
+                    Name = parts[0],
+                    District = parts[1]
+                };
+            }
+            else
+            {
+                query = new QueryMunicipalityByName
+                {
+                    Name = municipalityName
+                };
             }
 
-            return MunicipalityCache.FindByName(municipalityName);
+            return MunicipalityRepository.FindAll(query);
         }
 
         private MunicipalityPopulationProgressModel CreateModelByCode(string code)
         {
-            var municipality = MunicipalityCache.GetMunicipality(code);
-            var populationProgress = MunicipalityRepository.GetPopulationProgress(code);
+            var municipality = MunicipalityRepository.GetByCode(code);
+            var populationProgress = DataLoader.GetPopulationProgress(code);
 
             return new MunicipalityPopulationProgressModel
             {
@@ -89,8 +101,8 @@ namespace SvarnyJunak.CeskeObce.Web.Controllers
 
         private MunicipalityPopulationProgressModel CreateRandomModel()
         {
-            var municipality = MunicipalityCache.GetRandomMunicipality();
-            var populationProgress = MunicipalityRepository.GetPopulationProgress(municipality.Code);
+            var municipality = MunicipalityRepository.GetRandom();
+            var populationProgress = DataLoader.GetPopulationProgress(municipality.Code);
 
             return new MunicipalityPopulationProgressModel
             {

@@ -27,6 +27,17 @@ namespace SvarnyJunak.CeskeObce.Data.Utils
             return stringFormD.Any(ch => CharUnicodeInfo.GetUnicodeCategory(ch) == UnicodeCategory.NonSpacingMark);
         }
 
+        public static bool CompareWithoutDiacriticsIfNotProvided(this string a, string b)
+        {
+            var aUpperCased = a.ToUpper().Trim();
+            var bUpperCased = b.ToUpper().Trim();
+
+            if (a.HasDiacritics())
+                return bUpperCased.StartsWith(aUpperCased);
+
+            return bUpperCased.RemoveDiacritics().StartsWith(aUpperCased.RemoveDiacritics());
+        }
+
         /// <summary>
         /// Replaces all spaces by '-' and all text is converted to lowercase.
         /// </summary>
