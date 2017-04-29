@@ -108,5 +108,10 @@ namespace SvarnyJunak.CeskeObce.Web.Controllers
         {
             return View();
         }
+
+        public IActionResult PageNotFound()
+        {
+            return View();
+        }
     }
 }

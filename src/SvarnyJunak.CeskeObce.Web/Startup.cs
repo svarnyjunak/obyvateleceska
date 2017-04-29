@@ -17,6 +17,8 @@ using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Joonasw.AspNetCore.SecurityHeaders;
 using SvarnyJunak.CeskeObce.Web.Middlewares;
+using Microsoft.ApplicationInsights.Extensibility;
+using SvarnyJunak.CeskeObce.Web.Middlewares.ApplicationInsights;
 
 namespace SvarnyJunak.CeskeObce.Web
 {
@@ -30,12 +32,21 @@ namespace SvarnyJunak.CeskeObce.Web
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
 
-            if (env.IsDevelopment())
-            {
-                builder.AddApplicationInsightsSettings(developerMode: true);
-            }
+            //if (env.IsDevelopment())
+            //{
+            //    builder.AddApplicationInsightsSettings(developerMode: true);
+            //}
+
+            SetupApplicationInsights();
 
             Configuration = builder.Build();
+        }
+
+        private void SetupApplicationInsights()
+        {
+            var builder = TelemetryConfiguration.Active.TelemetryProcessorChainBuilder;
+            builder.Use((next) => new NotFoundFilter(next));
+            builder.Build();
         }
 
         public IConfigurationRoot Configuration { get; }
@@ -62,6 +73,7 @@ namespace SvarnyJunak.CeskeObce.Web
             }
             else
             {
+                app.UseExceptionHandler("/error");
                 app.UseHttpsEnforcement();
                 app.UseHsts(new HstsOptions
                 {
@@ -69,12 +81,18 @@ namespace SvarnyJunak.CeskeObce.Web
                     IncludeSubDomains = true,
                     Preload = true
                 });
-
-                app.UseExceptionHandler("/Home/Error");
             }
 
-            app.UseStaticFiles();
+            app.Use(async (context, next) =>
+            {
+                await next();
+                if (context.Response.StatusCode == 404)
+                {
+                    context.Request.Path = "/pagenotfound";
+                }
+            });
 
+            app.UseStaticFiles();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
@@ -94,6 +112,14 @@ namespace SvarnyJunak.CeskeObce.Web
                                   new MunicipalityCache(app.ApplicationServices.GetService<IMunicipalityRepository>()))
                       }
                 );
+                routes.MapRoute(
+                    name: "error",
+                    template: "error",
+                    defaults: new { controller = "Home", action = "Error" });
+                routes.MapRoute(
+                    name: "pagenotfound",
+                    template: "pagenotfound",
+                    defaults: new { controller = "Home", action = "PageNotFound" });
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
