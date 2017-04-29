@@ -89,6 +89,7 @@ namespace SvarnyJunak.CeskeObce.Web
                 if (context.Response.StatusCode == 404)
                 {
                     context.Request.Path = "/pagenotfound";
+                    await next();
                 }
             });
 
