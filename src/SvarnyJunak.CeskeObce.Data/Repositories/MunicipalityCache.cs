@@ -10,11 +10,11 @@ namespace SvarnyJunak.CeskeObce.Data.Repositories
 {
     public class MunicipalityCache
     {
-        private IEnumerable<Municipality> __municipalities;
+        private IEnumerable<Municipality> _municipalities;
 
         public MunicipalityCache(IMunicipalityRepository repository)
         {
-            __municipalities = repository.GetMunicipalities();
+            _municipalities = repository.GetMunicipalities();
         }
 
         /// <summary>
@@ -24,7 +24,7 @@ namespace SvarnyJunak.CeskeObce.Data.Repositories
         /// <returns></returns>
         public IEnumerable<Municipality> FindByName(string name)
         {
-            return from m in __municipalities
+            return from m in _municipalities
                    where CompareWithoutDiacriticsIfNotProvided(name.ToUpper().Trim(), m.Name)
                    orderby m.Name
                    select m;
@@ -32,7 +32,7 @@ namespace SvarnyJunak.CeskeObce.Data.Repositories
 
         public IEnumerable<Municipality> FindByNameAndDistrict(string name, string district)
         {
-            return from m in __municipalities
+            return from m in _municipalities
                    where CompareWithoutDiacriticsIfNotProvided(name.ToUpper().Trim(), m.Name) &&
                          CompareWithoutDiacriticsIfNotProvided(district.ToUpper().Trim(), m.DistrictName)
                    orderby m.Name
@@ -49,7 +49,7 @@ namespace SvarnyJunak.CeskeObce.Data.Repositories
 
         public bool Contains(string code)
         {
-            return __municipalities.Any(m => m.Code == code);
+            return _municipalities.Any(m => m.Code == code);
         }
 
         public Municipality GetMunicipality(string code)
@@ -57,7 +57,7 @@ namespace SvarnyJunak.CeskeObce.Data.Repositories
             if (code == null)
                 throw new ArgumentNullException("code");
 
-            var result = __municipalities.SingleOrDefault(m => m.Code == code);
+            var result = _municipalities.SingleOrDefault(m => m.Code == code);
 
             if (result == null)
                 throw new MunicipalityNotFoundException(String.Format("Municipality with given code {0} was not found.", code));
@@ -67,7 +67,7 @@ namespace SvarnyJunak.CeskeObce.Data.Repositories
 
         public Municipality GetRandomMunicipality()
         {
-            return __municipalities.GetRandomElement();
+            return _municipalities.GetRandomElement();
         }
     }
 }
