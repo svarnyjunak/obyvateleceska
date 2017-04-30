@@ -14,14 +14,15 @@ namespace SvarnyJunak.CeskeObce.Web.Controllers
 {
     public class HomeController : Controller
     {
-        protected IDataLoader DataLoader { get; set; }
         protected MunicipalityRepository MunicipalityRepository { get; set; }
+        protected PopulationProgressRepository PopulationProgressRepository { get; set; }
         private readonly IStringLocalizer<HomeController> _localizer;
 
         public HomeController(IDataLoader dataLoader, IStringLocalizer<HomeController> localizer)
         {
-            DataLoader = dataLoader;
             MunicipalityRepository = new MunicipalityRepository(dataLoader);
+            PopulationProgressRepository = new PopulationProgressRepository(dataLoader);
+
             _localizer = localizer;
         }
 
@@ -90,7 +91,7 @@ namespace SvarnyJunak.CeskeObce.Web.Controllers
         private MunicipalityPopulationProgressModel CreateModelByCode(string code)
         {
             var municipality = MunicipalityRepository.GetByCode(code);
-            var populationProgress = DataLoader.GetPopulationProgress(code);
+            var populationProgress = PopulationProgressRepository.GetByMunicipalityCode(code);
 
             return new MunicipalityPopulationProgressModel
             {
@@ -102,7 +103,7 @@ namespace SvarnyJunak.CeskeObce.Web.Controllers
         private MunicipalityPopulationProgressModel CreateRandomModel()
         {
             var municipality = MunicipalityRepository.GetRandom();
-            var populationProgress = DataLoader.GetPopulationProgress(municipality.Code);
+            var populationProgress = PopulationProgressRepository.GetByMunicipalityCode(municipality.Code);
 
             return new MunicipalityPopulationProgressModel
             {

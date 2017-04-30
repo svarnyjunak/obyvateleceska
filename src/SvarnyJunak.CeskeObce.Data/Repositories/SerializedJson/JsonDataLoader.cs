@@ -29,19 +29,9 @@ namespace SvarnyJunak.CeskeObce.Data.Repositories.SerializedJson
             return CachedMunicipalities.ToArray();
         }
 
-        // todo: Move this to repository
-        public PopulationProgressInMunicipality GetPopulationProgress(string municipalityCode)
+        public IEnumerable<PopulationProgressInMunicipality> GetPopulationProgress()
         {
-            var result = (from p in CachedPopulationProggress where p.MunicipalityCode == municipalityCode select p).ToArray();
-
-            if (!result.Any())
-                throw new ArgumentException("No result found for given municipalityCode.");
-
-            if (result.Count() > 1)
-                throw new ArgumentException("Too many records found for given municipalityCode.");
-
-            return result.Single();
-
+            return CachedPopulationProggress.ToArray();
         }
     }
 }

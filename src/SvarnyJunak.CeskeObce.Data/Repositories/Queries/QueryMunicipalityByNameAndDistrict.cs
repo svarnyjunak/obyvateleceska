@@ -19,7 +19,7 @@ namespace SvarnyJunak.CeskeObce.Data.Repositories.Queries
         public string District { get; set; }
 
         public override Expression<Func<Municipality, bool>> Expression =>
-            m => m.Name.CompareWithoutDiacriticsIfNotProvided(Name) &&
-                 m.DistrictName.CompareWithoutDiacriticsIfNotProvided(District);
+            m => Name.CompareWithoutDiacriticsIfNotProvided(m.Name) &&
+                 District.CompareWithoutDiacriticsIfNotProvided(m.DistrictName);
     }
 }

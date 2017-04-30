@@ -31,7 +31,7 @@ namespace SvarnyJunak.CeskeObce.Web.Test.Controllers
         {
             var municipalities = CreateMunicipalities(20).ToArray();
             _dataLoader.GetMunicipalities().Returns(municipalities);
-            _dataLoader.GetPopulationProgress(null).ReturnsForAnyArgs(c => CreatePopulationProgress(c.Arg<string>()));
+            _dataLoader.GetPopulationProgress().Returns(CreatePopulationProgress(municipalities));
 
             var controller = new HomeController(_dataLoader, _localizer);
             var result = controller.Index(null, null, "19");
@@ -46,9 +46,10 @@ namespace SvarnyJunak.CeskeObce.Web.Test.Controllers
         public void Index_RandomMunicipalityTest()
         {
             var municipality = CreateMunicipality();
-            var populationProgress = CreatePopulationProgress(municipality.Code);
+            var populationProgress = CreatePopulationProgress(municipality);
+
             _dataLoader.GetMunicipalities().Returns(new[] { municipality });
-            _dataLoader.GetPopulationProgress(municipality.Code).Returns(populationProgress);
+            _dataLoader.GetPopulationProgress().Returns(new[] { populationProgress });
 
             var controller = new HomeController(_dataLoader, _localizer);
             var result = controller.Index(null, null, null);
@@ -64,9 +65,10 @@ namespace SvarnyJunak.CeskeObce.Web.Test.Controllers
         public void SelectMunicipality_Test()
         {
             var municipality = CreateMunicipality();
-            var populationProgress = CreatePopulationProgress(municipality.Code);
+            var populationProgress = CreatePopulationProgress(municipality);
+
             _dataLoader.GetMunicipalities().Returns(new[] { municipality });
-            _dataLoader.GetPopulationProgress(municipality.Code).Returns(populationProgress);
+            _dataLoader.GetPopulationProgress().Returns(new[] { populationProgress });
 
             var controller = new HomeController(_dataLoader, _localizer);
             var result = controller.SelectMunicipality("křemže", null);
@@ -84,9 +86,10 @@ namespace SvarnyJunak.CeskeObce.Web.Test.Controllers
         public void SelectMunicipality_NotFoundTest()
         {
             var municipality = CreateMunicipality();
-            var populationProgress = CreatePopulationProgress(municipality.Code);
+            var populationProgress = CreatePopulationProgress(municipality);
+
             _dataLoader.GetMunicipalities().Returns(new[] { municipality });
-            _dataLoader.GetPopulationProgress(municipality.Code).Returns(populationProgress);
+            _dataLoader.GetPopulationProgress().Returns(new[] { populationProgress });
 
             var controller = new HomeController(_dataLoader, _localizer);
             var result = controller.SelectMunicipality("not existing municipality", "1");
@@ -107,9 +110,10 @@ namespace SvarnyJunak.CeskeObce.Web.Test.Controllers
         public void SelectMunicipality_NullTest()
         {
             var municipality = CreateMunicipality();
-            var populationProgress = CreatePopulationProgress(municipality.Code);
+            var populationProgress = CreatePopulationProgress(municipality);
+
             _dataLoader.GetMunicipalities().Returns(new[] { municipality });
-            _dataLoader.GetPopulationProgress(municipality.Code).Returns(populationProgress);
+            _dataLoader.GetPopulationProgress().Returns(new[] { populationProgress });
 
             var controller = new HomeController(_dataLoader, _localizer);
             var result = controller.SelectMunicipality(null, "1");
@@ -170,12 +174,17 @@ namespace SvarnyJunak.CeskeObce.Web.Test.Controllers
             }
         }
 
-        private PopulationProgressInMunicipality CreatePopulationProgress(string municipalityCode)
+        private PopulationProgressInMunicipality CreatePopulationProgress(Municipality municipality)
         {
             return new PopulationProgressInMunicipality
             {
-                MunicipalityCode = municipalityCode
+                MunicipalityCode = municipality.Code
             };
+        }
+
+        private IEnumerable<PopulationProgressInMunicipality> CreatePopulationProgress(IEnumerable<Municipality> municipalities)
+        {
+            return municipalities.Select(CreatePopulationProgress);
         }
     }
 }
