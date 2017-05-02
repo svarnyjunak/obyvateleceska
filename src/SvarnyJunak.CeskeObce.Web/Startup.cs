@@ -115,13 +115,20 @@ namespace SvarnyJunak.CeskeObce.Web
                       }
                 );
                 routes.MapRoute(
+                    name: "about",
+                    template: "aplikace",
+                    defaults: new { controller = "Home", action = "About" });
+
+                routes.MapRoute(
                     name: "error",
                     template: "error",
                     defaults: new { controller = "Home", action = "Error" });
+
                 routes.MapRoute(
                     name: "pagenotfound",
                     template: "pagenotfound",
                     defaults: new { controller = "Home", action = "PageNotFound" });
+
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
