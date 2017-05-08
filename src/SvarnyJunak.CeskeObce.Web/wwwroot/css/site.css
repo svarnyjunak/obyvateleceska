@@ -106,8 +106,8 @@ input[type=text] {
 }
 
     .chart div {
-        font: 10px sans-serif;
-        height: 20px;
+        font: 14px sans-serif;
+        margin-bottom: 3px;
     }
 
     .chart .year-caption {
@@ -116,14 +116,12 @@ input[type=text] {
     }
 
     .chart .bar {
-        font: 10px sans-serif;
         background-color: steelblue;
         text-align: right;
         padding: 3px;
         color: white;
         display: inline-block;
         width: 0;
-        height: 11px;
         transition: background .5s ease-out;
     }
 

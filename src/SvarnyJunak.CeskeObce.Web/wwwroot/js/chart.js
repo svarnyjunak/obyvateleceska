@@ -35,7 +35,7 @@
 
     function getBarMaxWidth() {
         var defaultMaxWidth = 330;
-        var currentWidth = document.querySelector(".chart").offsetWidth - 40;
+        var currentWidth = document.querySelector(".chart").offsetWidth - 60;
         return defaultMaxWidth < currentWidth ? defaultMaxWidth : currentWidth;
     }
 
