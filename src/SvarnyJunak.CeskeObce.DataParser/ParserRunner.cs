@@ -11,6 +11,7 @@ using SvarnyJunak.CeskeObce.Data.Repositories.SerializedJson;
 using SvarnyJunak.CeskeObce.Data.Utils;
 using SvarnyJunak.CeskeObce.DataParser.Utils;
 using OfficeOpenXml;
+using DataRow = SvarnyJunak.CeskeObce.DataParser.Utils.DataRow;
 
 namespace SvarnyJunak.CeskeObce.DataParser
 {

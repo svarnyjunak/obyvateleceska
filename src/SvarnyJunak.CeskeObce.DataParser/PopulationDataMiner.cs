@@ -9,6 +9,7 @@ using SvarnyJunak.CeskeObce.Data;
 using SvarnyJunak.CeskeObce.Data.Entities;
 using SvarnyJunak.CeskeObce.DataParser.Entities;
 using SvarnyJunak.CeskeObce.DataParser.Utils;
+using DataRow = SvarnyJunak.CeskeObce.DataParser.Utils.DataRow;
 
 namespace SvarnyJunak.CeskeObce.DataParser
 {
