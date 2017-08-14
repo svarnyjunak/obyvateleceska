@@ -11,12 +11,6 @@
     <ApplicationInsightsAnnotationResourceId>/subscriptions/238b30b8-fe18-4a52-8b3e-a9bf9733b47e/resourcegroups/Default-Web-northeurope/providers/microsoft.insights/components/ceskeobce</ApplicationInsightsAnnotationResourceId>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="wwwroot\js\*.js" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="wwwroot\robots.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="Joonasw.AspNetCore.SecurityHeaders" Version="1.0.1" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="1.1.1" />
