@@ -5,7 +5,6 @@
     <PreserveCompilationContext>true</PreserveCompilationContext>
   </PropertyGroup>
   <PropertyGroup>
-    <PackageTargetFallback>$(PackageTargetFallback);portable-net45+win8+wp8+wpa81;</PackageTargetFallback>
     <UserSecretsId>c03e16fd-09da-4dbc-8f56-fca9cbfe5ce7</UserSecretsId>
     <ApplicationInsightsResourceId>/subscriptions/238b30b8-fe18-4a52-8b3e-a9bf9733b47e/resourcegroups/Default-Web-northeurope/providers/microsoft.insights/components/ceskeobce</ApplicationInsightsResourceId>
     <ApplicationInsightsAnnotationResourceId>/subscriptions/238b30b8-fe18-4a52-8b3e-a9bf9733b47e/resourcegroups/Default-Web-northeurope/providers/microsoft.insights/components/ceskeobce</ApplicationInsightsAnnotationResourceId>
