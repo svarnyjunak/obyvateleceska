@@ -12,8 +12,10 @@ matrix:
       dist: trusty
 
 install:
-  - nuget restore SvarnyJunak.CeskeObce.sln
-  - nuget install xunit.runners -Version 1.9.2 -OutputDirectory testrunner
+  - dotnet restore
 script:
-  - xbuild /p:Configuration=Release SvarnyJunak.CeskeObce.sln
-  - mono ./testrunner/xunit.runners.1.9.2/tools/xunit.console.clr4.exe ./MyProject.Tests/bin/Release/MyProject.Tests.dll
+  - dotnet test
+notifications:
+  email:
+    on_success: never
+    on_failure: always
