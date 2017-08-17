@@ -1,0 +1,19 @@
+language: csharp
+mono: none
+dotnet: 2.0.0
+dist: trusty
+script:
+ - dotnet restore
+ 
+matrix:
+  include:
+    - dotnet: 2.0.0
+      mono: none
+      dist: trusty
+
+install:
+  - nuget restore solution-name.sln
+  - nuget install xunit.runners -Version 1.9.2 -OutputDirectory testrunner
+script:
+  - xbuild /p:Configuration=Release solution-name.sln
+  - mono ./testrunner/xunit.runners.1.9.2/tools/xunit.console.clr4.exe ./MyProject.Tests/bin/Release/MyProject.Tests.dll
