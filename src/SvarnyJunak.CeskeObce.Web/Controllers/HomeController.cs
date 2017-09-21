@@ -45,11 +45,11 @@ namespace SvarnyJunak.CeskeObce.Web.Controllers
 
                 var errorMessage = Resources.Controllers_HomeController.No_municipality_found_;
                 ModelState.AddModelError(nameof(model.MunicipalityNameSearch), errorMessage);
-                return View("Index", model);
+                return View(nameof(Index), model);
             }
 
             var municipality = municipalities.First();
-            return RedirectToAction("Index", new { district = municipality.DistrictName, name = municipality.Name, code = municipality.Code });
+            return RedirectToAction(nameof(Index), new { district = municipality.DistrictName, name = municipality.Name, code = municipality.Code });
         }
 
         [HttpPost]
