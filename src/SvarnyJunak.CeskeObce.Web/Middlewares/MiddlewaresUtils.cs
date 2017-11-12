@@ -16,5 +16,15 @@ namespace SvarnyJunak.CeskeObce.Web.Middlewares
             }
             return app.UseMiddleware<EnforceHttpsMiddleware>();
         }
+
+        public static IApplicationBuilder UseContentTypeNoSniffHeader(this IApplicationBuilder app)
+        {
+            if(app == null)
+            {
+                throw new ArgumentNullException(nameof(app));
+            }
+
+            return app.UseMiddleware<ContentTypeOptionsNoSniffMiddleware>();
+        }
     }
 }

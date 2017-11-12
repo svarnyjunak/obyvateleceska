@@ -79,6 +79,8 @@ namespace SvarnyJunak.CeskeObce.Web
                 app.UseHsts(new HstsOptions(new TimeSpan(126, 0, 0, 0, 0), includeSubDomains: true, preload: true));
             }
 
+            app.UseContentTypeNoSniffHeader();
+
             app.Use(async (context, next) =>
             {
                 await next();
