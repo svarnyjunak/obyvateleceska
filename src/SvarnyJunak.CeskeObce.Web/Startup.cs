@@ -81,6 +81,7 @@ namespace SvarnyJunak.CeskeObce.Web
 
             app.UseContentTypeNoSniffHeader();
             app.UseXssProtectionHeader();
+            app.UseContentSecurityPolicyHeader();
 
             app.Use(async (context, next) =>
             {
