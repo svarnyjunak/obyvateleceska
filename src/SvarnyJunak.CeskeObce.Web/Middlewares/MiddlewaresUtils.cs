@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Primitives;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +25,17 @@ namespace SvarnyJunak.CeskeObce.Web.Middlewares
                 throw new ArgumentNullException(nameof(app));
             }
 
-            return app.UseMiddleware<ContentTypeOptionsNoSniffMiddleware>();
+            return app.UseMiddleware<AddResponseHeaderMiddleware>("X-Content-Type-Options", new StringValues("nosniff") );
+        }
+
+        public static IApplicationBuilder UseXssProtectionHeader(this IApplicationBuilder app)
+        {
+            if (app == null)
+            {
+                throw new ArgumentNullException(nameof(app));
+            }
+
+            return app.UseMiddleware<AddResponseHeaderMiddleware>("X-XSS-Protection", new StringValues("1; mode=block") );
         }
     }
 }
