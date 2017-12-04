@@ -15,8 +15,6 @@ var regex = {
     js: /\.js$/
 };
 
-//test
-
 gulp.task("min", ["min:js", "min:css", "min:html"]);
 
 gulp.task("min:js", function () {
