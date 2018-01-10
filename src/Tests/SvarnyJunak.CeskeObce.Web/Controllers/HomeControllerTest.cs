@@ -154,12 +154,6 @@ namespace SvarnyJunak.CeskeObce.Web.Test.Controllers
             Assert.Equal("Křemže, Český Krumlov", model.Single());
         }
 
-        [Fact]
-        public void Test()
-        {
-            Assert.True(false);
-        }
-
         private Municipality CreateMunicipality()
         {
             return new Municipality
