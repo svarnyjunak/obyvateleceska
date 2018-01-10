@@ -76,7 +76,7 @@ namespace SvarnyJunak.CeskeObce.Web
             {
                 app.UseExceptionHandler("/error");
                 app.UseHttpsEnforcement();
-                app.UseHsts(new HstsOptions(new TimeSpan(126, 0, 0, 0, 0), includeSubDomains: true, preload: true));
+                app.UseHsts(new HstsOptions(new TimeSpan(180, 0, 0, 0, 0), includeSubDomains: true, preload: true));
             }
 
             app.UseContentTypeNoSniffHeader();
