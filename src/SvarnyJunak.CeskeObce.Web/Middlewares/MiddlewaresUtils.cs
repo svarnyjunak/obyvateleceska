@@ -59,12 +59,19 @@ namespace SvarnyJunak.CeskeObce.Web.Middlewares
             var js = new[]
             {
                 "'self'",
+                "'unsafe-inline'", // google adsense
                 "https://maps.googleapis.com",
                 "https://maps.gstatic.com",
                 "https://www.google-analytics.com/analytics.js",
                 "https://az416426.vo.msecnd.net/scripts/a/ai.0.js",
+                "https://pagead2.googlesyndication.com",
+                "https://adservice.google.cz/adsid/integrator.js",
+                "https://adservice.google.com/adsid/integrator.js",
+             /* 
                 "'sha256-XNzxjnKkNNDQIdgm47tH693jYB/vMQuAJD366bJnNVA='",
                 "'sha256-gTNuTcADd7aFfQROeHc6OQsKqPlLON+shrmJUHeb+0E='",
+                "'sha256-1Gl1aQj35BHBndlNA5NqZN/Yh2jaJx1U2IQEm7Cad1o='"
+             */
             };
 
             var img = new[]
