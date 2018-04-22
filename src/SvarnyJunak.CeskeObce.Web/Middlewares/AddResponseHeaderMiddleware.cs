@@ -22,10 +22,18 @@ namespace SvarnyJunak.CeskeObce.Web.Middlewares
 
         public async Task Invoke(HttpContext context)
         {
-            context.Response.OnStarting(state => {
-                var httpContext = (HttpContext)state;
-                httpContext.Response.Headers.Add(_headerName, _headerValues);
-                return Task.FromResult(0);
+            context.Response.OnStarting(async state =>
+            {
+                await Task.Run(() =>
+                {
+                    var httpContext = (HttpContext)state;
+                    var responseHeaders = httpContext.Response.Headers;
+                    
+                    if (responseHeaders.Keys.All(k => k != _headerName))
+                    {
+                        responseHeaders.Add(_headerName, _headerValues);
+                    }
+                });
             }, context);
 
             await _next(context);
