@@ -178,7 +178,12 @@ namespace SvarnyJunak.CeskeObce.Web.Test.Controllers
         {
             return new PopulationProgressInMunicipality
             {
-                MunicipalityCode = municipality.Code
+                MunicipalityCode = municipality.Code,
+                PopulationProgress = new[]
+                {
+                    new PopulationFrame {Count = 1, Year = 2000},
+                    new PopulationFrame {Count = 2, Year = 2001},
+                }
             };
         }
 
