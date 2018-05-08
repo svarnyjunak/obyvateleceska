@@ -37,7 +37,7 @@ namespace SvarnyJunak.CeskeObce.Web.Controllers
         [HttpPost]
         public IActionResult SelectMunicipality(string municipalityName, string currentMunicipalityCode)
         {
-            var municipalities = FindMunicipalitiesByNameWithDiscrict(municipalityName).ToArray();
+            var municipalities = FindMunicipalitiesByNameWithDiscrict(municipalityName);
 
             if (!municipalities.Any())
             {
