@@ -92,25 +92,24 @@ namespace SvarnyJunak.CeskeObce.Web.Controllers
         private MunicipalityPopulationProgressModel CreateModelByCode(string code)
         {
             var municipality = MunicipalityRepository.GetByCode(code);
-            var populationProgress = PopulationProgressRepository.GetByMunicipalityCode(code);
+            return CreateModelByMunicipality(municipality);
+        }
+
+        private MunicipalityPopulationProgressModel CreateModelByMunicipality(Municipality municipality)
+        {
+            var populationProgress = PopulationProgressRepository.GetByMunicipalityCode(municipality.Code);
 
             return new MunicipalityPopulationProgressModel
             {
                 Municipality = municipality,
-                PopulationProgress = populationProgress.PopulationProgress.ToArray()
+                PopulationProgress = populationProgress.PopulationProgress.OrderByDescending(d => d.Year).ToArray()
             };
         }
 
         private MunicipalityPopulationProgressModel CreateRandomModel()
         {
             var municipality = MunicipalityRepository.GetRandom();
-            var populationProgress = PopulationProgressRepository.GetByMunicipalityCode(municipality.Code);
-
-            return new MunicipalityPopulationProgressModel
-            {
-                Municipality = municipality,
-                PopulationProgress = populationProgress.PopulationProgress.ToArray()
-            };
+            return CreateModelByMunicipality(municipality);
         }
 
         private string CreateMetaDescription(MunicipalityPopulationProgressModel model)

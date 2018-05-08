@@ -58,7 +58,9 @@ namespace SvarnyJunak.CeskeObce.Web.Test.Controllers
 
             var model = (MunicipalityPopulationProgressModel)result.Model;
             Assert.Same(municipality, model.Municipality);
-            Assert.Equal(populationProgress.PopulationProgress, model.PopulationProgress);
+
+            var expectedPopulation = populationProgress.PopulationProgress.OrderByDescending(d => d.Year);
+            Assert.Equal(expectedPopulation, model.PopulationProgress);
         }
 
         [Fact]
