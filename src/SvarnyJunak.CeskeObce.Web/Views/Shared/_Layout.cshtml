@@ -36,8 +36,13 @@
             </ul>
         </nav>
     </header>
-
-    @RenderBody()
+    
+    <div class="content-wrapper">
+        <div class="background-image"></div>
+        <div class="content">
+            @RenderBody()
+        </div>
+    </div>
 
     @RenderSection("scripts", required: false)
 
