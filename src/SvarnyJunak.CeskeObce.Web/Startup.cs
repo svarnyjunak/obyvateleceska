@@ -18,6 +18,7 @@ using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Joonasw.AspNetCore.SecurityHeaders;
 using SvarnyJunak.CeskeObce.Web.Middlewares;
 using Microsoft.ApplicationInsights.Extensibility;
+using Microsoft.AspNetCore.Mvc;
 using SvarnyJunak.CeskeObce.Web.Middlewares.ApplicationInsights;
 using SvarnyJunak.CeskeObce.Data.Repositories.Queries;
 
@@ -56,7 +57,7 @@ namespace SvarnyJunak.CeskeObce.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddApplicationInsightsTelemetry(Configuration);
-            services.AddMvc().AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix);
+            services.AddMvc(options => options.EnableEndpointRouting = false).AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix);
             services.AddTransient<IDataLoader, JsonDataLoader>();
             services.AddLocalization(options => options.ResourcesPath = "Resources");
         }
@@ -64,9 +65,6 @@ namespace SvarnyJunak.CeskeObce.Web
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
