@@ -1,7 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Text.Json;
 
 namespace SvarnyJunak.CeskeObce.Data.Utils
 {
@@ -14,13 +15,12 @@ namespace SvarnyJunak.CeskeObce.Data.Utils
 
         public string Write<T>(T data)
         {
-            return JsonConvert.SerializeObject(data);
+            return JsonSerializer.Serialize<T>(data);
         }
 
         public T Read<T>(string data)
         {
-            var deserializedData = JsonConvert.DeserializeObject(data);
-            return ((Newtonsoft.Json.Linq.JArray)deserializedData).ToObject<T>();
+            return JsonSerializer.Deserialize<T>(data);
         }
     }
 }
