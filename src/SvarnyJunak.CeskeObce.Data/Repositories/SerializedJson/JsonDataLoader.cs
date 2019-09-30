@@ -8,12 +8,12 @@ namespace SvarnyJunak.CeskeObce.Data.Repositories.SerializedJson
 {
     public class JsonDataLoader : IDataLoader
     {
-        static JsonDataLoader()
+        public JsonDataLoader()
         {
             Init();
         }
 
-        protected static void Init()
+        protected void Init()
         {
             var dataLoader = new JsonResources();
             var serializer = new JsonDataSerializer();
@@ -21,8 +21,8 @@ namespace SvarnyJunak.CeskeObce.Data.Repositories.SerializedJson
             CachedPopulationProggress = serializer.Read<IEnumerable<PopulationProgressInMunicipality>>(dataLoader.LoadProgress());
         }
 
-        protected static IEnumerable<Municipality> CachedMunicipalities { get; set; }
-        protected static IEnumerable<PopulationProgressInMunicipality> CachedPopulationProggress { get; set; }
+        protected IEnumerable<Municipality> CachedMunicipalities { get; set; }
+        protected IEnumerable<PopulationProgressInMunicipality> CachedPopulationProggress { get; set; }
 
         public IEnumerable<Municipality> GetMunicipalities()
         {

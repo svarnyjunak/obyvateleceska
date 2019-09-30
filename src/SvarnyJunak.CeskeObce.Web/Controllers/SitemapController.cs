@@ -16,7 +16,7 @@ namespace SvarnyJunak.CeskeObce.Web.Controllers
     [Route("sitemap.xml")]
     public class SitemapController : Controller
     {
-        private IDataLoader _dataLoader;
+        private readonly IDataLoader _dataLoader;
 
         public SitemapController(IDataLoader dataLoader)
         {

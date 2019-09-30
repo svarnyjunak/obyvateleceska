@@ -63,10 +63,9 @@ namespace SvarnyJunak.CeskeObce.Web
                 options.ConstraintMap.Add("municipalityCode", typeof(MunicipalityRouteConstraint));
             });
             services.AddControllersWithViews(options => options.EnableEndpointRouting = false).AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix);
-            services.AddTransient<IDataLoader, JsonDataLoader>();
             services.AddLocalization(options => options.ResourcesPath = "Resources");
 
-            services.AddTransient<IDataLoader, JsonDataLoader>();
+            services.AddSingleton<IDataLoader, JsonDataLoader>();
             services.AddTransient<MunicipalityRepository>();
         }
 
