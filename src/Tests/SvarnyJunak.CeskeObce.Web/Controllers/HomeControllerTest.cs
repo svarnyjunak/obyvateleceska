@@ -137,7 +137,7 @@ namespace SvarnyJunak.CeskeObce.Web.Test.Controllers
             Assert.IsType<String[]>(result.Value);
 
             var model = (String[])result.Value;
-            Assert.Equal(1, model.Length);
+            Assert.Single(model);
             Assert.Equal("Křemže, Český Krumlov", model.Single());
         }
 
@@ -152,7 +152,7 @@ namespace SvarnyJunak.CeskeObce.Web.Test.Controllers
             Assert.IsType<String[]>(result.Value);
 
             var model = (String[])result.Value;
-            Assert.Equal(1, model.Length);
+            Assert.Single(model);
             Assert.Equal("Křemže, Český Krumlov", model.Single());
         }
 

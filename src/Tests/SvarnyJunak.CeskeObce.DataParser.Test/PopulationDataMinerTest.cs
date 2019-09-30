@@ -15,7 +15,7 @@ namespace SvarnyJunak.CeskeObce.DataParser.Tests
             __populationDataMiner.AddPopulationData(CreateDataWithTwoFramesAndOneMunicipality());
 
             var result = __populationDataMiner.ComputePopulationProgressInMunicipalities();
-            Assert.Equal(1, result.Count());
+            Assert.Single(result);
         }
 
         [Fact]
