@@ -27,6 +27,8 @@ namespace SvarnyJunak.CeskeObce.Web.Controllers
         }
 
         [HttpGet]
+        [Route("{district}/{name}/{code:municipalityCode}")]
+        [Route("{controller=Home}/{action=Index}/{id?}")]
         public ViewResult Index(string district, string name, string code)
         {
             var model = code == null ? CreateRandomModel() : CreateModelByCode(code);
@@ -120,16 +122,19 @@ namespace SvarnyJunak.CeskeObce.Web.Controllers
             return $"Vývoj počtu obyvatel v obci {model.Municipality.Name} (okres {model.Municipality.DistrictName}) mezi roky {firstYear} - {lastYear}.";
         }
 
+        [Route("aplikace")]
         public IActionResult About()
         {
             return View();
         }
 
+        [Route("error")]
         public IActionResult Error()
         {
             return View();
         }
 
+        [Route("pagenotfound")]
         public IActionResult PageNotFound()
         {
             return View();

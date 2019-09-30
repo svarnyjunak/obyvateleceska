@@ -57,9 +57,17 @@ namespace SvarnyJunak.CeskeObce.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddApplicationInsightsTelemetry(Configuration);
-            services.AddMvc(options => options.EnableEndpointRouting = false).AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix);
+            services.AddRouting(options =>
+            {
+                options.LowercaseUrls = true;
+                options.ConstraintMap.Add("municipalityCode", typeof(MunicipalityRouteConstraint));
+            });
+            services.AddControllersWithViews(options => options.EnableEndpointRouting = false).AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix);
             services.AddTransient<IDataLoader, JsonDataLoader>();
             services.AddLocalization(options => options.ResourcesPath = "Resources");
+
+            services.AddTransient<IDataLoader, JsonDataLoader>();
+            services.AddTransient<MunicipalityRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -92,43 +100,11 @@ namespace SvarnyJunak.CeskeObce.Web
             });
 
             app.UseStaticFiles();
-            app.UseMvc(routes =>
+            app.UseRouting();
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapRoute(
-                  name: "Sitemap",
-                  template: "sitemap.xml",
-                  defaults: new { controller = "Sitemap", action = "Index" });
-
-                routes.MapRoute(
-                  name: "MunicipalityRoute",
-                  template: "{district}/{name}/{code}",
-                  defaults: new { controller = "Home", action = "Index" },
-                  constraints:
-                      new
-                      {
-                          code =
-                              new MunicipalityRouteConstraint(
-                                  new MunicipalityRepository(app.ApplicationServices.GetService<IDataLoader>()))
-                      }
-                );
-                routes.MapRoute(
-                    name: "about",
-                    template: "aplikace",
-                    defaults: new { controller = "Home", action = "About" });
-
-                routes.MapRoute(
-                    name: "error",
-                    template: "error",
-                    defaults: new { controller = "Home", action = "Error" });
-
-                routes.MapRoute(
-                    name: "pagenotfound",
-                    template: "pagenotfound",
-                    defaults: new { controller = "Home", action = "PageNotFound" });
-
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapControllers();
+                endpoints.MapDefaultControllerRoute();
             });
 
             var supportedCultures = new[] { new CultureInfo("cs-CZ") };
