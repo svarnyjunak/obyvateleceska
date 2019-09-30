@@ -39,16 +39,7 @@ namespace SvarnyJunak.CeskeObce.Web
                 builder.AddApplicationInsightsSettings(developerMode: true);
             }
 
-            SetupApplicationInsights();
-
             Configuration = builder.Build();
-        }
-
-        private void SetupApplicationInsights()
-        {
-            var builder = TelemetryConfiguration.Active.TelemetryProcessorChainBuilder;
-            builder.Use((next) => new NotFoundFilter(next));
-            builder.Build();
         }
 
         public IConfigurationRoot Configuration { get; }
@@ -57,6 +48,7 @@ namespace SvarnyJunak.CeskeObce.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddApplicationInsightsTelemetry(Configuration);
+            services.AddApplicationInsightsTelemetryProcessor<NotFoundFilter>();
             services.AddRouting(options =>
             {
                 options.LowercaseUrls = true;
