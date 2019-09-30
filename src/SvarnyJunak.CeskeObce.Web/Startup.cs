@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -14,11 +11,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using System.Globalization;
 using Microsoft.AspNetCore.Mvc.Razor;
-using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Joonasw.AspNetCore.SecurityHeaders;
 using SvarnyJunak.CeskeObce.Web.Middlewares;
-using Microsoft.ApplicationInsights.Extensibility;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
 using SvarnyJunak.CeskeObce.Web.Middlewares.ApplicationInsights;
 using SvarnyJunak.CeskeObce.Data.Repositories.Queries;
 
@@ -26,7 +21,7 @@ namespace SvarnyJunak.CeskeObce.Web
 {
     public class Startup
     {
-        public Startup(IHostingEnvironment env)
+        public Startup(IWebHostEnvironment env)
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
@@ -62,7 +57,7 @@ namespace SvarnyJunak.CeskeObce.Web
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment())
             {
