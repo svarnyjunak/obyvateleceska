@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Localization;
 using System.Globalization;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Joonasw.AspNetCore.SecurityHeaders;
+using Joonasw.AspNetCore.SecurityHeaders.Csp.Builder;
+using Microsoft.AspNetCore.Mvc;
 using SvarnyJunak.CeskeObce.Web.Middlewares;
 using Microsoft.Extensions.Hosting;
 using SvarnyJunak.CeskeObce.Web.Middlewares.ApplicationInsights;
@@ -21,23 +23,12 @@ namespace SvarnyJunak.CeskeObce.Web
 {
     public class Startup
     {
-        public Startup(IWebHostEnvironment env)
+        public Startup(IWebHostEnvironment env, IConfiguration configuration)
         {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-                .AddEnvironmentVariables();
-
-            if (env.IsDevelopment())
-            {
-                builder.AddApplicationInsightsSettings(developerMode: true);
-            }
-
-            Configuration = builder.Build();
+            Configuration = configuration;
         }
 
-        public IConfigurationRoot Configuration { get; }
+        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -49,7 +40,12 @@ namespace SvarnyJunak.CeskeObce.Web
                 options.LowercaseUrls = true;
                 options.ConstraintMap.Add("municipalityCode", typeof(MunicipalityRouteConstraint));
             });
-            services.AddControllersWithViews().AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix);
+            
+            services
+                .AddControllersWithViews()
+                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+
             services.AddLocalization(options => options.ResourcesPath = "Resources");
             services.AddSingleton<IDataLoader, JsonDataLoader>();
             services.AddTransient<MunicipalityRepository>();
@@ -66,14 +62,22 @@ namespace SvarnyJunak.CeskeObce.Web
             else
             {
                 app.UseExceptionHandler("/error");
+
+                //todo: use app.UseHttpsRedirection();
                 app.UseHttpsEnforcement();
                 app.UseHsts(new HstsOptions(new TimeSpan(180, 0, 0, 0, 0), includeSubDomains: true, preload: true));
             }
 
+            //todo: app.UseCors();
             app.UseContentTypeNoSniffHeader();
-            app.UseXssProtectionHeader();
+            
+            //app.UseXssProtectionHeader();
+            app.UseXXssProtection(new XXssProtectionOptions(true, true));
+
+            // todo: app.UseCsp(...)
             app.UseContentSecurityPolicyHeader();
 
+            // todo: use app.UseStatusCodePagesWithRedirects(...)
             app.Use(async (context, next) =>
             {
                 await next();

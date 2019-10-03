@@ -5,7 +5,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Json;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -26,7 +28,24 @@ namespace SvarnyJunak.CeskeObce.Web
                     logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
                     logging.AddConsole();
                     logging.AddDebug();
+                    logging.AddApplicationInsights();
+                })
+                .ConfigureAppConfiguration((host, configuration) =>
+                {
+                    var env = host.HostingEnvironment;
 
+                    configuration
+                        .SetBasePath(env.ContentRootPath)
+                        .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                        .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+                        .AddEnvironmentVariables();
+
+                    if (env.IsDevelopment())
+                    {
+                        configuration.AddApplicationInsightsSettings(developerMode: true);
+                    }
+
+                    configuration.Build();
                 })
                 .Build();
     }
