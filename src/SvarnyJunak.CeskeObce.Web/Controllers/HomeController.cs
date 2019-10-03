@@ -55,12 +55,13 @@ namespace SvarnyJunak.CeskeObce.Web.Controllers
             return RedirectToAction(nameof(Index), new { district = municipality.DistrictName, name = municipality.Name, code = municipality.Code });
         }
 
-        [HttpPost]
-        public JsonResult FindMunicipalities(string name)
+        [HttpGet]
+        [Route("api/municipalities")]
+        public ActionResult<string[]> FindMunicipalities(string name)
         {
             var municipalities = FindMunicipalitiesByNameWithDiscrict(name);
             var data = municipalities.Select(m => $"{m.Name}, {m.DistrictName}").ToArray();
-            return Json(data);
+            return Ok(data);
         }
 
         private IEnumerable<Municipality> FindMunicipalitiesByNameWithDiscrict(string municipalityName)

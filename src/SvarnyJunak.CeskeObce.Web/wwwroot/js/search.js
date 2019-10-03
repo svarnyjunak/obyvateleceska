@@ -13,13 +13,13 @@
         },
         source: function (term, response) {
             var ajax = new XMLHttpRequest();
-            ajax.open("POST", "/Home/FindMunicipalities", true);
+            ajax.open("GET", "/api/municipalities?name=" + encodeURIComponent(term), true);
             ajax.onload = function () {
                 var data = JSON.parse(ajax.responseText);
                 response(data);
             };
             ajax.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            ajax.send("name=" + term);
+            ajax.send();
         }
     });
 })();
