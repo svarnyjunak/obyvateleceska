@@ -27,7 +27,7 @@ namespace SvarnyJunak.CeskeObce.Web.Controllers
         }
 
         [HttpGet]
-        [Route("{district}/{name}/{code:municipalityCode}")]
+        [Route("{district}/{name}/{code:municipalityCode}", Name = "MunicipalityRoute")]
         [Route("{controller=Home}/{action=Index}/{id?}")]
         public ViewResult Index(string district, string name, string code)
         {
