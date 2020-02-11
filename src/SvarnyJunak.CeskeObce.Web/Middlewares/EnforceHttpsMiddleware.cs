@@ -18,6 +18,12 @@ namespace SvarnyJunak.CeskeObce.Web.Middlewares
         public async Task Invoke(HttpContext context)
         {
             HttpRequest req = context.Request;
+
+            if (req.Path.HasValue && req.Path.Value.Contains(".well-known"))
+            {
+                await _next(context); //ověření domény - nepřesměrovávat 
+            }
+
             if (req.IsHttps == false)
             {
                 string url = "https://" + req.Host + req.Path + req.QueryString;
