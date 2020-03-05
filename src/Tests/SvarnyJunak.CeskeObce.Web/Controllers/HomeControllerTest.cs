@@ -133,10 +133,7 @@ namespace SvarnyJunak.CeskeObce.Web.Test.Controllers
             _dataLoader.GetMunicipalities().Returns(new[] { municipality });
 
             var controller = new HomeController(_dataLoader, _localizer);
-            var result = controller.FindMunicipalities("křem");
-            Assert.IsType<String[]>(result.Value);
-
-            var model = (String[])result.Value;
+            var model = GetOkResultValue(controller.FindMunicipalities("křem"));
             Assert.Single(model);
             Assert.Equal("Křemže, Český Krumlov", model.Single());
         }
@@ -148,10 +145,7 @@ namespace SvarnyJunak.CeskeObce.Web.Test.Controllers
             _dataLoader.GetMunicipalities().Returns(new[] { municipality });
 
             var controller = new HomeController(_dataLoader, _localizer);
-            var result = controller.FindMunicipalities("křemže, český krumlov");
-            Assert.IsType<String[]>(result.Value);
-
-            var model = (String[])result.Value;
+            var model = GetOkResultValue(controller.FindMunicipalities("křemže, český krumlov"));
             Assert.Single(model);
             Assert.Equal("Křemže, Český Krumlov", model.Single());
         }
@@ -192,6 +186,15 @@ namespace SvarnyJunak.CeskeObce.Web.Test.Controllers
         private IEnumerable<PopulationProgressInMunicipality> CreatePopulationProgress(IEnumerable<Municipality> municipalities)
         {
             return municipalities.Select(CreatePopulationProgress);
+        }
+
+        private static T GetOkResultValue<T>(ActionResult<T> actionResult)
+        {
+            Assert.IsType<OkObjectResult>(actionResult.Result);
+
+            var okResult = (OkObjectResult)actionResult.Result;
+            Assert.IsType<T>(okResult.Value);
+            return (T) okResult.Value;
         }
     }
 }
