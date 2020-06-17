@@ -11,6 +11,6 @@
         public decimal MaleAverageAge { get; set; }
         public decimal FemaleAverageAge { get; set; }
 
-        public string MunicipalityCode { get; set; }
+        public string MunicipalityCode { get; set; } = default!;
     }
 }

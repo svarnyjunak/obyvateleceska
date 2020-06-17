@@ -8,7 +8,7 @@ namespace SvarnyJunak.CeskeObce.Data.Repositories.Queries
 {
     public class QueryMunicipalityByCode : QueryMunicipality
     {
-        public string Code { get; set; }
+        public string Code { get; set; } = default!;
 
         public override Expression<Func<Municipality, bool>> Expression =>
             m => m.Code == Code;

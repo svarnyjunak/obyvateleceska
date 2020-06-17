@@ -10,11 +10,6 @@ namespace SvarnyJunak.CeskeObce.Data.Repositories.SerializedJson
     {
         public JsonDataLoader()
         {
-            Init();
-        }
-
-        protected void Init()
-        {
             var dataLoader = new JsonResources();
             var serializer = new JsonDataSerializer();
             CachedMunicipalities = serializer.Read<Municipality[]>(dataLoader.LoadMunicipalities());

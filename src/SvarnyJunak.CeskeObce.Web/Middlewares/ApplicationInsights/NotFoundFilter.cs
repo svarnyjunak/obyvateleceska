@@ -20,9 +20,7 @@ namespace SvarnyJunak.CeskeObce.Web.Middlewares.ApplicationInsights
 
         public void Process(ITelemetry item)
         {
-            var request = item as RequestTelemetry;
-
-            if (HasHttpStatusCode(request, HttpStatusCode.NotFound))
+            if (item is RequestTelemetry request && HasHttpStatusCode(request, HttpStatusCode.NotFound))
             {
                 return;
             }
@@ -32,11 +30,6 @@ namespace SvarnyJunak.CeskeObce.Web.Middlewares.ApplicationInsights
 
         private static bool HasHttpStatusCode(RequestTelemetry request, HttpStatusCode httpStatus)
         {
-            if(request == null)
-            {
-                return false;
-            }
-
             var httpStatusCode = ((int)httpStatus).ToString();
             return request.ResponseCode.Equals(httpStatusCode, StringComparison.OrdinalIgnoreCase);
         }

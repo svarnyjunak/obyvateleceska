@@ -44,10 +44,10 @@ namespace SvarnyJunak.CeskeObce.DataParser
             }
         }
 
-        public PopulationProgressInMunicipality FindMunicipalityWithBiggestPopulationGrowth()
+        public PopulationProgressInMunicipality? FindMunicipalityWithBiggestPopulationGrowth()
         {
             var municipalities = (from p in __dataList select p.MunicipalityCode).Distinct();
-            PopulationProgressInMunicipality result = null;
+            PopulationProgressInMunicipality? result = null;
 
             foreach (var municipalityCode in municipalities)
             {

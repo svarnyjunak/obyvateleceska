@@ -47,6 +47,6 @@ namespace SvarnyJunak.CeskeObce.DataParser.Utils
 
     public class DataRow
     {
-        public object[] Columns { get; set; }
+        public object[] Columns { get; set; } = new object[0];
     }
 }

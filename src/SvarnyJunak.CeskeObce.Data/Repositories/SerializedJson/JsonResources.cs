@@ -23,10 +23,17 @@ namespace SvarnyJunak.CeskeObce.Data.Repositories.SerializedJson
             var type = typeof(JsonResources);
             var assembly = type.GetTypeInfo().Assembly;
             using (var stream = assembly.GetManifestResourceStream(type.Namespace + "." + embededFileName))
-            using (var reader = new StreamReader(stream))
             {
-                var data = reader.ReadToEnd();
-                return data;
+                if (stream == null)
+                {
+                    throw new ArgumentException($"File {embededFileName} was not found as embeded file in the assembly.");
+                }
+
+                using (var reader = new StreamReader(stream))
+                {
+                    var data = reader.ReadToEnd();
+                    return data;
+                }
             }
         }
     }

@@ -8,6 +8,7 @@ namespace SvarnyJunak.CeskeObce.Data.Entities
         public PopulationProgressInMunicipality()
         {
             PopulationProgress = new PopulationFrame[0];
+            MunicipalityCode = String.Empty;
         }
 
         /// <summary>

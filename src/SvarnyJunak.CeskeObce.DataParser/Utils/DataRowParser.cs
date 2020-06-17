@@ -17,9 +17,9 @@ namespace SvarnyJunak.CeskeObce.DataParser.Utils
         public string ParseString(object value)
         {
             if (value == null)
-                return null;
+                return String.Empty;
 
-            return value.ToString();
+            return value.ToString()!;
         }
 
         public double ParseDouble(object value)

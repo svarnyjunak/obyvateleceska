@@ -29,7 +29,7 @@ namespace SvarnyJunak.CeskeObce.Web.Controllers
         [HttpGet]
         [Route("{district}/{name}/{code:municipalityCode}", Name = "MunicipalityRoute")]
         [Route("{controller=Home}/{action=Index}/{id?}")]
-        public ViewResult Index(string district, string name, string code)
+        public ViewResult Index(string? district, string? name, string? code)
         {
             var model = code == null ? CreateRandomModel() : CreateModelByCode(code);
             ViewData["MetaDescription"] = CreateMetaDescription(model);
