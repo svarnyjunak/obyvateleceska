@@ -8,7 +8,7 @@ namespace SvarnyJunak.CeskeObce.Data.Repositories
 {
     public class PopulationProgressRepository
     {
-        private IEnumerable<PopulationProgressInMunicipality> _populationProgress;
+        private readonly IEnumerable<PopulationProgressInMunicipality> _populationProgress;
 
         public PopulationProgressRepository(IDataLoader dataLoader)
         {

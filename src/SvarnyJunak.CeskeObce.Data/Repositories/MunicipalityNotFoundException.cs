@@ -9,7 +9,7 @@ namespace SvarnyJunak.CeskeObce.Data.Repositories
     public class MunicipalityNotFoundException : Exception
     {
         public MunicipalityNotFoundException(string municipalityName)
-            : base(String.Format("Municipality with name {0} was not found.", municipalityName))
+            : base($"Municipality with name {municipalityName} was not found.")
         {
             MunicipalityName = municipalityName;
         }

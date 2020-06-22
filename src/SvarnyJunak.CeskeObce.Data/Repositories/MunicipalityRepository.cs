@@ -12,7 +12,7 @@ namespace SvarnyJunak.CeskeObce.Data.Repositories
 {
     public class MunicipalityRepository
     {
-        private IEnumerable<Municipality> _municipalities;
+        private readonly IEnumerable<Municipality> _municipalities;
 
         public MunicipalityRepository(IDataLoader dataLoader)
         {
@@ -21,13 +21,10 @@ namespace SvarnyJunak.CeskeObce.Data.Repositories
 
         public Municipality GetByCode(string code)
         {
-            if (code == null)
-                throw new ArgumentNullException("code");
-
             var result = _municipalities.SingleOrDefault(m => m.Code == code);
 
             if (result == null)
-                throw new MunicipalityNotFoundException(String.Format("Municipality with given code {0} was not found.", code));
+                throw new MunicipalityNotFoundException($"Municipality with given code {code} was not found.");
 
             return result;
         }

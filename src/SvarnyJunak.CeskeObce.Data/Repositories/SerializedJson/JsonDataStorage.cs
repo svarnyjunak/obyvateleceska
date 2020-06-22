@@ -11,13 +11,22 @@ namespace SvarnyJunak.CeskeObce.Data.Repositories.SerializedJson
 {
     public class JsonDataStorage : IMunicipalityDataStorer
     {
-        private readonly IDataSerializer __serializer;
-        private readonly string __path;
+        private readonly IDataSerializer _serializer;
+        private readonly string _path;
+        private readonly IFileStorage _fileStorage;
 
         public JsonDataStorage(IDataSerializer serializer, string path)
         {
-            __serializer = serializer;
-            __path = path;
+            _serializer = serializer;
+            _path = path;
+            _fileStorage = new FileStorage();
+        }
+
+        public JsonDataStorage(IDataSerializer serializer, string path, IFileStorage fileStorage)
+        {
+            _serializer = serializer;
+            _path = path;
+            _fileStorage = fileStorage;
         }
 
         public void StoreMunicipalities(IEnumerable<Municipality> municipalities)
@@ -32,8 +41,8 @@ namespace SvarnyJunak.CeskeObce.Data.Repositories.SerializedJson
 
         private void Serialize<T>(IEnumerable<T> data, string dataName) where T : class
         {
-            var path = Path.Combine(__path, dataName + "." + __serializer.GetDataExtension());
-            File.WriteAllText(path, __serializer.Write(data));
+            var path = Path.Combine(_path, dataName + "." + _serializer.GetDataExtension());
+            _fileStorage.Store(path, _serializer.Write(data));
         }
     }
 }

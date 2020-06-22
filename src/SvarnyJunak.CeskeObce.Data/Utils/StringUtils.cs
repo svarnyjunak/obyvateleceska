@@ -37,25 +37,5 @@ namespace SvarnyJunak.CeskeObce.Data.Utils
 
             return bUpperCased.RemoveDiacritics().StartsWith(aUpperCased.RemoveDiacritics());
         }
-
-        /// <summary>
-        /// Replaces all spaces by '-' and all text is converted to lowercase.
-        /// </summary>
-        /// <param name="text"></param>
-        /// <returns></returns>
-        public static string PrepareForUrl(this string text)
-        {
-            return text.ToLower().Replace(" ", "-");
-        }
-
-        /// <summary>
-        /// Replaces all '-' by spaces.
-        /// </summary>
-        /// <param name="text"></param>
-        /// <returns></returns>
-        public static string PrepareFromUrl(this string text)
-        {
-            return text.Replace("-", " ");
-        }
     }
 }
