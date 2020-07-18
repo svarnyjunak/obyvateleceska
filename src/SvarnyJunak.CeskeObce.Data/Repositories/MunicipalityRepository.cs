@@ -6,22 +6,26 @@ using System.Threading.Tasks;
 using SvarnyJunak.CeskeObce.Data.Entities;
 using SvarnyJunak.CeskeObce.Data.Utils;
 using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 using SvarnyJunak.CeskeObce.Data.Repositories.Queries;
 
 namespace SvarnyJunak.CeskeObce.Data.Repositories
 {
-    public class MunicipalityRepository
+    public interface IMunicipalityRepository : IRepository<Municipality>
     {
-        private readonly IEnumerable<Municipality> _municipalities;
+        Municipality GetByCode(string code);
+        Municipality GetRandom();
+    }
 
-        public MunicipalityRepository(IDataLoader dataLoader)
+    public class MunicipalityRepository : RepositoryBase<Municipality>, IMunicipalityRepository
+    {
+        public MunicipalityRepository(CeskeObceDbContext dbContext) : base(dbContext)
         {
-            _municipalities = dataLoader.GetMunicipalities();
         }
 
         public Municipality GetByCode(string code)
         {
-            var result = _municipalities.SingleOrDefault(m => m.Code == code);
+            var result = DbContext.Municipalities.SingleOrDefault(m => m.MunicipalityId == code);
 
             if (result == null)
                 throw new MunicipalityNotFoundException($"Municipality with given code {code} was not found.");
@@ -31,17 +35,12 @@ namespace SvarnyJunak.CeskeObce.Data.Repositories
 
         public Municipality GetRandom()
         {
-            return _municipalities.GetRandomElement();
+            return DbContext.Municipalities.GetRandomElement();
         }
 
-        public IEnumerable<Municipality> FindAll(IQuery<Municipality> query)
+        protected override DbSet<Municipality> GetDbSet()
         {
-            return _municipalities.Where(query.Expression.Compile()).OrderBy(m => m.Name);
-        }
-
-        public bool Exists(IQuery<Municipality> query)
-        {
-            return _municipalities.Any(query.Expression.Compile());
+            return DbContext.Municipalities;
         }
     }
 }

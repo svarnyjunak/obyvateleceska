@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SvarnyJunak.CeskeObce.Data.Entities;
 using SvarnyJunak.CeskeObce.Data.Repositories;
-using SvarnyJunak.CeskeObce.Data.Repositories.SerializedJson;
-using SvarnyJunak.CeskeObce.Data.Utils;
 using SvarnyJunak.CeskeObce.DataParser.Utils;
 using OfficeOpenXml;
 using DataRow = SvarnyJunak.CeskeObce.DataParser.Utils.DataRow;
@@ -17,18 +10,21 @@ namespace SvarnyJunak.CeskeObce.DataParser
 {
     public sealed class ParserRunner 
     {
-        private readonly IMunicipalityDataStorer __storer;
+        private readonly IMunicipalityRepository _municipalityRepository;
+        private readonly IPopulationFrameRepository _populationFrameRepository;
 
-        public ParserRunner(IMunicipalityDataStorer storer)
+        public ParserRunner(IMunicipalityRepository municipalityRepository, IPopulationFrameRepository populationFrameRepository)
         {
-            __storer = storer;
+            _municipalityRepository = municipalityRepository;
+            _populationFrameRepository = populationFrameRepository;
         }
 
         public void Run()
         {
-            var municipalities = GetMunicipalities().ToArray();
-            __storer.StorePopulationProgress(GetPopulationProgress());
-            __storer.StoreMunicipalities(municipalities);
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+            _municipalityRepository.Save(GetMunicipalities().ToArray());
+            _populationFrameRepository.Save(GetPopulationProgress().ToArray());
         }
 
         private IEnumerable<Municipality> GetMunicipalities()
@@ -39,7 +35,7 @@ namespace SvarnyJunak.CeskeObce.DataParser
             return municipalities;
         }
 
-        private IEnumerable<PopulationProgressInMunicipality> GetPopulationProgress()
+        private IEnumerable<PopulationFrame> GetPopulationProgress()
         {
             const string sheetName = "List1";
             var population = new PopulationDataMiner();

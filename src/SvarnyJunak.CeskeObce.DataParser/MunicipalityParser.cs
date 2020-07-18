@@ -16,7 +16,7 @@ namespace SvarnyJunak.CeskeObce.DataParser
         {
             return new Municipality
             {
-                Code = Parser.ParseString(row.Columns[0]),
+                MunicipalityId = Parser.ParseString(row.Columns[0]),
                 Name = Parser.ParseString(row.Columns[1]),
                 DistrictName = Parser.ParseString(row.Columns[2]),
                 Latitude = Parser.ParseDecimal(row.Columns[3]),

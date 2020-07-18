@@ -10,14 +10,17 @@ namespace SvarnyJunak.CeskeObce.Data.Utils
     {
         private static readonly Random _random = new Random();
 
-        public static T GetRandomElement<T>(this IEnumerable<T> list)
+        public static T GetRandomElement<T>(this IQueryable<T> list)
         {
-            // If there are no elements in the collection, return the default value of T
-            var array = list as T[] ?? list.ToArray();
-            if (array.Length == 0)
-                return default;
+            var count = list.Count();
 
-            return array[_random.Next(array.Length)];
+            if (count == 0)
+            {
+                return default(T) ?? throw new InvalidOperationException();
+            }
+
+            var random = _random.Next(count);
+            return list.Skip(random - 1).Take(1).Single();
         }
     }
 }

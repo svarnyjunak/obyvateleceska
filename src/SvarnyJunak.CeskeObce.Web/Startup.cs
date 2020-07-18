@@ -4,15 +4,16 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using SvarnyJunak.CeskeObce.Data.Repositories.SerializedJson;
 using SvarnyJunak.CeskeObce.Data.Repositories;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using System.Globalization;
+using FileContextCore;
+using FileContextCore.FileManager;
+using FileContextCore.Serializer;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Joonasw.AspNetCore.SecurityHeaders;
-using Joonasw.AspNetCore.SecurityHeaders.Csp.Builder;
 using Microsoft.AspNetCore.Mvc;
 using SvarnyJunak.CeskeObce.Web.Middlewares;
 using Microsoft.Extensions.Hosting;
@@ -25,9 +26,11 @@ namespace SvarnyJunak.CeskeObce.Web
     {
         public Startup(IWebHostEnvironment env, IConfiguration configuration)
         {
+            Env = env;
             Configuration = configuration;
         }
 
+        public IWebHostEnvironment Env { get; }
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -47,8 +50,14 @@ namespace SvarnyJunak.CeskeObce.Web
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
             services.AddLocalization(options => options.ResourcesPath = "Resources");
-            services.AddSingleton<IDataLoader, JsonDataLoader>();
-            services.AddTransient<MunicipalityRepository>();
+
+            services.AddDbContext<CeskeObceDbContext>(options =>
+            {
+                options.UseFileContextDatabase<JSONSerializer, DefaultFileManager>();
+            });
+
+            services.AddScoped<IMunicipalityRepository, MunicipalityRepository>();
+            services.AddScoped<IPopulationFrameRepository, PopulationFrameRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -107,10 +116,10 @@ namespace SvarnyJunak.CeskeObce.Web
 
         public class MunicipalityRouteConstraint : IRouteConstraint
         {
-            private readonly MunicipalityRepository __cache;
-            public MunicipalityRouteConstraint(MunicipalityRepository cache)
+            private readonly IServiceProvider _serviceProvider;
+            public MunicipalityRouteConstraint(IServiceProvider serviceProvider)
             {
-                __cache = cache;
+                _serviceProvider = serviceProvider;
             }
 
             public bool Match(HttpContext httpContext, IRouter route, string routeKey, RouteValueDictionary values, RouteDirection routeDirection)
@@ -118,12 +127,17 @@ namespace SvarnyJunak.CeskeObce.Web
                 if (!values.ContainsKey(routeKey))
                     return false;
 
-                var query = new QueryMunicipalityByCode
+                using (var scope = _serviceProvider.CreateScope())
                 {
-                    Code = (string)values[routeKey]
-                };
+                    var repository = scope.ServiceProvider.GetRequiredService<IMunicipalityRepository>();
 
-                return __cache.Exists(query);
+                    var query = new QueryMunicipalityByCode
+                    {
+                        Code = (string)values[routeKey]
+                    };
+
+                    return repository.Exists(query);
+                }
             }
         }
     }

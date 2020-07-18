@@ -11,14 +11,14 @@ namespace SvarnyJunak.CeskeObce.Data.Test.Entities
     public class MunicipalityTest
     {
         [TestMethod]
-        public void Code_Test()
+        public void MunicipalityId_Test()
         {
             var municipality = new Municipality
             {
-                Code = "code"
+                MunicipalityId = "code"
             };
 
-            Assert.AreEqual("code", municipality.Code);
+            Assert.AreEqual("code", municipality.MunicipalityId);
         }
 
         [TestMethod]

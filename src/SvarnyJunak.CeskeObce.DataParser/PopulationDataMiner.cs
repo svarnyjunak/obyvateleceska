@@ -28,59 +28,17 @@ namespace SvarnyJunak.CeskeObce.DataParser
             __dataList.AddRange(data);
         }
 
-        public IEnumerable<PopulationProgressInMunicipality> ComputePopulationProgressInMunicipalities()
+        public IEnumerable<PopulationFrame> ComputePopulationProgressInMunicipalities()
         {
             var municipalities = (from p in __dataList select p.MunicipalityCode).Distinct();
 
             foreach (var municipalityCode in municipalities)
             {
-                var progress = GetPopulationProggress(municipalityCode);
-
-                yield return new PopulationProgressInMunicipality
+                foreach (var frame in GetPopulationProggress(municipalityCode))
                 {
-                    MunicipalityCode = municipalityCode,
-                    PopulationProgress = progress.ToArray()
-                };
-            }
-        }
-
-        public PopulationProgressInMunicipality? FindMunicipalityWithBiggestPopulationGrowth()
-        {
-            var municipalities = (from p in __dataList select p.MunicipalityCode).Distinct();
-            PopulationProgressInMunicipality? result = null;
-
-            foreach (var municipalityCode in municipalities)
-            {
-                var progress = GetPopulationProggress(municipalityCode);
-                var tempMunicipality = new PopulationProgressInMunicipality
-                {
-                    MunicipalityCode = municipalityCode,
-                    PopulationProgress = progress.ToArray()
-                };
-
-                if (result == null || HasBiggerPopulationGrowthRate(result, tempMunicipality))
-                {
-                    result = tempMunicipality;
+                    yield return frame;
                 }
             }
-
-            return result;
-        }
-
-        private bool HasBiggerPopulationGrowthRate(PopulationProgressInMunicipality a, PopulationProgressInMunicipality b)
-        {
-            return GetPopulationGrowthRate(a) < GetPopulationGrowthRate(b);
-        }
-
-        private int GetPopulationGrowthRate(PopulationProgressInMunicipality populationProgress)
-        {
-            var minYear = populationProgress.PopulationProgress.Min(d => d.Year);
-            var minYearCount = (from d in populationProgress.PopulationProgress where d.Year == minYear select d.Count).Single();
-
-            var maxYear = populationProgress.PopulationProgress.Max(d => d.Year);
-            var maxYearCount = (from d in populationProgress.PopulationProgress where d.Year == maxYear select d.Count).Single();
-
-            return maxYearCount / minYearCount;
         }
 
         private IEnumerable<PopulationFrame> GetPopulationProggress(string municipalityCode)
@@ -89,6 +47,7 @@ namespace SvarnyJunak.CeskeObce.DataParser
                    where p.MunicipalityCode == municipalityCode
                    select new PopulationFrame
                    {
+                       MunicipalityId = municipalityCode,
                        Year = p.Year,
                        Count = p.TotalCount,
                    };

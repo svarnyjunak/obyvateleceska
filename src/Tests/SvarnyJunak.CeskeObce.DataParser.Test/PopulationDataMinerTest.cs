@@ -3,7 +3,7 @@ using System.Linq;
 using SvarnyJunak.CeskeObce.DataParser.Entities;
 using Xunit;
 
-namespace SvarnyJunak.CeskeObce.DataParser.Tests
+namespace SvarnyJunak.CeskeObce.DataParser.Test
 {
     public class PopulationDataMinerTest
     {
@@ -15,7 +15,8 @@ namespace SvarnyJunak.CeskeObce.DataParser.Tests
             __populationDataMiner.AddPopulationData(CreateDataWithTwoFramesAndOneMunicipality());
 
             var result = __populationDataMiner.ComputePopulationProgressInMunicipalities();
-            Assert.Single(result);
+            var municipalityIds = result.GroupBy(p => p.MunicipalityId);
+            Assert.Single(municipalityIds);
         }
 
         [Fact]
@@ -23,8 +24,8 @@ namespace SvarnyJunak.CeskeObce.DataParser.Tests
         {
             __populationDataMiner.AddPopulationData(CreateDataWithTwoFramesAndOneMunicipality());
 
-            var result = __populationDataMiner.ComputePopulationProgressInMunicipalities().Single();
-            Assert.Equal(2, result.PopulationProgress.Count());
+            var result = __populationDataMiner.ComputePopulationProgressInMunicipalities();
+            Assert.Equal(2, result.Count());
         }
 
         [Fact]

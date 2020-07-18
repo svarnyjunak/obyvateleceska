@@ -27,20 +27,20 @@ namespace SvarnyJunak.CeskeObce.Data.Test.Queries
             {
                 new Municipality
                 {
-                    Code = "A"
+                    MunicipalityId = "A"
                 },
                 new Municipality
                 {
-                    Code = "XXX",
+                    MunicipalityId = "XXX",
                 },
                 new Municipality
                 {
-                    Code = "B"
+                    MunicipalityId = "B"
                 },
             };
 
             var result = data.SingleOrDefault(query.Expression.Compile());
-            Assert.AreEqual("XXX", result?.Code);
+            Assert.AreEqual("XXX", result?.MunicipalityId);
         }
     }
 }

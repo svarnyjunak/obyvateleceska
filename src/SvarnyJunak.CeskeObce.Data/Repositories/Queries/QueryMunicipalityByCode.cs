@@ -11,6 +11,6 @@ namespace SvarnyJunak.CeskeObce.Data.Repositories.Queries
         public string Code { get; set; } = default!;
 
         public override Expression<Func<Municipality, bool>> Expression =>
-            m => m.Code == Code;
+            m => m.MunicipalityId == Code;
     }
 }

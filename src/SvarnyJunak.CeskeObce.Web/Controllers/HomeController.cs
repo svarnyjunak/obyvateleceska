@@ -1,29 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SvarnyJunak.CeskeObce.Data.Repositories;
-using SvarnyJunak.CeskeObce.Data.Repositories.SerializedJson;
 using SvarnyJunak.CeskeObce.Web.Models;
 using SvarnyJunak.CeskeObce.Data.Entities;
-using Microsoft.Extensions.Localization;
 using SvarnyJunak.CeskeObce.Data.Repositories.Queries;
 
 namespace SvarnyJunak.CeskeObce.Web.Controllers
 {
     public class HomeController : Controller
     {
-        protected MunicipalityRepository MunicipalityRepository { get; set; }
-        protected PopulationProgressRepository PopulationProgressRepository { get; set; }
-        private readonly IStringLocalizer<HomeController> _localizer;
+        protected IMunicipalityRepository MunicipalityRepository { get; set; }
+        protected IPopulationFrameRepository PopulationFrameRepository { get; set; }
 
-        public HomeController(IDataLoader dataLoader, IStringLocalizer<HomeController> localizer)
+        public HomeController(IMunicipalityRepository municipalityRepository, IPopulationFrameRepository populationProgressRepository)
         {
-            MunicipalityRepository = new MunicipalityRepository(dataLoader);
-            PopulationProgressRepository = new PopulationProgressRepository(dataLoader);
-
-            _localizer = localizer;
+            MunicipalityRepository = municipalityRepository;
+            PopulationFrameRepository = populationProgressRepository;
         }
 
         [HttpGet]
@@ -52,7 +45,7 @@ namespace SvarnyJunak.CeskeObce.Web.Controllers
             }
 
             var municipality = municipalities.First();
-            return RedirectToAction(nameof(Index), new { district = municipality.DistrictName, name = municipality.Name, code = municipality.Code });
+            return RedirectToAction(nameof(Index), new { district = municipality.DistrictName, name = municipality.Name, code = municipality.MunicipalityId });
         }
 
         [HttpGet]
@@ -100,12 +93,12 @@ namespace SvarnyJunak.CeskeObce.Web.Controllers
 
         private MunicipalityPopulationProgressModel CreateModelByMunicipality(Municipality municipality)
         {
-            var populationProgress = PopulationProgressRepository.GetByMunicipalityCode(municipality.Code);
+            var populationProgress = PopulationFrameRepository.FindAll(new QueryPopulationFrameByMunicipalityCode { Code = municipality.MunicipalityId });
 
             return new MunicipalityPopulationProgressModel
             {
                 Municipality = municipality,
-                PopulationProgress = populationProgress.PopulationProgress.OrderByDescending(d => d.Year).ToArray()
+                PopulationProgress = populationProgress.OrderByDescending(d => d.Year).ToArray()
             };
         }
 

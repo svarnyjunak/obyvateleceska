@@ -14,7 +14,7 @@
     <label for="municipalityName">
         <strong>@Localizer["MunicipalitySearchLabel"]</strong>
     </label><br />
-    <input type="hidden" name="currentMunicipalityCode" value="@Model.Municipality.Code" />
+    <input type="hidden" name="currentMunicipalityCode" value="@Model.Municipality.MunicipalityId" />
     <input id="municipality-search" type="text" name="municipalityName" value="@Model.MunicipalityNameSearch" />
 
     <div asp-validation-summary="All"></div>

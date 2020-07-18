@@ -10,48 +10,54 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using SvarnyJunak.CeskeObce.Data.Repositories.Queries;
 using Xunit;
 
 namespace SvarnyJunak.CeskeObce.Web.Test.Controllers
 {
     public class HomeControllerTest
     {
-        private readonly IDataLoader _dataLoader;
-        private readonly IStringLocalizer<HomeController> _localizer;
-
-        public HomeControllerTest()
-        {
-            _dataLoader = Substitute.For<IDataLoader>();
-            _localizer = Substitute.For<IStringLocalizer<HomeController>>();
-            _localizer.GetString(String.Empty).ReturnsForAnyArgs(c => new LocalizedString(c.Arg<string>(), c.Arg<string>()));
-        }
-
         [Fact]
         public void Index_SpecificMunicipalityTest()
         {
-            var municipalities = CreateMunicipalities(20).ToArray();
-            _dataLoader.GetMunicipalities().Returns(municipalities);
-            _dataLoader.GetPopulationProgress().Returns(CreatePopulationProgress(municipalities));
+            var municipality = new Municipality
+            {
+                MunicipalityId = "19"
+            };
+            var populationProgress = CreatePopulationProgress(municipality).ToArray();
 
-            var controller = new HomeController(_dataLoader, _localizer);
+            var municipalityRepository = Substitute.For<IMunicipalityRepository>();
+            var populationFrameRepository = Substitute.For<IPopulationFrameRepository>();
+
+            municipalityRepository.GetByCode("19").Returns(municipality);
+            populationFrameRepository
+                .FindAll(Arg.Is<QueryPopulationFrameByMunicipalityCode>(q => q.Code == "19"))
+                .Returns(populationProgress);
+
+            var controller = new HomeController(municipalityRepository, populationFrameRepository);
             var result = controller.Index(null, null, "19");
 
             Assert.IsType<MunicipalityPopulationProgressModel>(result.Model);
 
             var model = (MunicipalityPopulationProgressModel)result.Model;
-            Assert.Equal("19", model.Municipality.Code);
+            Assert.Equal("19", model.Municipality.MunicipalityId);
         }
 
         [Fact]
         public void Index_RandomMunicipalityTest()
         {
             var municipality = CreateMunicipality();
-            var populationProgress = CreatePopulationProgress(municipality);
+            var populationProgress = CreatePopulationProgress(municipality).ToArray();
 
-            _dataLoader.GetMunicipalities().Returns(new[] { municipality });
-            _dataLoader.GetPopulationProgress().Returns(new[] { populationProgress });
+            var municipalityRepository = Substitute.For<IMunicipalityRepository>();
+            var populationFrameRepository = Substitute.For<IPopulationFrameRepository>();
 
-            var controller = new HomeController(_dataLoader, _localizer);
+            municipalityRepository.GetRandom().Returns(municipality);
+            populationFrameRepository
+                .FindAll(Arg.Is<QueryPopulationFrameByMunicipalityCode>(q => q.Code == municipality.MunicipalityId))
+                .ReturnsForAnyArgs(populationProgress);
+
+            var controller = new HomeController(municipalityRepository, populationFrameRepository);
             var result = controller.Index(null, null, null);
 
             Assert.IsType<MunicipalityPopulationProgressModel>(result.Model);
@@ -59,7 +65,7 @@ namespace SvarnyJunak.CeskeObce.Web.Test.Controllers
             var model = (MunicipalityPopulationProgressModel)result.Model;
             Assert.Same(municipality, model.Municipality);
 
-            var expectedPopulation = populationProgress.PopulationProgress.OrderByDescending(d => d.Year);
+            var expectedPopulation = populationProgress.OrderByDescending(d => d.Year);
             Assert.Equal(expectedPopulation, model.PopulationProgress);
         }
 
@@ -67,19 +73,22 @@ namespace SvarnyJunak.CeskeObce.Web.Test.Controllers
         public void SelectMunicipality_Test()
         {
             var municipality = CreateMunicipality();
-            var populationProgress = CreatePopulationProgress(municipality);
 
-            _dataLoader.GetMunicipalities().Returns(new[] { municipality });
-            _dataLoader.GetPopulationProgress().Returns(new[] { populationProgress });
+            var municipalityRepository = Substitute.For<IMunicipalityRepository>();
+            var populationFrameRepository = Substitute.For<IPopulationFrameRepository>();
 
-            var controller = new HomeController(_dataLoader, _localizer);
+            municipalityRepository
+                .FindAll(Arg.Is<QueryMunicipalityByName>(q => q.Name == "křemže"))
+                .Returns(new[] {municipality});
+
+            var controller = new HomeController(municipalityRepository, populationFrameRepository);
             var result = controller.SelectMunicipality("křemže", null);
 
             Assert.IsType<RedirectToActionResult>(result);
 
             var redirectResult = (RedirectToActionResult)result;
             Assert.Equal("Index", redirectResult.ActionName);
-            Assert.Equal(municipality.Code, redirectResult.RouteValues["code"]);
+            Assert.Equal(municipality.MunicipalityId, redirectResult.RouteValues["code"]);
             Assert.Equal(municipality.DistrictName, redirectResult.RouteValues["district"]);
             Assert.Equal(municipality.Name, redirectResult.RouteValues["name"]);
         }
@@ -88,12 +97,13 @@ namespace SvarnyJunak.CeskeObce.Web.Test.Controllers
         public void SelectMunicipality_NotFoundTest()
         {
             var municipality = CreateMunicipality();
-            var populationProgress = CreatePopulationProgress(municipality);
 
-            _dataLoader.GetMunicipalities().Returns(new[] { municipality });
-            _dataLoader.GetPopulationProgress().Returns(new[] { populationProgress });
+            var municipalityRepository = Substitute.For<IMunicipalityRepository>();
+            var populationFrameRepository = Substitute.For<IPopulationFrameRepository>();
 
-            var controller = new HomeController(_dataLoader, _localizer);
+            municipalityRepository.GetByCode("1").Returns(municipality);
+
+            var controller = new HomeController(municipalityRepository, populationFrameRepository);
             var result = controller.SelectMunicipality("not existing municipality", "1");
 
             Assert.IsType<ViewResult>(result);
@@ -112,13 +122,16 @@ namespace SvarnyJunak.CeskeObce.Web.Test.Controllers
         public void SelectMunicipality_NullTest()
         {
             var municipality = CreateMunicipality();
-            var populationProgress = CreatePopulationProgress(municipality);
 
-            _dataLoader.GetMunicipalities().Returns(new[] { municipality });
-            _dataLoader.GetPopulationProgress().Returns(new[] { populationProgress });
+            var municipalityRepository = Substitute.For<IMunicipalityRepository>();
+            var populationFrameRepository = Substitute.For<IPopulationFrameRepository>();
 
-            var controller = new HomeController(_dataLoader, _localizer);
-            var result = controller.SelectMunicipality(null, "1");
+            municipalityRepository
+                .GetByCode("1")
+                .Returns(municipality);
+
+            var controller = new HomeController(municipalityRepository, populationFrameRepository);
+            var result = controller.SelectMunicipality(null!, "1");
 
             Assert.IsType<ViewResult>(result);
             var viewResult = (ViewResult)result;
@@ -130,9 +143,15 @@ namespace SvarnyJunak.CeskeObce.Web.Test.Controllers
         public void FindMunicipalities_PartialNameTest()
         {
             var municipality = CreateMunicipality();
-            _dataLoader.GetMunicipalities().Returns(new[] { municipality });
 
-            var controller = new HomeController(_dataLoader, _localizer);
+            var municipalityRepository = Substitute.For<IMunicipalityRepository>();
+            var populationFrameRepository = Substitute.For<IPopulationFrameRepository>();
+
+            municipalityRepository
+                .FindAll(Arg.Is<QueryMunicipalityByName>(q => q.Name == "křem"))
+                .Returns(new[] {municipality});
+
+            var controller = new HomeController(municipalityRepository, populationFrameRepository);
             var model = GetOkResultValue(controller.FindMunicipalities("křem"));
             Assert.Single(model);
             Assert.Equal("Křemže, Český Krumlov", model.Single());
@@ -142,9 +161,15 @@ namespace SvarnyJunak.CeskeObce.Web.Test.Controllers
         public void FindMunicipalities_FullNameWithDistrictTest()
         {
             var municipality = CreateMunicipality();
-            _dataLoader.GetMunicipalities().Returns(new[] { municipality });
 
-            var controller = new HomeController(_dataLoader, _localizer);
+            var municipalityRepository = Substitute.For<IMunicipalityRepository>();
+            var populationFrameRepository = Substitute.For<IPopulationFrameRepository>();
+
+            municipalityRepository
+                .FindAll(Arg.Any<QueryMunicipalityByNameAndDistrict>())
+                .Returns(new[] {municipality});
+
+            var controller = new HomeController(municipalityRepository, populationFrameRepository);
             var model = GetOkResultValue(controller.FindMunicipalities("křemže, český krumlov"));
             Assert.Single(model);
             Assert.Equal("Křemže, Český Krumlov", model.Single());
@@ -154,7 +179,7 @@ namespace SvarnyJunak.CeskeObce.Web.Test.Controllers
         {
             return new Municipality
             {
-                Code = "1",
+                MunicipalityId = "1",
                 DistrictName = "Český Krumlov",
                 Name = "Křemže",
             };
@@ -165,27 +190,15 @@ namespace SvarnyJunak.CeskeObce.Web.Test.Controllers
             for(int i = 0; i < count;i++)
             {
                 var municipality = CreateMunicipality();
-                municipality.Code = i.ToString();
+                municipality.MunicipalityId = i.ToString();
                 yield return municipality;
             }
         }
 
-        private PopulationProgressInMunicipality CreatePopulationProgress(Municipality municipality)
+        private IEnumerable<PopulationFrame> CreatePopulationProgress(Municipality municipality)
         {
-            return new PopulationProgressInMunicipality
-            {
-                MunicipalityCode = municipality.Code,
-                PopulationProgress = new[]
-                {
-                    new PopulationFrame {Count = 1, Year = 2000},
-                    new PopulationFrame {Count = 2, Year = 2001},
-                }
-            };
-        }
-
-        private IEnumerable<PopulationProgressInMunicipality> CreatePopulationProgress(IEnumerable<Municipality> municipalities)
-        {
-            return municipalities.Select(CreatePopulationProgress);
+            yield return new PopulationFrame {Count = 1, Year = 2000};
+            yield return new PopulationFrame {Count = 2, Year = 2001};
         }
 
         private static T GetOkResultValue<T>(ActionResult<T> actionResult)

@@ -1,32 +1,27 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Net.Http.Headers;
 using SvarnyJunak.CeskeObce.Data.Entities;
-using SvarnyJunak.CeskeObce.Data.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Linq;
+using SvarnyJunak.CeskeObce.Data.Repositories;
 
 namespace SvarnyJunak.CeskeObce.Web.Controllers
 {
     [Route("sitemap.xml")]
     public class SitemapController : Controller
     {
-        private readonly IDataLoader _dataLoader;
+        private readonly MunicipalityRepository _municipalityRepository;
 
-        public SitemapController(IDataLoader dataLoader)
+        public SitemapController(MunicipalityRepository municipalityRepository)
         {
-            _dataLoader = dataLoader;
+            _municipalityRepository = municipalityRepository;
         }
 
         [HttpGet]
         public FileContentResult Index()
         {
-            var municipalities = _dataLoader.GetMunicipalities();
+            var municipalities = _municipalityRepository.FindAll();
             var urls = municipalities.Select(m => CreateUrl(Url, m));
 
             XNamespace xmlns = "http://www.sitemaps.org/schemas/sitemap/0.9";
@@ -41,7 +36,7 @@ namespace SvarnyJunak.CeskeObce.Web.Controllers
 
         private static string CreateUrl(IUrlHelper urlHelper, Municipality municipality)
         {
-            var routeValues = new { district = municipality.DistrictName, name = municipality.Name, code = municipality.Code };
+            var routeValues = new { district = municipality.DistrictName, name = municipality.Name, code = municipality.MunicipalityId };
             string scheme = urlHelper.ActionContext.HttpContext.Request.Scheme;
             return urlHelper.RouteUrl("MunicipalityRoute", routeValues, scheme);
         }
