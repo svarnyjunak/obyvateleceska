@@ -15,7 +15,6 @@
     <Content Include="wwwroot\.well-known\pki-validation\fileauth.txt" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Joonasw.AspNetCore.SecurityHeaders" Version="2.9.0" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.8.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="3.1.6" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.6" />

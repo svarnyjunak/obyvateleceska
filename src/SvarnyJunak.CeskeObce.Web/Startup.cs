@@ -13,7 +13,7 @@ using FileContextCore;
 using FileContextCore.FileManager;
 using FileContextCore.Serializer;
 using Microsoft.AspNetCore.Mvc.Razor;
-using Joonasw.AspNetCore.SecurityHeaders;
+//using Joonasw.AspNetCore.SecurityHeaders;
 using Microsoft.AspNetCore.Mvc;
 using SvarnyJunak.CeskeObce.Web.Middlewares;
 using Microsoft.Extensions.Hosting;
@@ -43,7 +43,14 @@ namespace SvarnyJunak.CeskeObce.Web
                 options.LowercaseUrls = true;
                 options.ConstraintMap.Add("municipalityCode", typeof(MunicipalityRouteConstraint));
             });
-            
+
+            services.AddHsts(options =>
+            {
+                options.Preload = true;
+                options.IncludeSubDomains = true;
+                options.MaxAge = TimeSpan.FromDays(180);
+            });
+
             services
                 .AddControllersWithViews()
                 .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix);
@@ -73,14 +80,14 @@ namespace SvarnyJunak.CeskeObce.Web
 
                 //todo: use app.UseHttpsRedirection();
                 app.UseHttpsEnforcement();
-                app.UseHsts(new HstsOptions(new TimeSpan(180, 0, 0, 0, 0), includeSubDomains: true, preload: true));
+                app.UseHsts();
             }
 
             //todo: app.UseCors();
             app.UseContentTypeNoSniffHeader();
             
-            //app.UseXssProtectionHeader();
-            app.UseXXssProtection(new XXssProtectionOptions(true, true));
+            app.UseXssProtectionHeader();
+            //app.UseXXssProtection(new XXssProtectionOptions(true, true));
 
             // todo: app.UseCsp(...)
             app.UseContentSecurityPolicyHeader();
