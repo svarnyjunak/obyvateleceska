@@ -46,8 +46,7 @@ namespace SvarnyJunak.CeskeObce.Web
             
             services
                 .AddControllersWithViews()
-                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
-                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix);
 
             services.AddLocalization(options => options.ResourcesPath = "Resources");
 
