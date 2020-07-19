@@ -4,8 +4,8 @@
     if (isMapVisible) {
         var latitude = Number(document.getElementById("Municipality_Latitude").value);
         var longitude = Number(document.getElementById("Municipality_Longitude").value);
-        var offset = 0.016408460434895744;
-        var center = SMap.Coords.fromWGS84(longitude + offset, latitude + offset);
+        var offset = 0.04;
+        var center = SMap.Coords.fromWGS84(longitude, latitude + (offset));
         var m = new SMap(JAK.gel("map-canvas"), center, 13);
         m.addDefaultLayer(SMap.DEF_BASE).enable();
 
