@@ -60,8 +60,9 @@ namespace SvarnyJunak.CeskeObce.Web.Middlewares
             {
                 "'self'",
                 "'unsafe-inline'", // google adsense
-                "https://maps.googleapis.com",
-                "https://maps.gstatic.com",
+                "https://api.mapy.cz",
+                //"https://maps.googleapis.com",
+                //"https://maps.gstatic.com",
                 "https://www.google-analytics.com/analytics.js",
                 "https://az416426.vo.msecnd.net/scripts/a/ai.0.js",
                 "https://pagead2.googlesyndication.com",
@@ -80,8 +81,10 @@ namespace SvarnyJunak.CeskeObce.Web.Middlewares
                 "https://csi.gstatic.com",
                 "https://www.google-analytics.com",
                 "https://*.googleapis.com",
-                "https://maps.googleapis.com",
-                "https://maps.gstatic.com",
+                "http://api.mapy.cz",
+                "http://mapserver.mapy.cz",
+//                "https://maps.googleapis.com",
+//                "https://maps.gstatic.com",
                 "https://stats.g.doubleclick.net",
             };
 

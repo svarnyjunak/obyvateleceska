@@ -24,11 +24,11 @@
 
     </div>
 
-    @*@{
+    @{
         var numberFormat = new System.Globalization.CultureInfo("en-US").NumberFormat;
         <input type="hidden" id="Municipality_Latitude" value="@Model.Municipality.Latitude.ToString(numberFormat)" />
         <input type="hidden" id="Municipality_Longitude" value="@Model.Municipality.Longitude.ToString(numberFormat)" />
-    }*@
+    }
 
     <table class="data-population-progress">
         <thead>
@@ -50,6 +50,9 @@
 
 </form>
 
+<script type="text/javascript" src="https://api.mapy.cz/loader.js"></script>
+<script type="text/javascript">Loader.load();</script>
+
 <environment names="Development">
     <script src="~/lib/pixabay-autocompleted/auto-complete.js" asp-append-version="true"></script>
     <script src="~/js/search.js" asp-append-version="true"></script>
@@ -59,3 +62,4 @@
 <environment names="Staging,Production">
     <script src="~/js/site.min.js" asp-append-version="true"></script>
 </environment>
+
