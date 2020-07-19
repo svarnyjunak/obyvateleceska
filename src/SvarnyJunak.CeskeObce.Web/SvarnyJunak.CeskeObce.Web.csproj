@@ -55,5 +55,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="appdata\" />
+    <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
 </Project>
