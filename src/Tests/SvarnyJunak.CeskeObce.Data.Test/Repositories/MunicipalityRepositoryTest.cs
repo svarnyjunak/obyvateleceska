@@ -16,6 +16,29 @@ namespace SvarnyJunak.CeskeObce.Data.Test.Repositories
     public class MunicipalityRepositoryTest
     {
         [TestMethod]
+        public void GetRandom_Test()
+        {
+            using (var context = new CeskeObceDbContext(CreateInMemoryDbContextOptions()))
+            {
+                var municipalities = new List<Municipality>
+                {
+                    new Municipality { MunicipalityId = "1", Name = "Municipality name 1", DistrictName = "District name 1"},
+                    new Municipality { MunicipalityId = "2", Name = "Municipality name 2", DistrictName = "District name 2"},
+                    new Municipality { MunicipalityId = "3", Name = "Municipality name 3", DistrictName = "District name 3"},
+                    new Municipality { MunicipalityId = "4", Name = "Municipality name 4", DistrictName = "District name 4"},
+                    new Municipality { MunicipalityId = "5", Name = "Municipality name 5", DistrictName = "District name 5"},
+                };
+
+                context.AddRange(municipalities);
+                context.SaveChanges();
+
+                var repository = new MunicipalityRepository(context);
+                var result = repository.GetRandom();
+                Assert.IsNotNull(result);
+            }
+        }
+
+        [TestMethod]
         public void Exists_Test()
         {
             using (var context = new CeskeObceDbContext(CreateInMemoryDbContextOptions()))
@@ -31,6 +54,28 @@ namespace SvarnyJunak.CeskeObce.Data.Test.Repositories
                 var repository = new MunicipalityRepository(context);
                 var result = repository.Exists(new QueryMunicipalityByCode { Code = "TEST" });
                 Assert.IsTrue(result);
+            }
+        }
+
+        [TestMethod]
+        public async Task GetByCode_Test()
+        {
+            using (var dbContext = new CeskeObceDbContext(CreateInMemoryDbContextOptions()))
+            {
+                var municipality = new Municipality
+                {
+                    MunicipalityId = "TEST", 
+                    Name = "Municipality name", 
+                    DistrictName = "District name"
+                };
+
+                await dbContext.AddAsync(municipality);
+                await dbContext.SaveChangesAsync();
+
+                var repository = new MunicipalityRepository(dbContext);
+                var result = repository.GetByCode("TEST");
+
+                Assert.AreEqual(municipality, result);
             }
         }
 
