@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using System.Globalization;
+using System.Linq;
 using FileContextCore;
 using FileContextCore.FileManager;
 using FileContextCore.Serializer;
@@ -17,8 +18,10 @@ using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.AspNetCore.Mvc;
 using SvarnyJunak.CeskeObce.Web.Middlewares;
 using Microsoft.Extensions.Hosting;
+using SvarnyJunak.CeskeObce.Data.Entities;
 using SvarnyJunak.CeskeObce.Web.Middlewares.ApplicationInsights;
 using SvarnyJunak.CeskeObce.Data.Repositories.Queries;
+using SvarnyJunak.CeskeObce.Data.Services;
 
 namespace SvarnyJunak.CeskeObce.Web
 {
@@ -123,6 +126,8 @@ namespace SvarnyJunak.CeskeObce.Web
         public class MunicipalityRouteConstraint : IRouteConstraint
         {
             private readonly IServiceProvider _serviceProvider;
+            private static Municipality[]? _municipalities = null;
+
             public MunicipalityRouteConstraint(IServiceProvider serviceProvider)
             {
                 _serviceProvider = serviceProvider;
@@ -133,16 +138,22 @@ namespace SvarnyJunak.CeskeObce.Web
                 if (!values.ContainsKey(routeKey))
                     return false;
 
-                using (var scope = _serviceProvider.CreateScope())
+                InitCache();
+
+                return _municipalities.Any(m => m.MunicipalityId == (string) values[routeKey]);
+            }
+
+            private void InitCache()
+            {
+                if (_municipalities == null)
                 {
-                    var repository = scope.ServiceProvider.GetRequiredService<IMunicipalityRepository>();
-
-                    var query = new QueryMunicipalityByCode
+                    using (var scope = _serviceProvider.CreateScope())
                     {
-                        Code = (string)values[routeKey]
-                    };
-
-                    return repository.Exists(query);
+                        var repository = scope.ServiceProvider.GetRequiredService<IMunicipalityRepository>();
+                        
+                        _municipalities = repository.FindAll().ToArray();
+                    }
+                    
                 }
             }
         }
