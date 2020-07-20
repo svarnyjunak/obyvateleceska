@@ -25,7 +25,7 @@ namespace SvarnyJunak.CeskeObce.Data.Repositories
 
         public Municipality GetByCode(string code)
         {
-            var result = DbContext.Municipalities.SingleOrDefault(m => m.MunicipalityId == code);
+            var result = DbContext.Municipalities.Find(code);
 
             if (result == null)
                 throw new MunicipalityNotFoundException($"Municipality with given code {code} was not found.");
