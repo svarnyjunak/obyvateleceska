@@ -11,9 +11,9 @@ namespace SvarnyJunak.CeskeObce.Web.Controllers
     [Route("sitemap.xml")]
     public class SitemapController : Controller
     {
-        private readonly MunicipalityRepository _municipalityRepository;
+        private readonly IMunicipalityRepository _municipalityRepository;
 
-        public SitemapController(MunicipalityRepository municipalityRepository)
+        public SitemapController(IMunicipalityRepository municipalityRepository)
         {
             _municipalityRepository = municipalityRepository;
         }
@@ -21,7 +21,7 @@ namespace SvarnyJunak.CeskeObce.Web.Controllers
         [HttpGet]
         public FileContentResult Index()
         {
-            var municipalities = _municipalityRepository.FindAll();
+            var municipalities = _municipalityRepository.FindAll().ToArray();
             var urls = municipalities.Select(m => CreateUrl(Url, m));
 
             XNamespace xmlns = "http://www.sitemaps.org/schemas/sitemap/0.9";
