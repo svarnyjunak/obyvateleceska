@@ -14,14 +14,10 @@ using FileContextCore;
 using FileContextCore.FileManager;
 using FileContextCore.Serializer;
 using Microsoft.AspNetCore.Mvc.Razor;
-//using Joonasw.AspNetCore.SecurityHeaders;
-using Microsoft.AspNetCore.Mvc;
 using SvarnyJunak.CeskeObce.Web.Middlewares;
 using Microsoft.Extensions.Hosting;
 using SvarnyJunak.CeskeObce.Data.Entities;
 using SvarnyJunak.CeskeObce.Web.Middlewares.ApplicationInsights;
-using SvarnyJunak.CeskeObce.Data.Repositories.Queries;
-using SvarnyJunak.CeskeObce.Data.Services;
 
 namespace SvarnyJunak.CeskeObce.Web
 {
