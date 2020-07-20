@@ -32,12 +32,12 @@ namespace SvarnyJunak.CeskeObce.Data.Repositories
 
         public IEnumerable<T> FindAll(IQuery<T> query)
         {
-            return GetDbSet().Where(query.Expression.Compile());
+            return GetDbSet().Where(query.Expression);
         }
 
         public bool Exists(IQuery<T> query)
         {
-            return GetDbSet().Any(query.Expression.Compile());
+            return GetDbSet().Any(query.Expression);
         }
 
         public void Save(T[] data)
