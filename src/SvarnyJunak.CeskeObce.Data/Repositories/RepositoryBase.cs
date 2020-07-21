@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SvarnyJunak.CeskeObce.Data.Entities;
 using SvarnyJunak.CeskeObce.Data.Repositories.Queries;
@@ -13,7 +14,7 @@ namespace SvarnyJunak.CeskeObce.Data.Repositories
         IEnumerable<Municipality> FindAll();
         IEnumerable<T> FindAll(IQuery<T> query);
         bool Exists(IQuery<T> query);
-        void Save(T[] municipalities);
+        Task ReplaceAllAsync(T[] municipalities);
     }
 
     public abstract class RepositoryBase<T> : IRepository<T> where T : class
@@ -40,11 +41,11 @@ namespace SvarnyJunak.CeskeObce.Data.Repositories
             return GetDbSet().Any(query.Expression);
         }
 
-        public void Save(T[] data)
+        public async Task ReplaceAllAsync(T[] data)
         {
             DbContext.RemoveRange(GetDbSet());
-            DbContext.AddRange(data);
-            DbContext.SaveChanges();
+            await DbContext.AddRangeAsync(data);
+            await DbContext.SaveChangesAsync();
         }
 
         protected abstract DbSet<T> GetDbSet();

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using FileContextCore.FileManager;
 using FileContextCore.Serializer;
 using SvarnyJunak.CeskeObce.Data.Repositories;
@@ -12,12 +13,12 @@ public class Program
 {
     private static ServiceProvider _serviceProvider;
 
-    static void Main(string[] args)
+    static async Task Main(string[] args)
     {
         RegisterServices();
 
         IServiceScope scope = _serviceProvider.CreateScope();
-        scope.ServiceProvider.GetRequiredService<ParserRunner>().Run();
+        await scope.ServiceProvider.GetRequiredService<ParserRunner>().Run();
 
         DisposeServices();
     }
@@ -27,8 +28,8 @@ public class Program
         var services = new ServiceCollection();
 
         services.AddTransient<ParserRunner>();
-        //services.AddTransient<IMunicipalityRepository, MunicipalityRepository>();
-        //services.AddTransient<IPopulationFrameRepository, PopulationFrameRepository>();
+        services.AddTransient<IMunicipalityRepository, MunicipalityRepository>();
+        services.AddTransient<IPopulationFrameRepository, PopulationFrameRepository>();
         services.AddDbContext<CeskeObceDbContext>(options =>
         {
             options.UseFileContextDatabase<JSONSerializer, DefaultFileManager>(location: GetDataPath());

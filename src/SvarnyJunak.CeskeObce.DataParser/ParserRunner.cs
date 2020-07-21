@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Transactions;
 using SvarnyJunak.CeskeObce.Data.Entities;
 using SvarnyJunak.CeskeObce.Data.Repositories;
 using SvarnyJunak.CeskeObce.DataParser.Utils;
@@ -19,12 +21,17 @@ namespace SvarnyJunak.CeskeObce.DataParser
             _populationFrameRepository = populationFrameRepository;
         }
 
-        public void Run()
+        public async Task Run()
         {
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
-            _municipalityRepository.Save(GetMunicipalities().ToArray());
-            _populationFrameRepository.Save(GetPopulationProgress().ToArray());
+            using (var scope = new TransactionScope())
+            {
+                await _municipalityRepository.ReplaceAllAsync(GetMunicipalities().ToArray());
+                await _populationFrameRepository.ReplaceAllAsync(GetPopulationProgress().ToArray());
+
+                scope.Complete();
+            }
         }
 
         private IEnumerable<Municipality> GetMunicipalities()

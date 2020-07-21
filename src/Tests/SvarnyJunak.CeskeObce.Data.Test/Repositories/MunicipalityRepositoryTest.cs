@@ -91,7 +91,7 @@ namespace SvarnyJunak.CeskeObce.Data.Test.Repositories
         }
 
         [TestMethod]
-        public async Task Save_Test()
+        public async Task ReplaceAll_Test()
         {
             using (var dbContext = new CeskeObceDbContext(CreateInMemoryDbContextOptions()))
             {
@@ -104,7 +104,7 @@ namespace SvarnyJunak.CeskeObce.Data.Test.Repositories
                     DistrictName = "District name"
                 };
 
-                repository.Save(new[] { municipality });
+                await repository.ReplaceAllAsync(new[] { municipality });
 
                 Assert.IsNotNull(await dbContext.Municipalities.FindAsync(municipality.MunicipalityId));
             }
