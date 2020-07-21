@@ -1,40 +1,41 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SvarnyJunak.CeskeObce.DataParser.Entities;
-using Xunit;
 
 namespace SvarnyJunak.CeskeObce.DataParser.Test
 {
+    [TestClass]
     public class PopulationDataMinerTest
     {
-        private readonly PopulationDataMiner __populationDataMiner = new PopulationDataMiner();
+        private readonly PopulationDataMiner _populationDataMiner = new PopulationDataMiner();
 
-        [Fact]
+        [TestMethod]
         public void ComputePopulationProgressInMunicipalities_GroupTest()
         {
-            __populationDataMiner.AddPopulationData(CreateDataWithTwoFramesAndOneMunicipality());
+            _populationDataMiner.AddPopulationData(CreateDataWithTwoFramesAndOneMunicipality());
 
-            var result = __populationDataMiner.ComputePopulationProgressInMunicipalities();
+            var result = _populationDataMiner.ComputePopulationProgressInMunicipalities();
             var municipalityIds = result.GroupBy(p => p.MunicipalityId);
-            Assert.Single(municipalityIds);
+            Assert.AreEqual(1, municipalityIds.Count());
         }
 
-        [Fact]
+        [TestMethod]
         public void ComputePopulationProgressInMunicipalities_ProgressValuesCountTest()
         {
-            __populationDataMiner.AddPopulationData(CreateDataWithTwoFramesAndOneMunicipality());
+            _populationDataMiner.AddPopulationData(CreateDataWithTwoFramesAndOneMunicipality());
 
-            var result = __populationDataMiner.ComputePopulationProgressInMunicipalities();
-            Assert.Equal(2, result.Count());
+            var result = _populationDataMiner.ComputePopulationProgressInMunicipalities();
+            Assert.AreEqual(2, result.Count());
         }
 
-        [Fact]
+        [TestMethod]
         public void ComputePopulationProgressInMunicipalities_DoNotGroupTest()
         {
-            __populationDataMiner.AddPopulationData(CreateDataWithTwoFramesAndTwoMunicipalities());
+            _populationDataMiner.AddPopulationData(CreateDataWithTwoFramesAndTwoMunicipalities());
 
-            var result = __populationDataMiner.ComputePopulationProgressInMunicipalities();
-            Assert.Equal(2, result.Count());
+            var result = _populationDataMiner.ComputePopulationProgressInMunicipalities();
+            Assert.AreEqual(2, result.Count());
         }
 
         private IEnumerable<PopulationInMunicipalitity> CreateDataWithTwoFramesAndOneMunicipality()

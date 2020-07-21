@@ -14,17 +14,12 @@ namespace SvarnyJunak.CeskeObce.DataParser.Utils
             return Convert.ToDecimal(value);
         }
 
-        public string ParseString(object value)
+        public string ParseString(object? value)
         {
             if (value == null)
                 return String.Empty;
 
             return value.ToString()!;
-        }
-
-        public double ParseDouble(object value)
-        {
-            return Convert.ToDouble(value);
         }
     }
 }

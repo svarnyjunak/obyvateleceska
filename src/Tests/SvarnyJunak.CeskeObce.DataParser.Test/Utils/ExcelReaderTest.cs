@@ -5,22 +5,23 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using Xunit;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace SvarnyJunak.CeskeObce.DataParser.Test.Utils
 {
+    [TestClass]
     public class ExcelReaderTest
     {
-        [Fact]
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
         public void ReadData_ThrowsExceptionWhenFileDoesntExist()
         {
             var reader = new ExcelReader();
             var fileName = GetFilePath("NotExistingFile.xlsx");
-            var ex = Assert.Throws<ArgumentException>(() => reader.ReadData(fileName, "List1").ToArray());
-            Assert.Equal($"File {fileName} doesn't exist.", ex.Message);
+            var x = reader.ReadData(fileName, "List1").ToArray();
         }
 
-        [Fact]
+        [TestMethod]
         public void ReadData_BasicTest()
         {
             var reader = new ExcelReader();
@@ -28,7 +29,7 @@ namespace SvarnyJunak.CeskeObce.DataParser.Test.Utils
             var result = reader.ReadData(file, "List1");
 
             var singleValue = result.Single().Columns.Single();
-            Assert.Equal("Test", singleValue);
+            Assert.AreEqual("Test", singleValue);
         }
 
         private string GetFilePath(string file)
