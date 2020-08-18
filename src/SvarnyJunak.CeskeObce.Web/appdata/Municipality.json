@@ -43769,5 +43769,12 @@
     "Latitude": "50.7652796619245",
     "Longitude": "14.7605216823318",
     "Name": "Jablonné v Podještědí"
+  },
+  {
+    "MunicipalityId": "500101",
+    "DistrictName": "Karlovy Vary",
+    "Latitude": "50.1748494",
+    "Longitude": "13.0465311",
+    "Name": "Bražec"
   }
 ]
