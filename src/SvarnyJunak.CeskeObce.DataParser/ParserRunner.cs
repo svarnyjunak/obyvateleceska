@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
@@ -27,8 +28,23 @@ namespace SvarnyJunak.CeskeObce.DataParser
 
             using (var scope = new TransactionScope())
             {
-                await _municipalityRepository.ReplaceAllAsync(GetMunicipalities().ToArray());
-                await _populationFrameRepository.ReplaceAllAsync(GetPopulationProgress().ToArray());
+                var municipalities = GetMunicipalities().ToArray();
+                var populationFrames = GetPopulationProgress().ToArray();
+
+                var missingMunicipalities = populationFrames
+                    .Where(p => municipalities.All(m => m.MunicipalityId != p.MunicipalityId))
+                    .GroupBy(p => p.MunicipalityId)
+                    .Select(p => $"{p.Key} year {p.Max(p => p.Year)}")
+                    .ToArray();
+
+                if (missingMunicipalities.Any())
+                {
+                    var message = "Any municipalities are missing " + String.Join(", ", missingMunicipalities);
+                    throw new Exception(message);
+                }
+
+                await _municipalityRepository.ReplaceAllAsync(municipalities);
+                await _populationFrameRepository.ReplaceAllAsync(populationFrames);
 
                 scope.Complete();
             }

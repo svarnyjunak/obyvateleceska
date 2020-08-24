@@ -43776,5 +43776,61 @@
     "Latitude": "50.1748494",
     "Longitude": "13.0465311",
     "Name": "Bražec"
+  },
+  {
+    "MunicipalityId": "500194",
+    "DistrictName": "Český Krumlov",
+    "Latitude": "48.7990642",
+    "Longitude": "14.1472269",
+    "Name": "Polná na Šumavě"
+  },
+  {
+    "MunicipalityId": "500127",
+    "DistrictName": "Karlovy Vary",
+    "Latitude": "50.2279325",
+    "Longitude": "13.0141564",
+    "Name": "Doupovské Hradiště"
+  },
+  {
+    "MunicipalityId": "500135",
+    "DistrictName": "Olomouc",
+    "Latitude": "49.6024294",
+    "Longitude": "17.5336908",
+    "Name": "Kozlov"
+  },
+  {
+    "MunicipalityId": "500160",
+    "DistrictName": "Olomouc",
+    "Latitude": "49.7213325",
+    "Longitude": "17.5217747",
+    "Name": "Město Libavá"
+  },
+  {
+    "MunicipalityId": "500151",
+    "DistrictName": "Přerov",
+    "Latitude": "49.6885789",
+    "Longitude": "17.6647969",
+    "Name": "Luboměř pod Strážnou"
+  },
+  {
+    "MunicipalityId": "530255",
+    "DistrictName": "Benešov",
+    "Latitude": "49.7427519",
+    "Longitude": "14.9335275",
+    "Name": "Nemíž"
+  },
+  {
+    "MunicipalityId": "544311",
+    "DistrictName": "Česká Lípa",
+    "Latitude": "50.7164272",
+    "Longitude": "14.5295053",
+    "Name": "Častolovice"
+  },
+  {
+    "MunicipalityId": "575020",
+    "DistrictName": "Pardubice",
+    "Latitude": "50.0024728",
+    "Longitude": "15.8677031",
+    "Name": "Hostovice"
   }
 ]
