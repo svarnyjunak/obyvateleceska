@@ -53,7 +53,11 @@ namespace SvarnyJunak.CeskeObce.Web.Controllers
         public ActionResult<string[]> FindMunicipalities(string name)
         {
             var municipalities = FindMunicipalitiesByNameWithDiscrict(name);
-            var data = municipalities.Select(m => $"{m.Name}, {m.DistrictName}").ToArray();
+            var data = municipalities
+                .OrderBy(m => m.Name)
+                .ThenBy(m => m.DistrictName)
+                .Select(m => $"{m.Name}, {m.DistrictName}").ToArray();
+
             return Ok(data);
         }
 
