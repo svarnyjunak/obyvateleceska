@@ -44,7 +44,7 @@ namespace SvarnyJunak.CeskeObce.Web.Controllers
                 return View(nameof(Index), model);
             }
 
-            var municipality = municipalities.First();
+            var municipality = municipalities.OrderBy(m => m.Name).First();
             return RedirectToAction(nameof(Index), new { district = municipality.DistrictName, name = municipality.Name, code = municipality.MunicipalityId });
         }
 

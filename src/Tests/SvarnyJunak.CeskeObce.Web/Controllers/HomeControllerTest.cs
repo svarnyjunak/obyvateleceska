@@ -1,15 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Localization;
 using NSubstitute;
 using SvarnyJunak.CeskeObce.Data.Entities;
 using SvarnyJunak.CeskeObce.Data.Repositories;
 using SvarnyJunak.CeskeObce.Web.Controllers;
 using SvarnyJunak.CeskeObce.Web.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Text;
 using SvarnyJunak.CeskeObce.Data.Repositories.Queries;
 using Xunit;
 
@@ -91,6 +87,32 @@ namespace SvarnyJunak.CeskeObce.Web.Test.Controllers
             Assert.Equal(municipality.MunicipalityId, redirectResult.RouteValues["code"]);
             Assert.Equal(municipality.DistrictName, redirectResult.RouteValues["district"]);
             Assert.Equal(municipality.Name, redirectResult.RouteValues["name"]);
+        }
+
+        [Fact]
+        public void SelectMunicipality_SimilarNamesTest()
+        {
+            var municipalityKurim = CreateMunicipality();
+            municipalityKurim.Name = "Kuřim";
+
+            var municipalityKurimskeJestrabi = CreateMunicipality();
+            municipalityKurimskeJestrabi.Name = "Kuřimské Jestřábí";
+
+            var municipalityRepository = Substitute.For<IMunicipalityRepository>();
+            var populationFrameRepository = Substitute.For<IPopulationFrameRepository>();
+
+            municipalityRepository
+               .FindAll(Arg.Is<QueryMunicipalityByName>(q => q.Name == "kuřim"))
+               .Returns(new[] { municipalityKurimskeJestrabi, municipalityKurim });
+
+            var controller = new HomeController(municipalityRepository, populationFrameRepository);
+            var result = controller.SelectMunicipality("kuřim", null);
+
+            Assert.IsType<RedirectToActionResult>(result);
+
+            var redirectResult = (RedirectToActionResult)result;
+
+            Assert.Equal(municipalityKurim.Name, redirectResult.RouteValues["name"]);
         }
 
         [Fact]
