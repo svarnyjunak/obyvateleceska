@@ -37,10 +37,9 @@ namespace SvarnyJunak.CeskeObce.Web.Controllers
             if (!municipalities.Any())
             {
                 var model = CreateModelByCode(currentMunicipalityCode);
-                model.MunicipalityNameSearch = municipalityName;
 
                 var errorMessage = Resources.Controllers_HomeController.No_municipality_found_;
-                ModelState.AddModelError(nameof(model.MunicipalityNameSearch), errorMessage);
+                ModelState.AddModelError(nameof(municipalityName), errorMessage);
                 return View(nameof(Index), model);
             }
 
@@ -97,13 +96,11 @@ namespace SvarnyJunak.CeskeObce.Web.Controllers
 
         private MunicipalityPopulationProgressModel CreateModelByMunicipality(Municipality municipality)
         {
-            var populationProgress = PopulationFrameRepository.FindAll(new QueryPopulationFrameByMunicipalityCode { Code = municipality.MunicipalityId });
+            var populationProgress = PopulationFrameRepository
+                .FindAll(new QueryPopulationFrameByMunicipalityCode { Code = municipality.MunicipalityId })
+                .OrderByDescending(d => d.Year).ToArray();
 
-            return new MunicipalityPopulationProgressModel
-            {
-                Municipality = municipality,
-                PopulationProgress = populationProgress.OrderByDescending(d => d.Year).ToArray()
-            };
+            return new MunicipalityPopulationProgressModel(municipality, populationProgress);
         }
 
         private MunicipalityPopulationProgressModel CreateRandomModel()

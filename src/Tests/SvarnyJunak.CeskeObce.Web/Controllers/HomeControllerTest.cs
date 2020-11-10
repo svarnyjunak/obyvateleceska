@@ -133,11 +133,9 @@ namespace SvarnyJunak.CeskeObce.Web.Test.Controllers
             var viewResult = (ViewResult)result;
             var model = (MunicipalityPopulationProgressModel)viewResult.Model;
             Assert.Same(municipality, model.Municipality);
-            Assert.Equal("not existing municipality", model.MunicipalityNameSearch);
 
             var modelState = controller.ViewData.ModelState;
-            Assert.True(modelState.ContainsKey("MunicipalityNameSearch"), "Error in model state is missing.");
-            Assert.True(modelState.ContainsKey("MunicipalityNameSearch"), "Error in model state is missing.");
+            Assert.True(modelState.ContainsKey("municipalityName"), "Error in model state is missing.");
         }
 
         [Fact]
