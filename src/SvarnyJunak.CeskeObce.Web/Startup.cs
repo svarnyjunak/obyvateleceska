@@ -129,17 +129,15 @@ namespace SvarnyJunak.CeskeObce.Web
                 _serviceProvider = serviceProvider;
             }
 
-            public bool Match(HttpContext httpContext, IRouter route, string routeKey, RouteValueDictionary values, RouteDirection routeDirection)
+            public bool Match(HttpContext? httpContext, IRouter? route, string routeKey, RouteValueDictionary values, RouteDirection routeDirection)
             {
                 if (!values.ContainsKey(routeKey))
                     return false;
 
-                InitCache();
-
-                return _municipalities.Any(m => m.MunicipalityId == (string)values[routeKey]);
+                return GetCachedData().Any(m => m.MunicipalityId == (string?)values[routeKey]);
             }
 
-            private void InitCache()
+            private Municipality[] GetCachedData()
             {
                 if (_municipalities == null)
                 {
@@ -147,9 +145,11 @@ namespace SvarnyJunak.CeskeObce.Web
                     {
                         var repository = scope.ServiceProvider.GetRequiredService<IMunicipalityRepository>();
 
-                        _municipalities = repository.FindAll().ToArray();
+                        return repository.FindAll().ToArray();
                     }
                 }
+
+                return _municipalities;
             }
         }
     }
