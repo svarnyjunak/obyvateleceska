@@ -84,7 +84,7 @@ namespace SvarnyJunak.CeskeObce.Web
 
             //todo: app.UseCors();
             app.UseContentTypeNoSniffHeader();
-            
+
             app.UseXssProtectionHeader();
             //app.UseXXssProtection(new XXssProtectionOptions(true, true));
 
@@ -136,7 +136,7 @@ namespace SvarnyJunak.CeskeObce.Web
 
                 InitCache();
 
-                return _municipalities.Any(m => m.MunicipalityId == (string) values[routeKey]);
+                return _municipalities.Any(m => m.MunicipalityId == (string)values[routeKey]);
             }
 
             private void InitCache()
@@ -146,10 +146,9 @@ namespace SvarnyJunak.CeskeObce.Web
                     using (var scope = _serviceProvider.CreateScope())
                     {
                         var repository = scope.ServiceProvider.GetRequiredService<IMunicipalityRepository>();
-                        
+
                         _municipalities = repository.FindAll().ToArray();
                     }
-                    
                 }
             }
         }
