@@ -1,0 +1,22 @@
+﻿[
+  {
+    "outputFileName": "../src/SvarnyJunak.CeskeObce.Web/wwwroot/css/site.min.css",
+    "inputFiles": [
+        "../src/SvarnyJunak.CeskeObce.Web/wwwroot/css/site.css",
+        "../src/SvarnyJunak.CeskeObce.Web/wwwroot/lib/pixabay-autocompleted/auto-complete.css"
+    ]
+  },
+  {
+    "outputFileName": "../src/SvarnyJunak.CeskeObce.Web/wwwroot/js/site.min.js",
+    "inputFiles": [
+        "../src/SvarnyJunak.CeskeObce.Web/wwwroot/lib/pixabay-autocompleted/auto-complete.js",
+        "../src/SvarnyJunak.CeskeObce.Web/wwwroot/js/search.js",
+        "../src/SvarnyJunak.CeskeObce.Web/wwwroot/js/chart.js",
+        "../src/SvarnyJunak.CeskeObce.Web/wwwroot/js/map.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    }
+  }
+]
