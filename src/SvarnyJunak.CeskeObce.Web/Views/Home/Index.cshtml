@@ -7,9 +7,6 @@
     ViewData["Title"] = Model.Municipality.Name + " - " + Localizer["MunicipalityPopulationTitle"].Value;
 }
 
-<div id="map-canvas">
-</div>
-
 <form id="select-municipality-form" asp-controller="Home" asp-action="SelectMunicipality" method="POST">
     <label for="municipalityName">
         <strong>@Localizer["MunicipalitySearchLabel"]</strong>
@@ -40,26 +37,34 @@
         <tbody>
             @foreach (var snapshot in Model.PopulationProgress)
             {
-                <tr>
-                    <td class="year">@snapshot.Year</td>
-                    <td class="count">@snapshot.Count</td>
-                </tr>
+            <tr>
+                <td class="year">@snapshot.Year</td>
+                <td class="count">@snapshot.Count</td>
+            </tr>
             }
         </tbody>
     </table>
 
 </form>
 
-<script type="text/javascript" src="https://api.mapy.cz/loader.js"></script>
-<script type="text/javascript">Loader.load();</script>
+<div id="map-canvas-container">
+    <div id="map-canvas">
+    </div>
+</div>
 
-<environment names="Development">
-    <script src="~/lib/pixabay-autocompleted/auto-complete.js" asp-append-version="true"></script>
-    <script src="~/js/search.js" asp-append-version="true"></script>
-    <script src="~/js/chart.js" asp-append-version="true"></script>
-    <script src="~/js/map.js" asp-append-version="true"></script>
-</environment>
-<environment names="Staging,Production">
-    <script src="~/js/site.min.js" asp-append-version="true"></script>
-</environment>
+@section scripts {
+    <script type="text/javascript" src="https://api.mapy.cz/loader.js"></script>
+    <script type="text/javascript">Loader.load();</script>
+
+    <environment names="Development">
+        <script src="~/lib/pixabay-autocompleted/auto-complete.js" asp-append-version="true"></script>
+        <script src="~/js/search.js" asp-append-version="true"></script>
+        <script src="~/js/chart.js" asp-append-version="true"></script>
+        <script src="~/js/map.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/js/site.min.js" asp-append-version="true"></script>
+    </environment>
+}
+
 
