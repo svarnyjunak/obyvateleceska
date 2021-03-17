@@ -3,11 +3,12 @@
 var gulp = require("gulp"),
     concat = require("gulp-concat"),
     cssmin = require("gulp-cssmin"),
-    htmlmin = require("gulp-htmlmin"),
     uglify = require("gulp-uglify"),
     merge = require("merge-stream"),
     del = require("del"),
     bundleconfig = require("./bundleconfig.json");
+
+const autoprefixer = require('gulp-autoprefixer');
 
 var regex = {
     css: /\.css$/,
@@ -28,22 +29,17 @@ gulp.task("min:js", function () {
 gulp.task("min:css", function () {
     var tasks = getBundles(regex.css).map(function (bundle) {
         return gulp.src(bundle.inputFiles, { base: "." })
+            .pipe(autoprefixer({
+                cascade: false,
+                grid: true,
+                overrideBrowserslist : "> 1%, IE 11" 
+            }))
             .pipe(concat(bundle.outputFileName))
             .pipe(cssmin())
             .pipe(gulp.dest("."));
     });
     return merge(tasks);
 });
-
-// gulp.task("min:html", function () {
-//     var tasks = getBundles(regex.html).map(function (bundle) {
-//         return gulp.src(bundle.inputFiles, { base: "." })
-//             .pipe(concat(bundle.outputFileName))
-//             .pipe(htmlmin({ collapseWhitespace: true, minifyCSS: true, minifyJS: true }))
-//             .pipe(gulp.dest("."));
-//     });
-//     return merge(tasks);
-// });
 
 gulp.task("clean", function () {
     var files = bundleconfig.map(function (bundle) {

@@ -1,7 +1,6 @@
 ﻿/*@-ms-viewport {
     width: device-width;
 }*/
-
 body {
     margin: 0;
     padding: 0;
@@ -51,10 +50,8 @@ input[type="text"] {
         width: 100%;
         display: grid;
         grid-template-columns: 600px 1fr;
-        grid-template-rows: 1fr;
-        gap: 0px 0px;
         grid-template-areas:
-            ". .";
+            "a b";
     }
 }
 
@@ -113,8 +110,13 @@ input[type="text"] {
         list-style-type: none;
     }
 
+#select-municipality-form {
+    grid-area: a;
+}
+
 #map-canvas-container {
     height: 0px;
+    grid-area: b;
 }
 
 #map-canvas,
@@ -129,7 +131,7 @@ input[type="text"] {
         visibility: hidden;
     }
 
-    form, {
+    form {
         margin: 1em;
     }
 }
