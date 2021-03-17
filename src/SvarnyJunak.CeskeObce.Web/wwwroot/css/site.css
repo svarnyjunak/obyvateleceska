@@ -8,12 +8,14 @@ body {
 }
 
 header {
-    background-color: #333;
-    color: white;
+    color: #333;
+    margin-left: 1em;
+    margin-right: 1em;
+    border-bottom: 2px dashed black;
 }
 
     header a {
-        color: white;
+        color: #333;
         text-decoration: none;
         padding-left: 1em;
         padding-right: 1em;
@@ -22,8 +24,9 @@ header {
     header h2 {
         font-weight: inherit;
         line-height: 2em;
+        font-size: 1.75em;
         display: inline;
-        font-variant: small-caps;
+        /*font-variant: small-caps;*/
     }
 
 h1 {

@@ -9,7 +9,7 @@
 
 <form id="select-municipality-form" asp-controller="Home" asp-action="SelectMunicipality" method="POST">
     <label for="municipalityName">
-        <strong>@Localizer["MunicipalitySearchLabel"]</strong>
+        @Localizer["MunicipalitySearchLabel"]
     </label><br />
     <input type="hidden" name="currentMunicipalityCode" value="@Model.Municipality.MunicipalityId" />
     <input id="municipality-search" type="text" name="municipalityName" value="@Model.MunicipalityNameSearch" />
