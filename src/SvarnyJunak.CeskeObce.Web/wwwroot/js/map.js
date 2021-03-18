@@ -2,6 +2,11 @@
     var mapElement = document.getElementById("map-canvas");
     var isMapVisible = mapElement.style.visibility !== "hidden" && mapElement.offsetWidth > 400;
     if (isMapVisible) {
+        Loader.async = true;
+        Loader.load(null, null, createMap);
+    }
+
+    function createMap() {
         var latitude = Number(document.getElementById("Municipality_Latitude").value);
         var longitude = Number(document.getElementById("Municipality_Longitude").value);
         var center = SMap.Coords.fromWGS84(longitude, latitude);
@@ -10,5 +15,5 @@
 
         var sync = new SMap.Control.Sync({ bottomSpace: 30 });
         m.addControl(sync);
-    }
+    };
 }());
