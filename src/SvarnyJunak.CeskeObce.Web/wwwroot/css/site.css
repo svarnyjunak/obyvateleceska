@@ -8,61 +8,82 @@ body {
 }
 
 header {
-    color: #333;
     margin-left: 1em;
     margin-right: 1em;
-    border-bottom: 2px dashed black;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 2px dashed #011888;
 }
 
     header a {
-        color: #333;
         text-decoration: none;
         padding-left: 1em;
         padding-right: 1em;
     }
 
     header h2 {
-        font-weight: inherit;
-        line-height: 2em;
-        font-size: 1.75em;
         display: inline;
+        line-height: 2em;
+        color: #011888;
+    }
+
+    header nav {
+        align-self: center;
     }
 
 h1 {
-    text-align: center;
     font-weight: normal;
-    margin-top: 1.5em;
     margin-bottom: .2em;
 }
 
-nav li {
-    display: inline;
-    list-style-type: none;
+h2 {
+    font-weight: inherit;
+    font-size: 1.75em;
 }
 
-form {
-    margin: 2em;
-    margin-top: 1em;
+a {
+    color: #011888;
 }
 
-input[type="text"] {
+input {
     width: 100%;
+    max-width: 350px;
     font-size: larger;
     box-sizing: border-box;
 }
 
 @media (min-width: 501px), (min-height: 701px) {
-    .content {
+    .grid {
         width: 100%;
+        margin-top: 1em;
         display: grid;
         grid-template-columns: 600px 1fr;
         grid-template-areas:
             "a b";
     }
+
+        .grid main {
+            grid-area: a;
+        }
+
+        .grid #map-canvas-container {
+            height: 0px;
+            grid-area: b;
+        }
 }
 
-.right {
-    float: right;
+.content {
+    margin: 2em;
+}
+
+@media (max-width: 500px), (max-height: 700px) {
+    #map-canvas-container {
+        visibility: hidden;
+    }
+
+    main {
+        margin-top: 1em;
+    }
 }
 
 .autocomplete-suggestions .autocomplete-suggestion {
@@ -88,7 +109,7 @@ input[type="text"] {
     }
 
     .chart .bar {
-        background-color: steelblue;
+        background-color: #4559c3;
         text-align: right;
         padding: 3px;
         white-space: nowrap;
@@ -99,7 +120,7 @@ input[type="text"] {
     }
 
         .chart .bar:hover {
-            background-color: lightsteelblue;
+            background-color: #5f75e4;
         }
 
 .validation-summary-errors {
@@ -117,25 +138,5 @@ input[type="text"] {
     }
 
 #select-municipality-form {
-    grid-area: a;
-}
-
-#map-canvas-container {
-    height: 0px;
-    grid-area: b;
-}
-
-#map-canvas,
-#info {
-    margin: 2em;
-}
-
-@media (max-width: 500px), (max-height: 700px) {
-    #map-canvas-container {
-        visibility: hidden;
-    }
-
-    form {
-        margin: 1em;
-    }
+    margin-top: 1em;
 }

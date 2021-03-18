@@ -16,45 +16,48 @@
 
     <div asp-validation-summary="All"></div>
 
-    <h1>@String.Format(Localizer["PopulationProgressInMunicipality"].Value, Model.Municipality.Name, @Model.Municipality.DistrictName)</h1>
-    <div class="chart">
-
-    </div>
-
     @{
         var numberFormat = new System.Globalization.CultureInfo("en-US").NumberFormat;
         <input type="hidden" id="Municipality_Latitude" value="@Model.Municipality.Latitude.ToString(numberFormat)" />
         <input type="hidden" id="Municipality_Longitude" value="@Model.Municipality.Longitude.ToString(numberFormat)" />
     }
-
-    <table class="data-population-progress">
-        <thead>
-            <tr>
-                <th>@Localizer["Year"]</th>
-                <th>@Localizer["Population"]</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var snapshot in Model.PopulationProgress)
-            {
-            <tr>
-                <td class="year">@snapshot.Year</td>
-                <td class="count">@snapshot.Count</td>
-            </tr>
-            }
-        </tbody>
-    </table>
-
 </form>
 
-<div id="map-canvas-container">
-    <div id="map-canvas">
+<h1>@String.Format(Localizer["PopulationProgressInMunicipality"].Value, Model.Municipality.Name, @Model.Municipality.DistrictName)</h1>
+<div class="grid">
+    <main>
+        <div class="chart">
+
+        </div>
+
+        <table class="data-population-progress">
+            <thead>
+                <tr>
+                    <th>@Localizer["Year"]</th>
+                    <th>@Localizer["Population"]</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var snapshot in Model.PopulationProgress)
+                {
+                    <tr>
+                        <td class="year">@snapshot.Year</td>
+                        <td class="count">@snapshot.Count</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </main>
+
+    <div id="map-canvas-container">
+
+        <div id="map-canvas">
+        </div>
     </div>
 </div>
 
 @section scripts {
     <script type="text/javascript" src="https://api.mapy.cz/loader.js"></script>
-    @*<script type="text/javascript">Loader.load();</script>*@
 
     <environment names="Development">
         <script src="~/lib/pixabay-autocompleted/auto-complete.js" asp-append-version="true"></script>

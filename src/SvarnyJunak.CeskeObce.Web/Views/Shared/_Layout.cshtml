@@ -27,17 +27,13 @@
 <body>
     <header>
         <a href="@Url.Action("Index", "Home" )"><h2>Obyvatelé Česka</h2></a>
-        <nav class="right">
-            <ul>
-                <li><a asp-area="" asp-controller="Home" asp-action="About">O aplikaci</a></li>
-            </ul>
+        <nav>
+            <a asp-area="" asp-controller="Home" asp-action="About">O aplikaci</a>
         </nav>
     </header>
 
-    <div class="content-wrapper">
-        <div class="content">
-            @RenderBody()
-        </div>
+    <div class="content">
+        @RenderBody()
     </div>
 
     @await RenderSectionAsync("scripts", required: false)
