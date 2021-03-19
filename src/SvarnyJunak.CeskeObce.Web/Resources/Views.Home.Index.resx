@@ -127,7 +127,7 @@
     <value>Počet obyvatel</value>
   </data>
   <data name="PopulationProgressInMunicipality" xml:space="preserve">
-    <value>Vývoj počtu obyvatel v obci {0}, {1}</value>
+    <value>Počet obyvatel v obci {0}, {1}</value>
   </data>
   <data name="Year" xml:space="preserve">
     <value>Rok</value>
