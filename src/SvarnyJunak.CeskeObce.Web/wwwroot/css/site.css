@@ -52,6 +52,10 @@ a {
     color: #011888;
 }
 
+p {
+    max-width: 600px;
+}
+
 input {
     width: 100%;
     max-width: 350px;
