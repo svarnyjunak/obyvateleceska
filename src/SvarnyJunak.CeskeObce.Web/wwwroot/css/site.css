@@ -10,8 +10,7 @@ body {
 header {
     margin-left: 1em;
     margin-right: 1em;
-    display: flex;
-    justify-content: space-between;
+    padding-bottom: 1em;
     border-bottom: 2px dashed #011888;
 }
 
@@ -30,6 +29,14 @@ header {
     header nav {
         align-self: center;
     }
+
+@media (min-width: 400px) {
+    header {
+        display: flex;
+        justify-content: space-between;
+        padding-bottom: 0;
+    }
+}
 
 h1 {
     font-weight: normal;
