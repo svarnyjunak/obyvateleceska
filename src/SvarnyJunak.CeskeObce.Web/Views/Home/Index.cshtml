@@ -5,6 +5,16 @@
 
 @{
     ViewData["Title"] = Model.Municipality.Name + " - " + Localizer["MunicipalityPopulationTitle"].Value;
+    var url = $"https://www.obyvateleceska.cz/{Html.UrlEncoder.Encode(Model.Municipality.DistrictName)}/{Html.UrlEncoder.Encode(Model.Municipality.Name)}/{Model.Municipality.MunicipalityId}";
+}
+
+@section metadata
+{
+    <meta property="og:url" content="@url" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Počet obyvatel v obci @Model.Municipality.Name" />
+    <meta property="og:description" content="Vývoj počtu obyvatel v letech @Model.PopulationProgress.Min(p => p.Year) až @Model.PopulationProgress.Max(p => p.Year)." />
+    <meta property="og:image" content="/images/preview.png" />
 }
 
 <form id="select-municipality-form" asp-controller="Home" asp-action="SelectMunicipality" method="POST">
@@ -47,6 +57,10 @@
                 }
             </tbody>
         </table>
+
+        <p>
+            <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=@url&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Sdílet na Facebooku</a>
+        </p>
     </main>
 
     <div id="map-canvas-container">

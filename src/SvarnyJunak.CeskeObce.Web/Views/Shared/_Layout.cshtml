@@ -11,6 +11,7 @@
             <meta name="description" content="@metaDescription">
         }
     }
+    @await RenderSectionAsync("metadata", required: false)
     <title>@ViewData["Title"]</title>
 
     <environment include="Development">
