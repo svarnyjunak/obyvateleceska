@@ -5,6 +5,9 @@ using SvarnyJunak.CeskeObce.Data.Repositories;
 using SvarnyJunak.CeskeObce.Web.Models;
 using SvarnyJunak.CeskeObce.Data.Entities;
 using SvarnyJunak.CeskeObce.Data.Repositories.Queries;
+using SvarnyJunak.CeskeObce.Data.Utils;
+using System;
+using SvarnyJunak.CeskeObce.Web.Utils;
 
 namespace SvarnyJunak.CeskeObce.Web.Controllers
 {
@@ -26,6 +29,7 @@ namespace SvarnyJunak.CeskeObce.Web.Controllers
         {
             var model = code == null ? CreateRandomModel() : CreateModelByCode(code);
             ViewData["MetaDescription"] = CreateMetaDescription(model);
+            ViewData["CanonicalUrl"] = UrlUtils.CreateCanonicalUrl(model.Municipality);
             return View(model);
         }
 
@@ -45,7 +49,9 @@ namespace SvarnyJunak.CeskeObce.Web.Controllers
             }
 
             var municipality = municipalities.OrderBy(m => m.Name).First();
-            return RedirectToAction(nameof(Index), new { district = municipality.DistrictName, name = municipality.Name, code = municipality.MunicipalityId });
+            var district = municipality.DistrictName.ToUrlSegment();
+            var name = municipality.Name.ToUrlSegment();
+            return RedirectToAction(nameof(Index), new { district = district, name = name, code = municipality.MunicipalityId });
         }
 
         [HttpGet]

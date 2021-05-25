@@ -45,5 +45,12 @@ namespace SvarnyJunak.CeskeObce.Data.Test.Utils
             var text = "Příliš žluťoučký kůň úpěl ďábelské ódy.";
             Assert.IsFalse(text.CompareWithoutDiacriticsIfNotProvided("Prilis zlutoucky kun upel dabelske ody."));
         }
+
+        [TestMethod]
+        public void ToUrlSegment()
+        {
+            var text = "Příliš žluťoučký kůň úpěl ďábelské ódy";
+            Assert.AreEqual("prilis-zlutoucky-kun-upel-dabelske-ody", text.ToUrlSegment());
+        }
     }
 }

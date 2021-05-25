@@ -145,7 +145,7 @@ namespace SvarnyJunak.CeskeObce.Web
                     {
                         var repository = scope.ServiceProvider.GetRequiredService<IMunicipalityRepository>();
 
-                        return repository.FindAll().ToArray();
+                        _municipalities = repository.FindAll().ToArray();
                     }
                     
                 }

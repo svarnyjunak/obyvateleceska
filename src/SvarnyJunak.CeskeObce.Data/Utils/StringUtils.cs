@@ -37,5 +37,10 @@ namespace SvarnyJunak.CeskeObce.Data.Utils
 
             return bUpperCased.RemoveDiacritics().StartsWith(aUpperCased.RemoveDiacritics());
         }
+
+        public static string ToUrlSegment(this string text)
+        {
+            return text.RemoveDiacritics().Trim().ToLower().Replace(' ', '-');
+        }
     }
 }

@@ -15,6 +15,7 @@
     <meta property="og:title" content="Počet obyvatel v obci @Model.Municipality.Name" />
     <meta property="og:description" content="Vývoj počtu obyvatel v letech @Model.PopulationProgress.Min(p => p.Year) až @Model.PopulationProgress.Max(p => p.Year)." />
     <meta property="og:image" content="/images/preview.png" />
+    <link rel="canonical" href="@ViewData["CanonicalUrl"]" />
 }
 
 <form id="select-municipality-form" asp-controller="Home" asp-action="SelectMunicipality" method="POST">

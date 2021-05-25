@@ -11,7 +11,7 @@ namespace SvarnyJunak.CeskeObce.Data.Repositories
 {
     public interface IRepository<T> where T : class
     {
-        IEnumerable<Municipality> FindAll();
+        IEnumerable<T> FindAll();
         IEnumerable<T> FindAll(IQuery<T> query);
         bool Exists(IQuery<T> query);
         Task ReplaceAllAsync(T[] municipalities);
@@ -26,9 +26,9 @@ namespace SvarnyJunak.CeskeObce.Data.Repositories
             DbContext = dbContext;
         }
 
-        public IEnumerable<Municipality> FindAll()
+        public IEnumerable<T> FindAll()
         {
-            return DbContext.Municipalities;
+            return GetDbSet().ToArray();
         }
 
         public IEnumerable<T> FindAll(IQuery<T> query)

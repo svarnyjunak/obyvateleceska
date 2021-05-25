@@ -5,6 +5,7 @@ using SvarnyJunak.CeskeObce.Data.Entities;
 using System.Text;
 using System.Xml.Linq;
 using SvarnyJunak.CeskeObce.Data.Repositories;
+using SvarnyJunak.CeskeObce.Web.Utils;
 
 namespace SvarnyJunak.CeskeObce.Web.Controllers
 {
@@ -21,8 +22,10 @@ namespace SvarnyJunak.CeskeObce.Web.Controllers
         [HttpGet]
         public FileContentResult Index()
         {
-            var municipalities = _municipalityRepository.FindAll().ToArray();
-            var urls = municipalities.Select(m => CreateUrl(Url, m));
+            var urls = _municipalityRepository
+                .FindAll()
+                .Select(UrlUtils.CreateCanonicalUrl)
+                .ToArray();
 
             XNamespace xmlns = "http://www.sitemaps.org/schemas/sitemap/0.9";
             var root = new XElement(xmlns + "urlset");
@@ -32,13 +35,6 @@ namespace SvarnyJunak.CeskeObce.Web.Controllers
             var bytes = Encoding.ASCII.GetBytes(xml.ToString());
 
             return new FileContentResult(bytes, MediaTypeHeaderValue.Parse("application/xml"));
-        }
-
-        private static string CreateUrl(IUrlHelper urlHelper, Municipality municipality)
-        {
-            var routeValues = new { district = municipality.DistrictName, name = municipality.Name, code = municipality.MunicipalityId };
-            string scheme = urlHelper.ActionContext.HttpContext.Request.Scheme;
-            return urlHelper.RouteUrl("MunicipalityRoute", routeValues, scheme);
         }
     }
 }
