@@ -102,15 +102,14 @@ input {
     line-height: 3em;
 }
 
-.data-population-progress {
-    display: none;
-}
-
 .chart {
     margin: 5px;
 }
+    .chart thead {
+        display: none;
+    }
 
-    .chart div {
+    .chart td {
         font: 14px sans-serif;
         margin-bottom: 3px;
     }

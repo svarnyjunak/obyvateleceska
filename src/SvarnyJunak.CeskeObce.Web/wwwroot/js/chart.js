@@ -3,7 +3,7 @@
     var data = Array.prototype.map.call(dataRows, function (tr, i) {
         return {
             year: Number(tr.children[0].innerText),
-            population: Number(tr.children[1].innerText)
+            population: Number(tr.children[1].innerText.replace(/\s/g, ''))
         };
     });
     
@@ -11,24 +11,28 @@
     var maxWidth = getBarMaxWidth();
     var scale = function (v) { return v * maxWidth / maxValue; };
 
-    var chart = document.querySelector(".chart");
-    var divs = data.map(function (v) {
-        return "<div><span class='year-caption'>" + v.year + "</span><span class='bar' data-width='" + scale(v.population) + "px' style='width: 0;visibility: hidden;transition: width 2s ease-out'>" + formatNumber(v.population) + "</div>";
-    });
+    function initBars() {
+        var bars = document.querySelectorAll(".chart td .bar");
+        var barsArray = Array.prototype.slice.call(bars);
 
-    chart.innerHTML = divs.join("");
+        barsArray.forEach(function (bar) {
+            bar.style.width = 0;
+            bar.style.visibility = "hidden";
+            bar.style.transition = "width 2s ease-out";
+            bar.dataset.width = scale(Number(bar.textContent.replace(/\s/g, '')));
+        });
+    };
+
+    initBars();
 
     function showBars() {
-        var bars = document.querySelectorAll(".chart div .bar");
+        var bars = document.querySelectorAll(".chart td .bar");
         var barsArray = Array.prototype.slice.call(bars);
+
         barsArray.forEach(function (s) {
             s.style.visibility = "visible";
-            s.style.width = s.getAttribute("data-width");
+            s.style.width = s.dataset.width + "px";
         });
-    }
-
-    function formatNumber(n) {
-        return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
     }
 
     setTimeout(showBars, 500);

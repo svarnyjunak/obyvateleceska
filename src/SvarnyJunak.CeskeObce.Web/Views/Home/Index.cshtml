@@ -41,7 +41,7 @@
 
         </div>
 
-        <table class="data-population-progress">
+        <table class="data-population-progress chart">
             <thead>
                 <tr>
                     <th>@Localizer["Year"]</th>
@@ -52,8 +52,12 @@
                 @foreach (var snapshot in Model.PopulationProgress)
                 {
                     <tr>
-                        <td class="year">@snapshot.Year</td>
-                        <td class="count">@snapshot.Count</td>
+                        <td class="year year-caption">@snapshot.Year</td>
+                        <td class="count">
+                            <span class="bar">
+                                @snapshot.Count.ToString("### ### ###")
+                            </span>
+                        </td>
                     </tr>
                 }
             </tbody>
