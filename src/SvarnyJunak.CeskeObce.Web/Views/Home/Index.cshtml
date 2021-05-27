@@ -5,17 +5,33 @@
 
 @{
     ViewData["Title"] = Model.Municipality.Name + " - " + Localizer["MunicipalityPopulationTitle"].Value;
-    var url = $"https://www.obyvateleceska.cz/{Html.UrlEncoder.Encode(Model.Municipality.DistrictName)}/{Html.UrlEncoder.Encode(Model.Municipality.Name)}/{Model.Municipality.MunicipalityId}";
+    var url = ViewData["CanonicalUrl"];
+    var title = $"Počet obyvatel v obci {Model.Municipality.Name}";
+    var minYear = Model.PopulationProgress.Min(p => p.Year);
+    var maxYear = Model.PopulationProgress.Max(p => p.Year);
+    var description = $"Vývoj počtu obyvatel v letech {minYear} až {maxYear}.";
+    var timeCovereage = $"{minYear} - {maxYear}";
 }
 
 @section metadata
 {
     <meta property="og:url" content="@url" />
     <meta property="og:type" content="article" />
-    <meta property="og:title" content="Počet obyvatel v obci @Model.Municipality.Name" />
-    <meta property="og:description" content="Vývoj počtu obyvatel v letech @Model.PopulationProgress.Min(p => p.Year) až @Model.PopulationProgress.Max(p => p.Year)." />
+    <meta property="og:title" content="@title" />
+    <meta property="og:description" content="@description" />
     <meta property="og:image" content="/images/preview.png" />
-    <link rel="canonical" href="@ViewData["CanonicalUrl"]" />
+    <link rel="canonical" href="@url" />
+
+    <script type="application/ld+json">
+        {
+          "@@context" : "http://schema.org",
+          "@@type" : "Dataset",
+          "name" : "@title",
+          "description" : "@description",
+          "temporalCoverage" : "2004 - 2021",
+          "datePublished" : "@DateTime.Today.Year-05-01"
+        }
+</script>
 }
 
 <form id="select-municipality-form" asp-controller="Home" asp-action="SelectMunicipality" method="POST">
