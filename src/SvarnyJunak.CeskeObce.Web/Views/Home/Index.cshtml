@@ -21,17 +21,6 @@
     <meta property="og:description" content="@description" />
     <meta property="og:image" content="/images/preview.png" />
     <link rel="canonical" href="@url" />
-
-    <script type="application/ld+json">
-        {
-          "@@context" : "http://schema.org",
-          "@@type" : "Dataset",
-          "name" : "@title",
-          "description" : "@description",
-          "temporalCoverage" : "2004 - 2021",
-          "datePublished" : "@DateTime.Today.Year-05-01"
-        }
-</script>
 }
 
 <form id="select-municipality-form" asp-controller="Home" asp-action="SelectMunicipality" method="POST">
