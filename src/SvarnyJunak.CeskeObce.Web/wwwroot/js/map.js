@@ -9,6 +9,8 @@
     function createMap() {
         var latitude = Number(document.getElementById("Municipality_Latitude").value);
         var longitude = Number(document.getElementById("Municipality_Longitude").value);
+        var name = document.getElementById("Municipality_Name").value;
+
         var center = SMap.Coords.fromWGS84(longitude, latitude);
         var m = new SMap(JAK.gel("map-canvas"), center, 13);
         m.addDefaultLayer(SMap.DEF_BASE).enable();
@@ -18,7 +20,7 @@
         markerLayer.enable();
 
         var markerElement = JAK.mel("div");
-        var img = JAK.mel("img", { src: SMap.CONFIG.img + "/marker/drop-blue.png" });
+        var img = JAK.mel("img", { src: SMap.CONFIG.img + "/marker/drop-blue.png", alt: name });
         markerElement.appendChild(img);
 
         var marker = new SMap.Marker(m.getCenter(), null, { url: markerElement });
