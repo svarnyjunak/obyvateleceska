@@ -18,6 +18,7 @@ using SvarnyJunak.CeskeObce.Web.Middlewares;
 using Microsoft.Extensions.Hosting;
 using SvarnyJunak.CeskeObce.Data.Entities;
 using SvarnyJunak.CeskeObce.Web.Middlewares.ApplicationInsights;
+using Microsoft.Net.Http.Headers;
 
 namespace SvarnyJunak.CeskeObce.Web
 {
@@ -102,7 +103,15 @@ namespace SvarnyJunak.CeskeObce.Web
                 }
             });
 
-            app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                OnPrepareResponse = ctx =>
+                {
+                    const int durationInSeconds = 60 * 60 * 24;
+                    ctx.Context.Response.Headers[HeaderNames.CacheControl] =
+                        "public,max-age=" + durationInSeconds;
+                }
+            });
             app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
