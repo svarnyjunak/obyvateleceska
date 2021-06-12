@@ -20,7 +20,7 @@
         markerLayer.enable();
 
         var markerElement = JAK.mel("div");
-        var img = JAK.mel("img", { src: SMap.CONFIG.img + "/marker/drop-blue.png", alt: name });
+        var img = JAK.mel("img", { src: SMap.CONFIG.img + "/marker/drop-blue.png", alt: name, width: 22, height: 31 });
         markerElement.appendChild(img);
 
         var marker = new SMap.Marker(m.getCenter(), null, { url: markerElement });
