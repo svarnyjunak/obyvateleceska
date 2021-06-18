@@ -4,13 +4,15 @@
 @model SvarnyJunak.CeskeObce.Web.Models.MunicipalityPopulationProgressModel
 
 @{
-    ViewData["Title"] = Model.Municipality.Name + " - " + Localizer["MunicipalityPopulationTitle"].Value;
     var url = ViewData["CanonicalUrl"];
-    var title = $"Počet obyvatel v obci {Model.Municipality.Name}";
+    var title = Model.Municipality.Name + " - " + Localizer["MunicipalityPopulationTitle"].Value;
     var minYear = Model.PopulationProgress.Min(p => p.Year);
     var maxYear = Model.PopulationProgress.Max(p => p.Year);
-    var description = $"Vývoj počtu obyvatel v letech {minYear} až {maxYear}.";
+    var allYears = String.Join(", ", Model.PopulationProgress.OrderBy(p => p.Year).Select(p => p.Year.ToString("0000")));
+    var description = String.Format(Localizer["MunicipalityPopulationDescription"].Value, Model.Municipality.Name, Model.Municipality.DistrictName, allYears);
     var timeCovereage = $"{minYear} - {maxYear}";
+
+    ViewData["Title"] = title;
 }
 
 @section metadata
