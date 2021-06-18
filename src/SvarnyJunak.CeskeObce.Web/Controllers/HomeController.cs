@@ -28,7 +28,6 @@ namespace SvarnyJunak.CeskeObce.Web.Controllers
         public ViewResult Index(string? district, string? name, string? code)
         {
             var model = code == null ? CreateRandomModel() : CreateModelByCode(code);
-            ViewData["MetaDescription"] = CreateMetaDescription(model);
             ViewData["CanonicalUrl"] = UrlUtils.CreateCanonicalUrl(model.Municipality);
             return View(model);
         }
@@ -116,14 +115,6 @@ namespace SvarnyJunak.CeskeObce.Web.Controllers
         {
             var municipality = MunicipalityRepository.GetRandom();
             return CreateModelByMunicipality(municipality);
-        }
-
-        private string CreateMetaDescription(MunicipalityPopulationProgressModel model)
-        {
-            var years = model.PopulationProgress.Select(p => p.Year).ToArray();
-            var firstYear = years.Min();
-            var lastYear = years.Max();
-            return $"Vývoj počtu obyvatel v obci {model.Municipality.Name} (okres {model.Municipality.DistrictName}) mezi roky {firstYear} - {lastYear}.";
         }
 
         [Route("aplikace")]
