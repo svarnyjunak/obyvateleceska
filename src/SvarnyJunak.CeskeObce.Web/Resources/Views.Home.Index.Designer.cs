@@ -61,7 +61,7 @@ namespace SvarnyJunak.CeskeObce.Web.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Počtu obyvatel obce {0}, {1} v letech {2}..
+        ///   Looks up a localized string similar to Počet obyvatel obce {0}, {1} v letech {2}..
         /// </summary>
         internal static string MunicipalityPopulationDescription {
             get {

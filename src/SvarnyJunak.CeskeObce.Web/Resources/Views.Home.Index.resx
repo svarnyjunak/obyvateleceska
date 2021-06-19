@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="MunicipalityPopulationDescription" xml:space="preserve">
-    <value>Počtu obyvatel obce {0}, {1} v letech {2}.</value>
+    <value>Počet obyvatel obce {0}, {1} v letech {2}.</value>
   </data>
   <data name="MunicipalityPopulationTitle" xml:space="preserve">
     <value>Počet obyvatel</value>
