@@ -103,11 +103,13 @@ namespace SvarnyJunak.CeskeObce.Web.Controllers
         private MunicipalityPopulationProgressModel CreateModelByMunicipality(Municipality municipality)
         {
             var populationProgress = PopulationFrameRepository.FindAll(new QueryPopulationFrameByMunicipalityCode { Code = municipality.MunicipalityId });
+            var closest = MunicipalityRepository.GetClosests(municipality.Longitude, municipality.Latitude);
 
             return new MunicipalityPopulationProgressModel
             {
                 Municipality = municipality,
-                PopulationProgress = populationProgress.OrderByDescending(d => d.Year).ToArray()
+                PopulationProgress = populationProgress.OrderByDescending(d => d.Year).ToArray(),
+                ClosestMunicipalities = closest.Skip(1).ToArray()
             };
         }
 

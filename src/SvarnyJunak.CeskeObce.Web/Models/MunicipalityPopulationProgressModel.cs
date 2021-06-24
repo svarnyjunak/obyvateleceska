@@ -7,5 +7,6 @@ namespace SvarnyJunak.CeskeObce.Web.Models
         public string MunicipalityNameSearch { get; set; } = default!;
         public Municipality Municipality { get; set; } = new Municipality();
         public PopulationFrame[] PopulationProgress { get; set; } = new PopulationFrame[0];
+        public Municipality[] ClosestMunicipalities { get; set; } = new Municipality[0];
     }
 }

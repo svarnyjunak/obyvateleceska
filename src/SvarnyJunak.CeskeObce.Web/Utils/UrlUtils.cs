@@ -7,9 +7,14 @@ namespace SvarnyJunak.CeskeObce.Web.Utils
     {
         public static string CreateCanonicalUrl(Municipality municipality)
         {
+            return $"https://obyvateleceska.cz{CreateRelativeUrl(municipality)}";
+        }
+
+        public static string CreateRelativeUrl(Municipality municipality)
+        {
             var district = municipality.DistrictName.ToUrlSegment();
             var name = municipality.Name.ToUrlSegment();
-            return $"https://obyvateleceska.cz/{district}/{name}/{municipality.MunicipalityId}";
+            return $"/{district}/{name}/{municipality.MunicipalityId}";
         }
     }
 }
