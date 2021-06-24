@@ -73,24 +73,28 @@
             </tbody>
         </table>
 
-        <p>
+        <div class="labels">
             @{
-                var municipalities = Model.ClosestMunicipalities.Take(Model.ClosestMunicipalities.Length - 1);
-                var lastMunicipality = Model.ClosestMunicipalities.Last();
+                var municipalities = Model.ClosestMunicipalities;
+                var lastButOne = municipalities.Skip(Model.ClosestMunicipalities.Length - 2).First();
+                var last = Model.ClosestMunicipalities.Last();
 
-                <text>Zaujalo vás? Podívejte se kolik obyvatel mají obce</text>
+                <text>Zaujalo vás? Podívejte se kolik obyvatel mají obce </text>
 
                 foreach (var municipality in municipalities)
                 {
-                    <a href="@UrlUtils.CreateRelativeUrl(municipality)">@municipality.Name</a><text>, </text>
+<a href="@UrlUtils.CreateRelativeUrl(municipality)" class="label">@municipality.Name</a>if (municipality == lastButOne)
+                    { 
+<text> nebo </text> 
+                    }
+                    else if (municipality != last)
+                    { 
+<text>, </text> 
+                    }
                 }
-
-                <text> nebo </text>
-
-                <a href="@UrlUtils.CreateRelativeUrl(lastMunicipality)">@lastMunicipality.Name</a>
             }
 
-        </p>
+        </div>
 
     </main>
 

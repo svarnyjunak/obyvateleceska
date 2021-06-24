@@ -134,6 +134,24 @@ input {
             background-color: #5f75e4;
         }
 
+.labels {
+    margin-top: 3em;
+}
+
+.label {
+    background: #4559c3;
+    color: white;
+    padding: .4em;
+    border-radius: .4em;
+    white-space: nowrap;
+    line-height: 2em;
+    text-decoration: none;
+}
+
+    .label:hover {
+        background: #5f75e4;
+    }
+
 .validation-summary-errors {
     color: red;
     margin-top: 0.5em;
