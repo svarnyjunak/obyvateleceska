@@ -57,12 +57,15 @@ p {
 }
 
 input {
-    width: 100%;
     max-width: 350px;
     padding: .3em;
     font-size: 16px;
     box-sizing: border-box;
 }
+
+    input[type=text] {
+        width: 100%;
+    }
 
 @media (min-width: 501px), (min-height: 701px) {
     .grid {
@@ -105,6 +108,7 @@ input {
 .chart {
     margin: 5px;
 }
+
     .chart thead {
         display: none;
     }
