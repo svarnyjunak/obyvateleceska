@@ -132,6 +132,9 @@
   <data name="PopulationProgressInMunicipality" xml:space="preserve">
     <value>Počet obyvatel v obci {0}, {1}</value>
   </data>
+  <data name="Search" xml:space="preserve">
+    <value>Vyhledat</value>
+  </data>
   <data name="Year" xml:space="preserve">
     <value>Rok</value>
   </data>

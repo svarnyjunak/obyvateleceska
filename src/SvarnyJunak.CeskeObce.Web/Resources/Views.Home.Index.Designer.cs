@@ -106,6 +106,15 @@ namespace SvarnyJunak.CeskeObce.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Vyhledat.
+        /// </summary>
+        internal static string Search {
+            get {
+                return ResourceManager.GetString("Search", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Rok.
         /// </summary>
         internal static string Year {
