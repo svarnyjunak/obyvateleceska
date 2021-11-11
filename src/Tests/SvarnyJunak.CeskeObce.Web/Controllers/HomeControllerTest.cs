@@ -18,7 +18,9 @@ namespace SvarnyJunak.CeskeObce.Web.Test.Controllers
         {
             var municipality = new Municipality
             {
-                MunicipalityId = "19"
+                MunicipalityId = "19",
+                DistrictName = "Český Krumlov",
+                Name = "Křemže"
             };
             var populationProgress = CreatePopulationProgress(municipality).ToArray();
 
@@ -85,8 +87,8 @@ namespace SvarnyJunak.CeskeObce.Web.Test.Controllers
             var redirectResult = (RedirectToActionResult)result;
             Assert.Equal("Index", redirectResult.ActionName);
             Assert.Equal(municipality.MunicipalityId, redirectResult.RouteValues["code"]);
-            Assert.Equal(municipality.DistrictName, redirectResult.RouteValues["district"]);
-            Assert.Equal(municipality.Name, redirectResult.RouteValues["name"]);
+            Assert.Equal("cesky-krumlov", redirectResult.RouteValues["district"]);
+            Assert.Equal("kremze", redirectResult.RouteValues["name"]);
         }
 
         [Fact]
@@ -112,7 +114,7 @@ namespace SvarnyJunak.CeskeObce.Web.Test.Controllers
 
             var redirectResult = (RedirectToActionResult)result;
 
-            Assert.Equal(municipalityKurim.Name, redirectResult.RouteValues["name"]);
+            Assert.Equal("kurim", redirectResult.RouteValues["name"]);
         }
 
         [Fact]

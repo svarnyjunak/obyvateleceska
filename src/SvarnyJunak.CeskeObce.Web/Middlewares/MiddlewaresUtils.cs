@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Primitives;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace SvarnyJunak.CeskeObce.Web.Middlewares
 {
@@ -21,7 +18,7 @@ namespace SvarnyJunak.CeskeObce.Web.Middlewares
 
         public static IApplicationBuilder UseContentTypeNoSniffHeader(this IApplicationBuilder app)
         {
-            if(app == null)
+            if (app == null)
             {
                 throw new ArgumentNullException(nameof(app));
             }
