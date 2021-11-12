@@ -2,12 +2,10 @@
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using FileContextCore.FileManager;
-using FileContextCore.Serializer;
 using SvarnyJunak.CeskeObce.Data.Repositories;
 using SvarnyJunak.CeskeObce.DataParser;
-using FileContextCore;
 using Microsoft.Extensions.DependencyInjection;
+using SvarnyJunak.CeskeObce.Data;
 
 public class Program
 {
@@ -30,10 +28,7 @@ public class Program
         services.AddTransient<ParserRunner>();
         services.AddTransient<IMunicipalityRepository, MunicipalityRepository>();
         services.AddTransient<IPopulationFrameRepository, PopulationFrameRepository>();
-        services.AddDbContext<CeskeObceDbContext>(options =>
-        {
-            options.UseFileContextDatabase<JSONSerializer, DefaultFileManager>(location: GetDataPath());
-        });
+        services.UseFileRepositories(GetDataPath());
 
         _serviceProvider = services.BuildServiceProvider(true);
     }

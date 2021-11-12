@@ -7,31 +7,30 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace SvarnyJunak.CeskeObce.Web.Middlewares.ApplicationInsights
+namespace SvarnyJunak.CeskeObce.Web.Middlewares.ApplicationInsights;
+
+public class NotFoundFilter : ITelemetryProcessor
 {
-    public class NotFoundFilter : ITelemetryProcessor
+    private ITelemetryProcessor _next;
+
+    public NotFoundFilter(ITelemetryProcessor next)
     {
-        private ITelemetryProcessor _next;
+        _next = next;
+    }
 
-        public NotFoundFilter(ITelemetryProcessor next)
+    public void Process(ITelemetry item)
+    {
+        if (item is RequestTelemetry request && HasHttpStatusCode(request, HttpStatusCode.NotFound))
         {
-            _next = next;
+            return;
         }
 
-        public void Process(ITelemetry item)
-        {
-            if (item is RequestTelemetry request && HasHttpStatusCode(request, HttpStatusCode.NotFound))
-            {
-                return;
-            }
+        _next.Process(item);
+    }
 
-            _next.Process(item);
-        }
-
-        private static bool HasHttpStatusCode(RequestTelemetry request, HttpStatusCode httpStatus)
-        {
-            var httpStatusCode = ((int)httpStatus).ToString();
-            return request.ResponseCode.Equals(httpStatusCode, StringComparison.OrdinalIgnoreCase);
-        }
+    private static bool HasHttpStatusCode(RequestTelemetry request, HttpStatusCode httpStatus)
+    {
+        var httpStatusCode = ((int)httpStatus).ToString();
+        return request.ResponseCode.Equals(httpStatusCode, StringComparison.OrdinalIgnoreCase);
     }
 }

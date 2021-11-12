@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using SvarnyJunak.CeskeObce.Data.Entities;
 using SvarnyJunak.CeskeObce.Data.Repositories.Queries;
 
 namespace SvarnyJunak.CeskeObce.Data.Repositories
@@ -19,35 +15,33 @@ namespace SvarnyJunak.CeskeObce.Data.Repositories
 
     public abstract class RepositoryBase<T> : IRepository<T> where T : class
     {
-        protected readonly CeskeObceDbContext DbContext;
+        protected IQueryable<T> Data = new T[0].AsQueryable();
+        private readonly IDataStorage<T> dataStorage;
 
-        protected RepositoryBase(CeskeObceDbContext dbContext)
+        protected RepositoryBase(IDataStorage<T> dataStorage)
         {
-            DbContext = dbContext;
+            this.dataStorage = dataStorage;
+            this.Data = dataStorage.Load().AsQueryable();
         }
 
         public IEnumerable<T> FindAll()
         {
-            return GetDbSet().ToArray();
+            return Data;
         }
 
         public IEnumerable<T> FindAll(IQuery<T> query)
         {
-            return GetDbSet().Where(query.Expression);
+            return Data.Where(query.Expression);
         }
 
         public bool Exists(IQuery<T> query)
         {
-            return GetDbSet().Any(query.Expression);
+            return Data.Any(query.Expression);
         }
 
         public async Task ReplaceAllAsync(T[] data)
         {
-            DbContext.RemoveRange(GetDbSet());
-            await DbContext.AddRangeAsync(data);
-            await DbContext.SaveChangesAsync();
+            await dataStorage.StoreAsync(data);
         }
-
-        protected abstract DbSet<T> GetDbSet();
     }
 }

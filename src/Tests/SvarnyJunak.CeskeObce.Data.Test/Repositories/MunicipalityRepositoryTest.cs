@@ -18,147 +18,110 @@ namespace SvarnyJunak.CeskeObce.Data.Test.Repositories
         [TestMethod]
         public void GetRandom_Test()
         {
-            using (var context = new CeskeObceDbContext(CreateInMemoryDbContextOptions()))
+            var municipalities = new[]
             {
-                var municipalities = new List<Municipality>
-                {
-                    new Municipality { MunicipalityId = "1", Name = "Municipality name 1", DistrictName = "District name 1"},
-                    new Municipality { MunicipalityId = "2", Name = "Municipality name 2", DistrictName = "District name 2"},
-                    new Municipality { MunicipalityId = "3", Name = "Municipality name 3", DistrictName = "District name 3"},
-                    new Municipality { MunicipalityId = "4", Name = "Municipality name 4", DistrictName = "District name 4"},
-                    new Municipality { MunicipalityId = "5", Name = "Municipality name 5", DistrictName = "District name 5"},
-                };
+                new Municipality { MunicipalityId = "1", Name = "Municipality name 1", DistrictName = "District name 1"},
+                new Municipality { MunicipalityId = "2", Name = "Municipality name 2", DistrictName = "District name 2"},
+                new Municipality { MunicipalityId = "3", Name = "Municipality name 3", DistrictName = "District name 3"},
+                new Municipality { MunicipalityId = "4", Name = "Municipality name 4", DistrictName = "District name 4"},
+                new Municipality { MunicipalityId = "5", Name = "Municipality name 5", DistrictName = "District name 5"},
+            };
 
-                context.AddRange(municipalities);
-                context.SaveChanges();
-
-                var repository = new MunicipalityRepository(context);
-                var result = repository.GetRandom();
-                Assert.IsNotNull(result);
-            }
+            var storage = MemoryDataStorage.FromData(municipalities);
+            var repository = new MunicipalityRepository(storage);
+            var result = repository.GetRandom();
+            Assert.IsNotNull(result);
         }
 
         [TestMethod]
         public void Exists_Test()
         {
-            using (var context = new CeskeObceDbContext(CreateInMemoryDbContextOptions()))
+            var municipalities = new Municipality[]
             {
-                var orders = new List<Municipality>
-                {
-                    new Municipality { MunicipalityId = "TEST", Name = "Municipality name", DistrictName = "District name"},
-                };
+                new Municipality { MunicipalityId = "TEST", Name = "Municipality name", DistrictName = "District name"},
+            };
 
-                context.AddRange(orders);
-                context.SaveChanges();
-
-                var repository = new MunicipalityRepository(context);
-                var result = repository.Exists(new QueryMunicipalityByCode { Code = "TEST" });
-                Assert.IsTrue(result);
-            }
+            var storage = MemoryDataStorage.FromData(municipalities);
+            var repository = new MunicipalityRepository(storage);
+            var result = repository.Exists(new QueryMunicipalityByCode { Code = "TEST" });
+            Assert.IsTrue(result);
         }
 
         [TestMethod]
-        public async Task GetByCode_Test()
+        public void GetByCode_Test()
         {
-            using (var dbContext = new CeskeObceDbContext(CreateInMemoryDbContextOptions()))
+            var municipality = new Municipality
             {
-                var municipality = new Municipality
-                {
-                    MunicipalityId = "TEST", 
-                    Name = "Municipality name", 
-                    DistrictName = "District name"
-                };
+                MunicipalityId = "TEST",
+                Name = "Municipality name",
+                DistrictName = "District name"
+            };
 
-                await dbContext.AddAsync(municipality);
-                await dbContext.SaveChangesAsync();
+            var storage = MemoryDataStorage.FromData(municipality);
+            var repository = new MunicipalityRepository(storage);
+            var result = repository.GetByCode("TEST");
 
-                var repository = new MunicipalityRepository(dbContext);
-                var result = repository.GetByCode("TEST");
-
-                Assert.AreEqual(municipality, result);
-            }
+            Assert.AreEqual(municipality, result);
         }
 
         [TestMethod]
         [ExpectedException(typeof(MunicipalityNotFoundException))]
         public void GetByCode_NoCodeTest()
         {
-            using (var dbContext = new CeskeObceDbContext(CreateInMemoryDbContextOptions()))
-            {
-                var repository = new MunicipalityRepository(dbContext);
-                repository.GetByCode("XXX");
-            }
+            var storage = MemoryDataStorage.FromData(new Municipality[0]);
+            var repository = new MunicipalityRepository(storage);
+            repository.GetByCode("XXX");
         }
 
         [TestMethod]
         public async Task ReplaceAll_Test()
         {
-            using (var dbContext = new CeskeObceDbContext(CreateInMemoryDbContextOptions()))
+            var municipality = new Municipality
             {
-                var repository = new MunicipalityRepository(dbContext);
+                MunicipalityId = "TEST",
+                Name = "Municipality name",
+                DistrictName = "District name"
+            };
 
-                var municipality = new Municipality
-                {
-                    MunicipalityId = "TEST",
-                    Name = "Municipality name",
-                    DistrictName = "District name"
-                };
+            var storage = MemoryDataStorage.FromData(municipality);
+            var repository = new MunicipalityRepository(storage);
 
-                await repository.ReplaceAllAsync(new[] { municipality });
+            await repository.ReplaceAllAsync(new[] { municipality });
 
-                Assert.IsNotNull(await dbContext.Municipalities.FindAsync(municipality.MunicipalityId));
-            }
+            Assert.IsNotNull(repository.GetByCode(municipality.MunicipalityId));
         }
 
         [TestMethod]
-        public async Task FindAll_Test()
+        public void FindAll_Test()
         {
-            using (var dbContext = new CeskeObceDbContext(CreateInMemoryDbContextOptions()))
+            var municipality = new Municipality
             {
-                var municipality = new Municipality
-                {
-                    MunicipalityId = "TEST",
-                    Name = "Municipality name",
-                    DistrictName = "District name"
-                };
+                MunicipalityId = "TEST",
+                Name = "Municipality name",
+                DistrictName = "District name"
+            };
 
-                await dbContext.Municipalities.AddAsync(municipality);
-                await dbContext.SaveChangesAsync();
+            var storage = MemoryDataStorage.FromData(municipality);
+            var repository = new MunicipalityRepository(storage);
+            var returned = repository.FindAll().Single();
 
-                var repository = new MunicipalityRepository(dbContext);
-                var returned = repository.FindAll().Single();
-
-                Assert.AreEqual(municipality, returned);
-            }
+            Assert.AreEqual(municipality, returned);
         }
 
         [TestMethod]
-        public async Task Exists_QueryTest()
+        public void Exists_QueryTest()
         {
-            using (var context = new CeskeObceDbContext(CreateInMemoryDbContextOptions()))
+            var municipality = new Municipality
             {
-                var municipality = new Municipality
-                {
-                    MunicipalityId = "TEST",
-                    Name = "Municipality name",
-                    DistrictName = "District name"
-                };
+                MunicipalityId = "TEST",
+                Name = "Municipality name",
+                DistrictName = "District name"
+            };
 
-                await context.AddAsync(municipality);
-                await context.SaveChangesAsync();
-
-                var repository = new MunicipalityRepository(context);
-                var result = repository.FindAll(new QueryMunicipalityByCode { Code = "TEST" }).Single();
-                Assert.AreEqual(municipality, result);
-            }
-        }
-
-        private static DbContextOptions<CeskeObceDbContext> CreateInMemoryDbContextOptions()
-        {
-            var builder = new DbContextOptionsBuilder<CeskeObceDbContext>();
-            builder.UseInMemoryDatabase(Guid.NewGuid().ToString());
-            var options = builder.Options;
-            return options;
+            var storage = MemoryDataStorage.FromData(municipality);
+            var repository = new MunicipalityRepository(storage);
+            var result = repository.FindAll(new QueryMunicipalityByCode { Code = "TEST" }).Single();
+            Assert.AreEqual(municipality, result);
         }
     }
 }

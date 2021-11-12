@@ -2,7 +2,6 @@
 using System.Linq;
 using SvarnyJunak.CeskeObce.Data.Entities;
 using SvarnyJunak.CeskeObce.Data.Utils;
-using Microsoft.EntityFrameworkCore;
 
 namespace SvarnyJunak.CeskeObce.Data.Repositories
 {
@@ -15,13 +14,13 @@ namespace SvarnyJunak.CeskeObce.Data.Repositories
 
     public class MunicipalityRepository : RepositoryBase<Municipality>, IMunicipalityRepository
     {
-        public MunicipalityRepository(CeskeObceDbContext dbContext) : base(dbContext)
+        public MunicipalityRepository(IDataStorage<Municipality> dataStorage) : base(dataStorage)
         {
         }
 
         public Municipality GetByCode(string code)
         {
-            var result = DbContext.Municipalities.Find(code);
+            var result = Data.SingleOrDefault(d => d.MunicipalityId == code);
 
             if (result == null)
                 throw new MunicipalityNotFoundException($"Municipality with given code {code} was not found.");
@@ -31,19 +30,14 @@ namespace SvarnyJunak.CeskeObce.Data.Repositories
 
         public IEnumerable<Municipality> GetClosests(decimal longitude, decimal latitude, int count = 5)
         {
-            return DbContext.Municipalities
+            return Data
                 .OrderBy(m => GeoCoordinateUtils.GetDistance(longitude, latitude, m.Longitude, m.Latitude))
                 .Take(count);
         }
 
         public Municipality GetRandom()
         {
-            return DbContext.Municipalities.GetRandomElement();
-        }
-
-        protected override DbSet<Municipality> GetDbSet()
-        {
-            return DbContext.Municipalities;
+            return Data.GetRandomElement();
         }
     }
 }

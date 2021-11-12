@@ -1,140 +1,136 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using SvarnyJunak.CeskeObce.Data.Repositories;
 using SvarnyJunak.CeskeObce.Web.Models;
 using SvarnyJunak.CeskeObce.Data.Entities;
 using SvarnyJunak.CeskeObce.Data.Repositories.Queries;
 using SvarnyJunak.CeskeObce.Data.Utils;
-using System;
 using SvarnyJunak.CeskeObce.Web.Utils;
 
-namespace SvarnyJunak.CeskeObce.Web.Controllers
+namespace SvarnyJunak.CeskeObce.Web.Controllers;
+
+public class HomeController : Controller
 {
-    public class HomeController : Controller
+    protected IMunicipalityRepository MunicipalityRepository { get; set; }
+    protected IPopulationFrameRepository PopulationFrameRepository { get; set; }
+
+    public HomeController(IMunicipalityRepository municipalityRepository, IPopulationFrameRepository populationProgressRepository)
     {
-        protected IMunicipalityRepository MunicipalityRepository { get; set; }
-        protected IPopulationFrameRepository PopulationFrameRepository { get; set; }
+        MunicipalityRepository = municipalityRepository;
+        PopulationFrameRepository = populationProgressRepository;
+    }
 
-        public HomeController(IMunicipalityRepository municipalityRepository, IPopulationFrameRepository populationProgressRepository)
+    [HttpGet]
+    [Route("{district}/{name}/{code:municipalityCode}", Name = "MunicipalityRoute")]
+    [Route("{controller=Home}/{action=Index}/{id?}")]
+    public ViewResult Index(string? district, string? name, string? code)
+    {
+        var model = code == null ? CreateRandomModel() : CreateModelByCode(code);
+        ViewData["CanonicalUrl"] = UrlUtils.CreateCanonicalUrl(model.Municipality);
+        return View(model);
+    }
+
+    [HttpPost]
+    public IActionResult SelectMunicipality(string municipalityName, string currentMunicipalityCode)
+    {
+        var municipalities = FindMunicipalitiesByNameWithDiscrict(municipalityName).ToArray();
+
+        if (!municipalities.Any())
         {
-            MunicipalityRepository = municipalityRepository;
-            PopulationFrameRepository = populationProgressRepository;
+            var model = CreateModelByCode(currentMunicipalityCode);
+            model.MunicipalityNameSearch = municipalityName;
+
+            var errorMessage = Resources.Controllers_HomeController.No_municipality_found_;
+            ModelState.AddModelError(nameof(model.MunicipalityNameSearch), errorMessage);
+            return View(nameof(Index), model);
         }
 
-        [HttpGet]
-        [Route("{district}/{name}/{code:municipalityCode}", Name = "MunicipalityRoute")]
-        [Route("{controller=Home}/{action=Index}/{id?}")]
-        public ViewResult Index(string? district, string? name, string? code)
+        var municipality = municipalities.OrderBy(m => m.Name).First();
+        var district = municipality.DistrictName.ToUrlSegment();
+        var name = municipality.Name.ToUrlSegment();
+        return RedirectToAction(nameof(Index), new { district = district, name = name, code = municipality.MunicipalityId });
+    }
+
+    [HttpGet]
+    [Route("api/municipalities")]
+    public ActionResult<string[]> FindMunicipalities(string name)
+    {
+        var municipalities = FindMunicipalitiesByNameWithDiscrict(name);
+        var data = municipalities
+            .OrderBy(m => m.Name)
+            .ThenBy(m => m.DistrictName)
+            .Select(m => $"{m.Name}, {m.DistrictName}").ToArray();
+
+        return Ok(data);
+    }
+
+    private IEnumerable<Municipality> FindMunicipalitiesByNameWithDiscrict(string municipalityName)
+    {
+        if (municipalityName == null)
         {
-            var model = code == null ? CreateRandomModel() : CreateModelByCode(code);
-            ViewData["CanonicalUrl"] = UrlUtils.CreateCanonicalUrl(model.Municipality);
-            return View(model);
+            return new Municipality[0];
         }
 
-        [HttpPost]
-        public IActionResult SelectMunicipality(string municipalityName, string currentMunicipalityCode)
+        IQuery<Municipality> query;
+        if (municipalityName.Contains(","))
         {
-            var municipalities = FindMunicipalitiesByNameWithDiscrict(municipalityName).ToArray();
-
-            if (!municipalities.Any())
+            var parts = municipalityName.Split(',');
+            query = new QueryMunicipalityByNameAndDistrict
             {
-                var model = CreateModelByCode(currentMunicipalityCode);
-                model.MunicipalityNameSearch = municipalityName;
-
-                var errorMessage = Resources.Controllers_HomeController.No_municipality_found_;
-                ModelState.AddModelError(nameof(model.MunicipalityNameSearch), errorMessage);
-                return View(nameof(Index), model);
-            }
-
-            var municipality = municipalities.OrderBy(m => m.Name).First();
-            var district = municipality.DistrictName.ToUrlSegment();
-            var name = municipality.Name.ToUrlSegment();
-            return RedirectToAction(nameof(Index), new { district = district, name = name, code = municipality.MunicipalityId });
+                Name = parts[0],
+                District = parts[1]
+            };
         }
-
-        [HttpGet]
-        [Route("api/municipalities")]
-        public ActionResult<string[]> FindMunicipalities(string name)
+        else
         {
-            var municipalities = FindMunicipalitiesByNameWithDiscrict(name);
-            var data = municipalities
-                .OrderBy(m => m.Name)
-                .ThenBy(m => m.DistrictName)
-                .Select(m => $"{m.Name}, {m.DistrictName}").ToArray();
-
-            return Ok(data);
-        }
-
-        private IEnumerable<Municipality> FindMunicipalitiesByNameWithDiscrict(string municipalityName)
-        {
-            if (municipalityName == null)
+            query = new QueryMunicipalityByName
             {
-                return new Municipality[0];
-            }
-
-            IQuery<Municipality> query;
-            if (municipalityName.Contains(","))
-            {
-                var parts = municipalityName.Split(',');
-                query = new QueryMunicipalityByNameAndDistrict
-                {
-                    Name = parts[0],
-                    District = parts[1]
-                };
-            }
-            else
-            {
-                query = new QueryMunicipalityByName
-                {
-                    Name = municipalityName
-                };
-            }
-
-            return MunicipalityRepository.FindAll(query);
-        }
-
-        private MunicipalityPopulationProgressModel CreateModelByCode(string code)
-        {
-            var municipality = MunicipalityRepository.GetByCode(code);
-            return CreateModelByMunicipality(municipality);
-        }
-
-        private MunicipalityPopulationProgressModel CreateModelByMunicipality(Municipality municipality)
-        {
-            var populationProgress = PopulationFrameRepository.FindAll(new QueryPopulationFrameByMunicipalityCode { Code = municipality.MunicipalityId });
-            var closest = MunicipalityRepository.GetClosests(municipality.Longitude, municipality.Latitude);
-
-            return new MunicipalityPopulationProgressModel
-            {
-                Municipality = municipality,
-                PopulationProgress = populationProgress.OrderByDescending(d => d.Year).ToArray(),
-                ClosestMunicipalities = closest.Skip(1).ToArray()
+                Name = municipalityName
             };
         }
 
-        private MunicipalityPopulationProgressModel CreateRandomModel()
-        {
-            var municipality = MunicipalityRepository.GetRandom();
-            return CreateModelByMunicipality(municipality);
-        }
+        return MunicipalityRepository.FindAll(query);
+    }
 
-        [Route("aplikace")]
-        public IActionResult About()
-        {
-            return View();
-        }
+    private MunicipalityPopulationProgressModel CreateModelByCode(string code)
+    {
+        var municipality = MunicipalityRepository.GetByCode(code);
+        return CreateModelByMunicipality(municipality);
+    }
 
-        [Route("error")]
-        public IActionResult Error()
-        {
-            return View();
-        }
+    private MunicipalityPopulationProgressModel CreateModelByMunicipality(Municipality municipality)
+    {
+        var populationProgress = PopulationFrameRepository.FindAll(new QueryPopulationFrameByMunicipalityCode { Code = municipality.MunicipalityId });
+        var closest = MunicipalityRepository.GetClosests(municipality.Longitude, municipality.Latitude);
 
-        [Route("pagenotfound")]
-        public IActionResult PageNotFound()
+        return new MunicipalityPopulationProgressModel
         {
-            return View();
-        }
+            Municipality = municipality,
+            PopulationProgress = populationProgress.OrderByDescending(d => d.Year).ToArray(),
+            ClosestMunicipalities = closest.Skip(1).ToArray()
+        };
+    }
+
+    private MunicipalityPopulationProgressModel CreateRandomModel()
+    {
+        var municipality = MunicipalityRepository.GetRandom();
+        return CreateModelByMunicipality(municipality);
+    }
+
+    [Route("aplikace")]
+    public IActionResult About()
+    {
+        return View();
+    }
+
+    [Route("error")]
+    public IActionResult Error()
+    {
+        return View();
+    }
+
+    [Route("pagenotfound")]
+    public IActionResult PageNotFound()
+    {
+        return View();
     }
 }

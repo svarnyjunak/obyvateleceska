@@ -209,16 +209,6 @@ namespace SvarnyJunak.CeskeObce.Web.Test.Controllers
             };
         }
 
-        private IEnumerable<Municipality> CreateMunicipalities(int count)
-        {
-            for(int i = 0; i < count;i++)
-            {
-                var municipality = CreateMunicipality();
-                municipality.MunicipalityId = i.ToString();
-                yield return municipality;
-            }
-        }
-
         private IEnumerable<PopulationFrame> CreatePopulationProgress(Municipality municipality)
         {
             yield return new PopulationFrame {Count = 1, Year = 2000};

@@ -11,7 +11,7 @@ using DataRow = SvarnyJunak.CeskeObce.DataParser.Utils.DataRow;
 
 namespace SvarnyJunak.CeskeObce.DataParser
 {
-    public sealed class ParserRunner 
+    public sealed class ParserRunner
     {
         private readonly IMunicipalityRepository _municipalityRepository;
         private readonly IPopulationFrameRepository _populationFrameRepository;
@@ -26,28 +26,23 @@ namespace SvarnyJunak.CeskeObce.DataParser
         {
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
-            using (var scope = new TransactionScope())
+            var municipalities = GetMunicipalities().ToArray();
+            var populationFrames = GetPopulationProgress().ToArray();
+
+            var missingMunicipalities = populationFrames
+                .Where(p => municipalities.All(m => m.MunicipalityId != p.MunicipalityId))
+                .GroupBy(p => p.MunicipalityId)
+                .Select(p => $"{p.Key} year {p.Max(p => p.Year)}")
+                .ToArray();
+
+            if (missingMunicipalities.Any())
             {
-                var municipalities = GetMunicipalities().ToArray();
-                var populationFrames = GetPopulationProgress().ToArray();
-
-                var missingMunicipalities = populationFrames
-                    .Where(p => municipalities.All(m => m.MunicipalityId != p.MunicipalityId))
-                    .GroupBy(p => p.MunicipalityId)
-                    .Select(p => $"{p.Key} year {p.Max(p => p.Year)}")
-                    .ToArray();
-
-                if (missingMunicipalities.Any())
-                {
-                    var message = "Any municipalities are missing " + String.Join(", ", missingMunicipalities);
-                    throw new Exception(message);
-                }
-
-                await _municipalityRepository.ReplaceAllAsync(municipalities);
-                await _populationFrameRepository.ReplaceAllAsync(populationFrames);
-
-                scope.Complete();
+                var message = "Any municipalities are missing " + String.Join(", ", missingMunicipalities);
+                throw new Exception(message);
             }
+
+            await _municipalityRepository.ReplaceAllAsync(municipalities);
+            await _populationFrameRepository.ReplaceAllAsync(populationFrames);
         }
 
         private IEnumerable<Municipality> GetMunicipalities()

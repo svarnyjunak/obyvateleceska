@@ -15,46 +15,28 @@ namespace SvarnyJunak.CeskeObce.Data.Test.Repositories
         [TestMethod]
         public void Exists_Test()
         {
-            using (var context = new CeskeObceDbContext(CreateInMemoryDbContextOptions()))
+            var municipality = new Municipality
             {
-                var municipality = new Municipality
-                {
-                    MunicipalityId = "TEST1",
-                    Name = "Municipality name",
-                    DistrictName = "District name"
-                };
+                MunicipalityId = "TEST1",
+                Name = "Municipality name",
+                DistrictName = "District name"
+            };
 
-                context.Add(municipality);
+            var frame = new PopulationFrame
+            {
+                Count = 1,
+                MunicipalityId = municipality.MunicipalityId,
+                Year = 2000
+            };
 
-                var data = new List<PopulationFrame>
-                {
-                    new PopulationFrame
-                    {
-                        Count = 1,
-                        MunicipalityId = municipality.MunicipalityId, 
-                        Year = 2000
-                    }
-                };
+            var populationFrameDataStorage = MemoryDataStorage.FromData(frame);
+            var repository = new PopulationFrameRepository(populationFrameDataStorage);
+            var result = repository.Exists(new QueryPopulationFrameByMunicipalityCode
+            {
+                Code = municipality.MunicipalityId
+            });
 
-                context.AddRange(data);
-                context.SaveChanges();
-
-                var repository = new PopulationFrameRepository(context);
-                var result = repository.Exists(new QueryPopulationFrameByMunicipalityCode
-                {
-                    Code = municipality.MunicipalityId
-                });
-
-                Assert.IsTrue(result);
-            }
-        }
-
-        private static DbContextOptions<CeskeObceDbContext> CreateInMemoryDbContextOptions()
-        {
-            var builder = new DbContextOptionsBuilder<CeskeObceDbContext>();
-            builder.UseInMemoryDatabase("ceske-obce");
-            var options = builder.Options;
-            return options;
+            Assert.IsTrue(result);
         }
     }
 }

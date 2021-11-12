@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Microsoft.EntityFrameworkCore;
 using SvarnyJunak.CeskeObce.Data.Entities;
 
 namespace SvarnyJunak.CeskeObce.Data.Repositories
@@ -13,13 +12,8 @@ namespace SvarnyJunak.CeskeObce.Data.Repositories
 
     public class PopulationFrameRepository : RepositoryBase<PopulationFrame>, IPopulationFrameRepository
     {
-        public PopulationFrameRepository(CeskeObceDbContext dbContext) : base(dbContext)
+        public PopulationFrameRepository(IDataStorage<PopulationFrame> dataStorage) : base(dataStorage)
         {
-        }
-
-        protected override DbSet<PopulationFrame> GetDbSet()
-        {
-            return DbContext.PopulationFrames;
         }
     }
 }

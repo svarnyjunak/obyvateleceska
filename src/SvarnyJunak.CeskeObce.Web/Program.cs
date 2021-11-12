@@ -1,45 +1,92 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc.Razor;
+using Microsoft.Net.Http.Headers;
+using SvarnyJunak.CeskeObce.Data;
+using SvarnyJunak.CeskeObce.Web.Middlewares;
+using SvarnyJunak.CeskeObce.Web.Middlewares.ApplicationInsights;
+using SvarnyJunak.CeskeObce.Web.Routing;
+using System.Globalization;
 
-namespace SvarnyJunak.CeskeObce.Web
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddApplicationInsightsTelemetry(builder.Configuration);
+builder.Services.AddApplicationInsightsTelemetryProcessor<NotFoundFilter>();
+builder.Services.AddRouting(options =>
 {
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            BuildWebHost(args).Run();
-        }
+    options.LowercaseUrls = true;
+    options.ConstraintMap.Add("municipalityCode", typeof(MunicipalityRouteConstraint));
+});
 
-        public static IHost BuildWebHost(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(c => c.UseStartup<Startup>())
-                .ConfigureLogging((hostingContext, logging) =>
-                {
-                    logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
-                    logging.AddConsole();
-                    logging.AddDebug();
-                    logging.AddApplicationInsights();
-                })
-                .ConfigureAppConfiguration((host, configuration) =>
-                {
-                    var env = host.HostingEnvironment;
+builder.Services.AddHsts(options =>
+{
+    options.Preload = true;
+    options.IncludeSubDomains = true;
+    options.MaxAge = TimeSpan.FromDays(180);
+});
 
-                    configuration
-                        .SetBasePath(env.ContentRootPath)
-                        .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                        .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-                        .AddEnvironmentVariables();
+builder.Services
+    .AddControllersWithViews()
+    .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix);
 
-                    if (env.IsDevelopment())
-                    {
-                        configuration.AddApplicationInsightsSettings(developerMode: true);
-                    }
+builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+builder.Services.UseFileRepositories(Path.Combine(Environment.CurrentDirectory, "appdata"));
 
-                    configuration.Build();
-                })
-                .Build();
-    }
+var app = builder.Build();
+if (builder.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
 }
+else
+{
+    app.UseExceptionHandler("/error");
+
+    //todo: use app.UseHttpsRedirection();
+    app.UseHttpsEnforcement();
+    app.UseHsts();
+}
+
+//todo: app.UseCors();
+app.UseContentTypeNoSniffHeader();
+
+app.UseXssProtectionHeader();
+//app.UseXXssProtection(new XXssProtectionOptions(true, true));
+
+// todo: app.UseCsp(...)
+app.UseContentSecurityPolicyHeader();
+
+// todo: use app.UseStatusCodePagesWithRedirects(...)
+app.Use(async (context, next) =>
+{
+    await next();
+    if (context.Response.StatusCode == 404)
+    {
+        context.Request.Path = "/pagenotfound";
+        await next();
+    }
+});
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    OnPrepareResponse = ctx =>
+    {
+        const int durationInSeconds = 60 * 60 * 24;
+        ctx.Context.Response.Headers[HeaderNames.CacheControl] =
+            "public,max-age=" + durationInSeconds;
+    }
+});
+app.UseRouting();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+    endpoints.MapDefaultControllerRoute();
+});
+
+var supportedCultures = new[] { new CultureInfo("cs-CZ") };
+app.UseRequestLocalization(new RequestLocalizationOptions
+{
+    DefaultRequestCulture = new RequestCulture("cs-CZ"),
+    SupportedCultures = supportedCultures,
+    SupportedUICultures = supportedCultures
+});
+
+app.Run();
