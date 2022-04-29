@@ -30,18 +30,20 @@ public class HomeController : Controller
     }
 
     [HttpPost]
-    public IActionResult SelectMunicipality(string municipalityName, string currentMunicipalityCode)
+    public IActionResult SelectMunicipality(string? municipalityName, string currentMunicipalityCode)
     {
+        if (string.IsNullOrEmpty(municipalityName))
+        {
+            var errorMessage = Resources.Controllers_HomeController.Municipality_name_is_required_;
+            return CreateErrorResult(errorMessage, municipalityName, currentMunicipalityCode);
+        }
+
         var municipalities = FindMunicipalitiesByNameWithDiscrict(municipalityName).ToArray();
 
         if (!municipalities.Any())
         {
-            var model = CreateModelByCode(currentMunicipalityCode);
-            model.MunicipalityNameSearch = municipalityName;
-
             var errorMessage = Resources.Controllers_HomeController.No_municipality_found_;
-            ModelState.AddModelError(nameof(model.MunicipalityNameSearch), errorMessage);
-            return View(nameof(Index), model);
+            return CreateErrorResult(errorMessage, municipalityName, currentMunicipalityCode);
         }
 
         var municipality = municipalities.OrderBy(m => m.Name).First();
@@ -61,6 +63,18 @@ public class HomeController : Controller
             .Select(m => $"{m.Name}, {m.DistrictName}").ToArray();
 
         return Ok(data);
+    }
+
+    private ActionResult CreateErrorResult(string errorMessage, string? municipalityName, string currentMunicipalityCode)
+    {
+        var model = CreateModelByCode(currentMunicipalityCode);
+        model.MunicipalityNameSearch = municipalityName ?? "";
+
+        ModelState.AddModelError(nameof(model.MunicipalityNameSearch), errorMessage);
+        
+        var view = View(nameof(Index), model);
+        view.StatusCode = StatusCodes.Status400BadRequest;
+        return view;
     }
 
     private IEnumerable<Municipality> FindMunicipalitiesByNameWithDiscrict(string municipalityName)
