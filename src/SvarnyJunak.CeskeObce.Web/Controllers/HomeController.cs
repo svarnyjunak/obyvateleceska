@@ -29,8 +29,9 @@ public class HomeController : Controller
         return View(model);
     }
 
+    [HttpGet]
     [HttpPost]
-    public IActionResult SelectMunicipality(string? municipalityName, string currentMunicipalityCode)
+    public IActionResult SelectMunicipality(string? municipalityName, string? currentMunicipalityCode)
     {
         if (string.IsNullOrEmpty(municipalityName))
         {
@@ -65,9 +66,9 @@ public class HomeController : Controller
         return Ok(data);
     }
 
-    private ActionResult CreateErrorResult(string errorMessage, string? municipalityName, string currentMunicipalityCode)
+    private ActionResult CreateErrorResult(string errorMessage, string? municipalityName, string? currentMunicipalityCode)
     {
-        var model = CreateModelByCode(currentMunicipalityCode);
+        var model = currentMunicipalityCode != null ? CreateModelByCode(currentMunicipalityCode) : CreateRandomModel();
         model.MunicipalityNameSearch = municipalityName ?? "";
 
         ModelState.AddModelError(nameof(model.MunicipalityNameSearch), errorMessage);
