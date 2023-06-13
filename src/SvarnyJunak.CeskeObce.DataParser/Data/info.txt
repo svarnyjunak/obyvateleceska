@@ -6,3 +6,5 @@ http://www.czso.cz/csu/klasifik.nsf/i/ciselnik_okresu_lau1_nuts_2008
 Data o počtech obyvatel pocházejí odtud:
 https://www.czso.cz/csu/czso/pocet-obyvatel-v-obcich-k-112015
 https://www.czso.cz/csu/czso/pocet-obyvatel-v-obcich-k-112017
+
+Obdobná data jsou k dispozici také na MVČR https://www.mvcr.cz/clanek/informativni-pocty-obyvatel-v-obcich.aspx

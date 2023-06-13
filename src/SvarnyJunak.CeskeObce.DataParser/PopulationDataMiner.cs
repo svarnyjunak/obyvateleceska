@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
-using SvarnyJunak.CeskeObce.Data;
 using SvarnyJunak.CeskeObce.Data.Entities;
 using SvarnyJunak.CeskeObce.DataParser.Entities;
-using SvarnyJunak.CeskeObce.DataParser.Utils;
+using SvarnyJunak.CeskeObce.DataParser.Parsers;
 using DataRow = SvarnyJunak.CeskeObce.DataParser.Utils.DataRow;
 
 namespace SvarnyJunak.CeskeObce.DataParser
@@ -17,9 +12,8 @@ namespace SvarnyJunak.CeskeObce.DataParser
     {
         private readonly List<PopulationInMunicipalitity> __dataList = new List<PopulationInMunicipalitity>();
 
-        public void AddPopulationData(DataRow[] rows, int year)
+        public void AddPopulationData(DataRow[] rows, IPopulationParser parser, int year)
         {
-            var parser = new PopulationParser();
             __dataList.AddRange(parser.Parse(rows, year));
         }
 

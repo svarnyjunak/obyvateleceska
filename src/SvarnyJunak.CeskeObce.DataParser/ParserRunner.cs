@@ -8,6 +8,7 @@ using SvarnyJunak.CeskeObce.Data.Repositories;
 using SvarnyJunak.CeskeObce.DataParser.Utils;
 using OfficeOpenXml;
 using DataRow = SvarnyJunak.CeskeObce.DataParser.Utils.DataRow;
+using SvarnyJunak.CeskeObce.DataParser.Parsers;
 
 namespace SvarnyJunak.CeskeObce.DataParser
 {
@@ -57,26 +58,28 @@ namespace SvarnyJunak.CeskeObce.DataParser
         {
             const string sheetName = "List1";
             var population = new PopulationDataMiner();
+            var csuParser = new CsuPopulationParser();
 
-            population.AddPopulationData(GetData("./Data/population_2004.xlsx", sheetName), 2004);
-            population.AddPopulationData(GetData("./Data/population_2005.xlsx", sheetName), 2005);
-            population.AddPopulationData(GetData("./Data/population_2006.xlsx", sheetName), 2006);
-            population.AddPopulationData(GetData("./Data/population_2007.xlsx", sheetName), 2007);
-            population.AddPopulationData(GetData("./Data/population_2008.xlsx", sheetName), 2008);
-            population.AddPopulationData(GetData("./Data/population_2009.xlsx", sheetName), 2009);
-            population.AddPopulationData(GetData("./Data/population_2010.xlsx", sheetName), 2010);
-            population.AddPopulationData(GetData("./Data/population_2011.xlsx", sheetName), 2011);
-            population.AddPopulationData(GetData("./Data/population_2012.xlsx", sheetName), 2012);
-            population.AddPopulationData(GetData("./Data/population_2013.xlsx", sheetName), 2013);
-            population.AddPopulationData(GetData("./Data/population_2014.xlsx", sheetName), 2014);
-            population.AddPopulationData(GetData("./Data/population_2015.xlsx", sheetName), 2015);
-            population.AddPopulationData(GetData("./Data/population_2016.xlsx", sheetName), 2016);
-            population.AddPopulationData(GetData("./Data/population_2017.xlsx", sheetName), 2017);
-            population.AddPopulationData(GetData("./Data/population_2018.xlsx", sheetName), 2018);
-            population.AddPopulationData(GetData("./Data/population_2019.xlsx", sheetName), 2019);
-            population.AddPopulationData(GetData("./Data/population_2020.xlsx", sheetName), 2020);
-            population.AddPopulationData(GetData("./Data/population_2021.xlsx", sheetName), 2021);
-            population.AddPopulationData(GetData("./Data/population_2022.xlsx", sheetName), 2022);
+            population.AddPopulationData(GetData("./Data/population_2004.xlsx", sheetName), csuParser, 2004);
+            population.AddPopulationData(GetData("./Data/population_2005.xlsx", sheetName), csuParser, 2005);
+            population.AddPopulationData(GetData("./Data/population_2006.xlsx", sheetName), csuParser, 2006);
+            population.AddPopulationData(GetData("./Data/population_2007.xlsx", sheetName), csuParser, 2007);
+            population.AddPopulationData(GetData("./Data/population_2008.xlsx", sheetName), csuParser, 2008);
+            population.AddPopulationData(GetData("./Data/population_2009.xlsx", sheetName), csuParser, 2009);
+            population.AddPopulationData(GetData("./Data/population_2010.xlsx", sheetName), csuParser, 2010);
+            population.AddPopulationData(GetData("./Data/population_2011.xlsx", sheetName), csuParser, 2011);
+            population.AddPopulationData(GetData("./Data/population_2012.xlsx", sheetName), csuParser, 2012);
+            population.AddPopulationData(GetData("./Data/population_2013.xlsx", sheetName), csuParser, 2013);
+            population.AddPopulationData(GetData("./Data/population_2014.xlsx", sheetName), csuParser, 2014);
+            population.AddPopulationData(GetData("./Data/population_2015.xlsx", sheetName), csuParser, 2015);
+            population.AddPopulationData(GetData("./Data/population_2016.xlsx", sheetName), csuParser, 2016);
+            population.AddPopulationData(GetData("./Data/population_2017.xlsx", sheetName), csuParser, 2017);
+            population.AddPopulationData(GetData("./Data/population_2018.xlsx", sheetName), csuParser, 2018);
+            population.AddPopulationData(GetData("./Data/population_2019.xlsx", sheetName), csuParser, 2019);
+            population.AddPopulationData(GetData("./Data/population_2020.xlsx", sheetName), csuParser, 2020);
+            population.AddPopulationData(GetData("./Data/population_2021.xlsx", sheetName), csuParser, 2021);
+            population.AddPopulationData(GetData("./Data/population_2022.xlsx", sheetName), csuParser, 2022);
+            population.AddPopulationData(GetData("./Data/population_2023.xlsx", sheetName), csuParser, 2023);
 
             var progress = population.ComputePopulationProgressInMunicipalities().ToArray();
             return progress;
