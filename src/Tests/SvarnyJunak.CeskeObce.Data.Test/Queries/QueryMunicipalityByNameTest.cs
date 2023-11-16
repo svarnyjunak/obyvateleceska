@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SvarnyJunak.CeskeObce.Data.Entities;
+﻿using SvarnyJunak.CeskeObce.Data.Entities;
 using SvarnyJunak.CeskeObce.Data.Repositories.Queries;
+using System.Linq;
+using Xunit;
 
 namespace SvarnyJunak.CeskeObce.Data.Test.Queries
 {
-    [TestClass]
     public class QueryMunicipalityByNameTest
     {
-        [TestMethod]
+        [Fact]
         public void Expression_Test()
         {
             var query = new QueryMunicipalityByName
@@ -36,7 +32,7 @@ namespace SvarnyJunak.CeskeObce.Data.Test.Queries
             };
 
             var result = data.SingleOrDefault(query.Expression.Compile());
-            Assert.AreEqual("Name", result?.Name);
+            Assert.Equal("Name", result?.Name);
         }
     }
 }

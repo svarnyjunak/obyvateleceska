@@ -1,14 +1,13 @@
 ﻿using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SvarnyJunak.CeskeObce.DataParser.Parsers;
 using SvarnyJunak.CeskeObce.DataParser.Utils;
+using Xunit;
 
 namespace SvarnyJunak.CeskeObce.DataParser.Test.Parsers
 {
-    [TestClass]
     public class CsuPopulationParserTest
     {
-        [TestMethod]
+        [Fact]
         public void Parse_Test()
         {
 
@@ -38,16 +37,16 @@ namespace SvarnyJunak.CeskeObce.DataParser.Test.Parsers
 
             var frame = result.Single();
 
-            Assert.AreEqual(2000, frame.Year);
-            Assert.AreEqual("MunicipalityId", frame.MunicipalityCode);
+            Assert.Equal(2000, frame.Year);
+            Assert.Equal("MunicipalityId", frame.MunicipalityCode);
 
-            Assert.AreEqual(20, frame.TotalCount);
-            Assert.AreEqual(11, frame.MalesCount);
-            Assert.AreEqual(9, frame.FemalesCount);
+            Assert.Equal(20, frame.TotalCount);
+            Assert.Equal(11, frame.MalesCount);
+            Assert.Equal(9, frame.FemalesCount);
 
-            Assert.AreEqual(40, frame.AverageAge);
-            Assert.AreEqual(41, frame.MaleAverageAge);
-            Assert.AreEqual(39, frame.FemaleAverageAge);
+            Assert.Equal(40, frame.AverageAge);
+            Assert.Equal(41, frame.MaleAverageAge);
+            Assert.Equal(39, frame.FemaleAverageAge);
         }
     }
 }

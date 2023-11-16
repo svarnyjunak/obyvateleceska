@@ -1,56 +1,52 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SvarnyJunak.CeskeObce.Data.Utils;
+﻿using SvarnyJunak.CeskeObce.Data.Utils;
+using Xunit;
 
 namespace SvarnyJunak.CeskeObce.Data.Test.Utils
 {
-    [TestClass]
     public class StringUtilsTest
     {
-        [TestMethod]
+        [Fact]
         public void RemoveDiacritics_Test()
         {
             var text = "Příliš žluťoučký kůň úpěl ďábelské ódy.";
-            Assert.AreEqual("Prilis zlutoucky kun upel dabelske ody.", text.RemoveDiacritics());
+            Assert.Equal("Prilis zlutoucky kun upel dabelske ody.", text.RemoveDiacritics());
         }
 
-        [TestMethod]
+        [Fact]
         public void HasDiacritics_PositiveTest()
         {
             var text = "Příliš žluťoučký kůň úpěl ďábelské ódy.";
-            Assert.IsTrue(text.HasDiacritics());
+            Assert.True(text.HasDiacritics());
         }
 
-        [TestMethod]
+        [Fact]
         public void HasDiacritics_NegativeTest()
         {
             var text = "Text bez diakritiky.";
-            Assert.IsFalse(text.HasDiacritics());
+            Assert.False(text.HasDiacritics());
         }
 
-        [TestMethod]
+        [Fact]
 
         public void CompareWithoutDiacriticsIfNotProvided_PositiveTest()
         {
             var text = "Příliš žluťoučký kůň úpěl ďábelské ódy.";
-            Assert.IsTrue("Prilis zlutoucky kun upel dabelske ody.".CompareWithoutDiacriticsIfNotProvided(text));
+            Assert.True("Prilis zlutoucky kun upel dabelske ody.".CompareWithoutDiacriticsIfNotProvided(text));
         }
 
-        [TestMethod]
+        [Fact]
 
         public void CompareWithoutDiacriticsIfNotProvided_NegativeTest()
         {
             var text = "Příliš žluťoučký kůň úpěl ďábelské ódy.";
-            Assert.IsFalse(text.CompareWithoutDiacriticsIfNotProvided("Prilis zlutoucky kun upel dabelske ody."));
+            Assert.False(text.CompareWithoutDiacriticsIfNotProvided("Prilis zlutoucky kun upel dabelske ody."));
         }
 
-        [TestMethod]
+        [Fact]
         public void ToUrlSegment()
         {
             var text = "Příliš žluťoučký kůň úpěl ďábelské ódy";
-            Assert.AreEqual("prilis-zlutoucky-kun-upel-dabelske-ody", text.ToUrlSegment());
+            Assert.Equal("prilis-zlutoucky-kun-upel-dabelske-ody", text.ToUrlSegment());
         }
     }
 }

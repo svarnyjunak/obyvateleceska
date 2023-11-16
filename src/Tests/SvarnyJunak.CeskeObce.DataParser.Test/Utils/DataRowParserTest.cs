@@ -1,36 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SvarnyJunak.CeskeObce.DataParser.Utils;
+﻿using SvarnyJunak.CeskeObce.DataParser.Utils;
+using System;
+using Xunit;
 
 namespace SvarnyJunak.CeskeObce.DataParser.Test.Utils
 {
-    [TestClass]
     public class DataRowParserTest
     {
-        [TestMethod]
+        [Fact]
         public void ParseInt_Test()
         {
             var parser = new DataRowParser();
 
-            Assert.AreEqual(1, parser.ParseInt("1"));
+            Assert.Equal(1, parser.ParseInt("1"));
         }
 
-        [TestMethod]
+        [Fact]
         public void ParseString_Test()
         {
             var parser = new DataRowParser();
 
-            Assert.AreEqual("test", parser.ParseString("test"));
+            Assert.Equal("test", parser.ParseString("test"));
         }
 
-        [TestMethod]
+        [Fact]
         public void ParseString_NullValueTest()
         {
             var parser = new DataRowParser();
 
-            Assert.AreEqual(String.Empty, parser.ParseString(null));
+            Assert.Equal(String.Empty, parser.ParseString(null));
         }
     }
 }
