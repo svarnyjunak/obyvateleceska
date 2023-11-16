@@ -33,7 +33,7 @@ public class AddResponseHeaderMiddleware
 
         if (responseHeaders.Keys.All(k => k != _headerName))
         {
-            responseHeaders.Add(_headerName, _headerValues);
+            responseHeaders.Append(_headerName, _headerValues);
         }
 
         return Task.FromResult(0);

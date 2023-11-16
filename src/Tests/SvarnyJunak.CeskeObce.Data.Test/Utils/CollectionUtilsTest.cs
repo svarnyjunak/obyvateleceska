@@ -19,7 +19,7 @@ namespace SvarnyJunak.CeskeObce.Data.Test.Utils
         public void GetRandomElement_FromArray()
         {
             var list = new int[] {1, 2, 3, 4, 5, 6}.AsQueryable();
-            Assert.True(list.ToList().Contains(list.GetRandomElement()));
+            Assert.Contains(list.GetRandomElement(), list.ToList());
         }
 
         [Fact]

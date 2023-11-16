@@ -9,7 +9,7 @@ using SvarnyJunak.CeskeObce.Data;
 
 public class Program
 {
-    private static ServiceProvider _serviceProvider;
+    private static ServiceProvider _serviceProvider = null!;
 
     static async Task Main(string[] args)
     {
