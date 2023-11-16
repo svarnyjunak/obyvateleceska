@@ -52,5 +52,6 @@
   <ItemGroup>
     <Folder Include="appdata\" />
     <Folder Include="Properties\PublishProfiles\" />
+    <Folder Include="Properties\ServiceDependencies\" />
   </ItemGroup>
 </Project>
