@@ -1,14 +1,13 @@
-﻿using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SvarnyJunak.CeskeObce.DataParser.Parsers;
+﻿using SvarnyJunak.CeskeObce.DataParser.Parsers;
 using SvarnyJunak.CeskeObce.DataParser.Utils;
+using System.Linq;
+using Xunit;
 
 namespace SvarnyJunak.CeskeObce.DataParser.Test.Parsers
 {
-    [TestClass]
     public class MunicipalityParserTest
     {
-        [TestMethod]
+        [Fact]
         public void Parse_Test()
         {
             var headerRow = new DataRow();
@@ -30,11 +29,11 @@ namespace SvarnyJunak.CeskeObce.DataParser.Test.Parsers
 
             var municipality = result.Single();
 
-            Assert.AreEqual("MunicipalityId", municipality.MunicipalityId);
-            Assert.AreEqual("Name", municipality.Name);
-            Assert.AreEqual("DistrictName", municipality.DistrictName);
-            Assert.AreEqual(11.1m, municipality.Latitude);
-            Assert.AreEqual(22.2m, municipality.Longitude);
+            Assert.Equal("MunicipalityId", municipality.MunicipalityId);
+            Assert.Equal("Name", municipality.Name);
+            Assert.Equal("DistrictName", municipality.DistrictName);
+            Assert.Equal(11.1m, municipality.Latitude);
+            Assert.Equal(22.2m, municipality.Longitude);
         }
     }
 }

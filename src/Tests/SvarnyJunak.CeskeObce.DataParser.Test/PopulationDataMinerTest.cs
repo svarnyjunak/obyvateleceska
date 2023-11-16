@@ -1,41 +1,40 @@
-﻿using System.Collections.Generic;
+﻿using SvarnyJunak.CeskeObce.DataParser.Entities;
+using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SvarnyJunak.CeskeObce.DataParser.Entities;
+using Xunit;
 
 namespace SvarnyJunak.CeskeObce.DataParser.Test
 {
-    [TestClass]
     public class PopulationDataMinerTest
     {
         private readonly PopulationDataMiner _populationDataMiner = new PopulationDataMiner();
 
-        [TestMethod]
+        [Fact]
         public void ComputePopulationProgressInMunicipalities_GroupTest()
         {
             _populationDataMiner.AddPopulationData(CreateDataWithTwoFramesAndOneMunicipality());
 
             var result = _populationDataMiner.ComputePopulationProgressInMunicipalities();
             var municipalityIds = result.GroupBy(p => p.MunicipalityId);
-            Assert.AreEqual(1, municipalityIds.Count());
+            Assert.Single(municipalityIds);
         }
 
-        [TestMethod]
+        [Fact]
         public void ComputePopulationProgressInMunicipalities_ProgressValuesCountTest()
         {
             _populationDataMiner.AddPopulationData(CreateDataWithTwoFramesAndOneMunicipality());
 
             var result = _populationDataMiner.ComputePopulationProgressInMunicipalities();
-            Assert.AreEqual(2, result.Count());
+            Assert.Equal(2, result.Count());
         }
 
-        [TestMethod]
+        [Fact]
         public void ComputePopulationProgressInMunicipalities_DoNotGroupTest()
         {
             _populationDataMiner.AddPopulationData(CreateDataWithTwoFramesAndTwoMunicipalities());
 
             var result = _populationDataMiner.ComputePopulationProgressInMunicipalities();
-            Assert.AreEqual(2, result.Count());
+            Assert.Equal(2, result.Count());
         }
 
         private IEnumerable<PopulationInMunicipalitity> CreateDataWithTwoFramesAndOneMunicipality()

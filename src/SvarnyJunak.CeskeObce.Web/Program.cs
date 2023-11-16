@@ -49,7 +49,6 @@ else
 app.UseContentTypeNoSniffHeader();
 
 app.UseXssProtectionHeader();
-//app.UseXXssProtection(new XXssProtectionOptions(true, true));
 
 // todo: app.UseCsp(...)
 app.UseContentSecurityPolicyHeader();
@@ -75,11 +74,8 @@ app.UseStaticFiles(new StaticFileOptions
     }
 });
 app.UseRouting();
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllers();
-    endpoints.MapDefaultControllerRoute();
-});
+app.MapControllers();
+app.MapDefaultControllerRoute();
 
 var supportedCultures = new[] { new CultureInfo("cs-CZ") };
 app.UseRequestLocalization(new RequestLocalizationOptions

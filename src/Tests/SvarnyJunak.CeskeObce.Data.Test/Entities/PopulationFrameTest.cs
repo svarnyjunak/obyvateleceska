@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SvarnyJunak.CeskeObce.Data.Entities;
+﻿using SvarnyJunak.CeskeObce.Data.Entities;
+using Xunit;
 
 namespace SvarnyJunak.CeskeObce.Data.Test.Entities
 {
-    [TestClass]
     public class PopulationFrameTest
     {
-        [TestMethod]
+        [Fact]
         public void Year_Test()
         {
             var populationFrame = new PopulationFrame
@@ -17,10 +13,10 @@ namespace SvarnyJunak.CeskeObce.Data.Test.Entities
                 Year = 2000
             };
 
-            Assert.AreEqual(2000, populationFrame.Year);
+            Assert.Equal(2000, populationFrame.Year);
         }
 
-        [TestMethod]
+        [Fact]
         public void Count_Test()
         {
             var populationFrame = new PopulationFrame
@@ -28,7 +24,7 @@ namespace SvarnyJunak.CeskeObce.Data.Test.Entities
                 Count = 11
             };
             
-            Assert.AreEqual(11, populationFrame.Count);
+            Assert.Equal(11, populationFrame.Count);
         }
     }
 }

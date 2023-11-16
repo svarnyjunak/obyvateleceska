@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SvarnyJunak.CeskeObce.Data.Repositories;
+﻿using SvarnyJunak.CeskeObce.Data.Repositories;
+using Xunit;
 
 namespace SvarnyJunak.CeskeObce.Data.Test.Repositories
 {
-    [TestClass]
     public class MunicipalityNotFoundExceptionTest
     {
-        [TestMethod]
+        [Fact]
         public void Constructor_Test()
         {
             var ex = new MunicipalityNotFoundException("test");
-            Assert.AreEqual("test", ex.MunicipalityName);
+            Assert.Equal("test", ex.MunicipalityName);
         }
     }
 }

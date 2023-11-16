@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SvarnyJunak.CeskeObce.Data.Entities;
+﻿using SvarnyJunak.CeskeObce.Data.Entities;
 using SvarnyJunak.CeskeObce.Data.Repositories;
 using SvarnyJunak.CeskeObce.Data.Repositories.Queries;
+using Xunit;
 
 namespace SvarnyJunak.CeskeObce.Data.Test.Repositories
 {
-    [TestClass]
     public class PopulationFrameRepositoryTest
     {
-        [TestMethod]
+        [Fact]
         public void Exists_Test()
         {
             var municipality = new Municipality
@@ -36,7 +31,7 @@ namespace SvarnyJunak.CeskeObce.Data.Test.Repositories
                 Code = municipality.MunicipalityId
             });
 
-            Assert.IsTrue(result);
+            Assert.True(result);
         }
     }
 }

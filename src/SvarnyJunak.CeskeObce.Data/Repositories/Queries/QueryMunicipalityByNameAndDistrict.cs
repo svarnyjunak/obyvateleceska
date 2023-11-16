@@ -14,9 +14,9 @@ namespace SvarnyJunak.CeskeObce.Data.Repositories.Queries
     /// <returns></returns>
     public class QueryMunicipalityByNameAndDistrict : QueryMunicipality
     {
-        public string Name { get; set; }
+        public string Name { get; set; } = "";
 
-        public string District { get; set; }
+        public string District { get; set; } = "";
 
         public override Expression<Func<Municipality, bool>> Expression =>
             m => Name.CompareWithoutDiacriticsIfNotProvided(m.Name) &&

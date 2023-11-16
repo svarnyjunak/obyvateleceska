@@ -1,14 +1,13 @@
-﻿using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SvarnyJunak.CeskeObce.DataParser.Parsers;
+﻿using SvarnyJunak.CeskeObce.DataParser.Parsers;
 using SvarnyJunak.CeskeObce.DataParser.Utils;
+using System.Linq;
+using Xunit;
 
 namespace SvarnyJunak.CeskeObce.DataParser.Test.Parsers
 {
-    [TestClass]
     public class MvcrPopulationParserTest
     {
-        [TestMethod]
+        [Fact]
         public void Parse_Test()
         {
             var emptyRow = new DataRow { Columns = new object[10] };
@@ -45,16 +44,16 @@ namespace SvarnyJunak.CeskeObce.DataParser.Test.Parsers
 
             var frame = result.Single();
 
-            Assert.AreEqual(2000, frame.Year);
-            Assert.AreEqual("554979", frame.MunicipalityCode);
+            Assert.Equal(2000, frame.Year);
+            Assert.Equal("554979", frame.MunicipalityCode);
 
-            Assert.AreEqual(852, frame.TotalCount);
-            Assert.AreEqual(432, frame.MalesCount);
-            Assert.AreEqual(420, frame.FemalesCount);
+            Assert.Equal(852, frame.TotalCount);
+            Assert.Equal(432, frame.MalesCount);
+            Assert.Equal(420, frame.FemalesCount);
 
-            Assert.AreEqual(0, frame.AverageAge);
-            Assert.AreEqual(0, frame.MaleAverageAge);
-            Assert.AreEqual(0, frame.FemaleAverageAge);
+            Assert.Equal(0, frame.AverageAge);
+            Assert.Equal(0, frame.MaleAverageAge);
+            Assert.Equal(0, frame.FemaleAverageAge);
         }
     }
 }
