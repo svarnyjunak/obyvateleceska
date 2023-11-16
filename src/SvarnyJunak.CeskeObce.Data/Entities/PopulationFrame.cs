@@ -9,7 +9,7 @@ namespace SvarnyJunak.CeskeObce.Data.Entities
         public int Year { get; set; }
         public int Count { get; set; }
 
-        public string MunicipalityId { get; set; }
-        public Municipality Municipality { get; set; }
+        public string MunicipalityId { get; set; } = "";
+        public Municipality Municipality { get; set; } = null!;
     }
 }
