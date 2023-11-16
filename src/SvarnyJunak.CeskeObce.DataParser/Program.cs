@@ -35,7 +35,10 @@ public class Program
 
     private static string GetDataPath()
     {
-        var directory = new DirectoryInfo(Environment.CurrentDirectory).Parent.Parent.Parent.Parent.GetDirectories("SvarnyJunak.CeskeObce.Web").Single();
+        var directory = new DirectoryInfo(Environment.CurrentDirectory)?.Parent?.Parent?.Parent?.Parent?.GetDirectories("SvarnyJunak.CeskeObce.Web").Single();
+
+        if (directory is null) throw new InvalidOperationException("Cannot find data directory.");
+
         return Path.Combine(directory.FullName, "appdata");
     }
 
