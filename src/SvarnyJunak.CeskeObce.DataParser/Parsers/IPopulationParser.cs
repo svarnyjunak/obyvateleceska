@@ -6,6 +6,6 @@ namespace SvarnyJunak.CeskeObce.DataParser.Parsers
 {
     public interface IPopulationParser
     {
-        IEnumerable<PopulationInMunicipalitity> Parse(DataRow[] rows, int year);
+        IEnumerable<PopulationInMunicipality> Parse(DataRow[] rows, int year);
     }
 }
