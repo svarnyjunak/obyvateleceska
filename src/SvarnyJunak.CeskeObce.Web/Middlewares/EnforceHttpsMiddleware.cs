@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using System.Threading.Tasks;
-
-namespace SvarnyJunak.CeskeObce.Web.Middlewares;
+﻿namespace SvarnyJunak.CeskeObce.Web.Middlewares;
 
 public class EnforceHttpsMiddleware
 {
@@ -18,10 +15,9 @@ public class EnforceHttpsMiddleware
 
         if (req.Path.HasValue && req.Path.Value.Contains(".well-known"))
         {
-            await _next(context); //ověření domény - nepřesměrovávat 
+            await _next(context); // Domain name check - do not redirect.
         }
-
-        if (req.IsHttps == false)
+        else if (req.IsHttps == false)
         {
             string url = "https://" + req.Host + req.Path + req.QueryString;
             context.Response.Redirect(url, permanent: true);
