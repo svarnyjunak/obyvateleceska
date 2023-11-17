@@ -11,11 +11,11 @@ namespace SvarnyJunak.CeskeObce.DataParser.Parsers
         {
             foreach (DataRow row in rows)
             {
-                var teritoryCode = row.Columns[0] as string;
-                if (teritoryCode == null)
+                var territoryCode = row.Columns[0] as string;
+                if (territoryCode == null)
                     continue;
 
-                if (!teritoryCode.StartsWith("CZ"))
+                if (!territoryCode.StartsWith("CZ"))
                     continue;
 
                 yield return Parse(row, year);

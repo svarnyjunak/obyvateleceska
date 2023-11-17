@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using SvarnyJunak.CeskeObce.Data.Entities;
+﻿using SvarnyJunak.CeskeObce.Data.Entities;
 
 namespace SvarnyJunak.CeskeObce.Data.Repositories
 {

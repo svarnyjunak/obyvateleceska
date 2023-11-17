@@ -1,11 +1,9 @@
-﻿using System.Linq;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
-using SvarnyJunak.CeskeObce.Data.Entities;
-using System.Text;
-using System.Xml.Linq;
 using SvarnyJunak.CeskeObce.Data.Repositories;
 using SvarnyJunak.CeskeObce.Web.Utils;
+using System.Text;
+using System.Xml.Linq;
 
 namespace SvarnyJunak.CeskeObce.Web.Controllers;
 

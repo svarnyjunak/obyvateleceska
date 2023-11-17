@@ -1,6 +1,6 @@
 ﻿namespace SvarnyJunak.CeskeObce.DataParser.Entities
 {
-    public class PopulationInMunicipalitity
+    public class PopulationInMunicipality
     {
         public int Year { get; set; }
         public int TotalCount { get; set; }
