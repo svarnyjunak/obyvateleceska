@@ -10,14 +10,14 @@ namespace SvarnyJunak.CeskeObce.DataParser
 {
     public class PopulationDataMiner
     {
-        private readonly List<PopulationInMunicipalitity> __dataList = new List<PopulationInMunicipalitity>();
+        private readonly List<PopulationInMunicipality> __dataList = new List<PopulationInMunicipality>();
 
         public void AddPopulationData(DataRow[] rows, IPopulationParser parser, int year)
         {
             __dataList.AddRange(parser.Parse(rows, year));
         }
 
-        public void AddPopulationData(IEnumerable<PopulationInMunicipalitity> data)
+        public void AddPopulationData(IEnumerable<PopulationInMunicipality> data)
         {
             __dataList.AddRange(data);
         }

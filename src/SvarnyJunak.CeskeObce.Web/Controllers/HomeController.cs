@@ -39,7 +39,7 @@ public class HomeController : Controller
             return CreateErrorResult(errorMessage, municipalityName, currentMunicipalityCode);
         }
 
-        var municipalities = FindMunicipalitiesByNameWithDiscrict(municipalityName).ToArray();
+        var municipalities = FindMunicipalitiesByNameWithDistrict(municipalityName).ToArray();
 
         if (!municipalities.Any())
         {
@@ -57,7 +57,7 @@ public class HomeController : Controller
     [Route("api/municipalities")]
     public ActionResult<string[]> FindMunicipalities(string name)
     {
-        var municipalities = FindMunicipalitiesByNameWithDiscrict(name);
+        var municipalities = FindMunicipalitiesByNameWithDistrict(name);
         var data = municipalities
             .OrderBy(m => m.Name)
             .ThenBy(m => m.DistrictName)
@@ -78,7 +78,7 @@ public class HomeController : Controller
         return view;
     }
 
-    private IEnumerable<Municipality> FindMunicipalitiesByNameWithDiscrict(string municipalityName)
+    private IEnumerable<Municipality> FindMunicipalitiesByNameWithDistrict(string municipalityName)
     {
         if (municipalityName == null)
         {
@@ -115,7 +115,7 @@ public class HomeController : Controller
     private MunicipalityPopulationProgressModel CreateModelByMunicipality(Municipality municipality)
     {
         var populationProgress = PopulationFrameRepository.FindAll(new QueryPopulationFrameByMunicipalityCode { Code = municipality.MunicipalityId });
-        var closest = MunicipalityRepository.GetClosests(municipality.Longitude, municipality.Latitude);
+        var closest = MunicipalityRepository.GetClosest(municipality.Longitude, municipality.Latitude);
 
         return new MunicipalityPopulationProgressModel
         {

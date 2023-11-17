@@ -1,6 +1,5 @@
 ﻿using SvarnyJunak.CeskeObce.DataParser.Entities;
 using SvarnyJunak.CeskeObce.DataParser.Utils;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,11 +7,11 @@ namespace SvarnyJunak.CeskeObce.DataParser.Parsers
 {
     public class MvcrPopulationParser : ParserBase, IPopulationParser
     {
-        public IEnumerable<PopulationInMunicipalitity> Parse(DataRow[] rows, int year)
+        public IEnumerable<PopulationInMunicipality> Parse(DataRow[] rows, int year)
         {
             foreach (DataRow row in rows.Skip(6))
             {
-                yield return new PopulationInMunicipalitity
+                yield return new PopulationInMunicipality
                 {
                     MunicipalityCode = Parser.ParseString(row.Columns[3]),
                     Year = year,

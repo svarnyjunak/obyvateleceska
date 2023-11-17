@@ -7,24 +7,24 @@ namespace SvarnyJunak.CeskeObce.DataParser.Parsers
 {
     public sealed class CsuPopulationParser : ParserBase, IPopulationParser
     {
-        public IEnumerable<PopulationInMunicipalitity> Parse(DataRow[] rows, int year)
+        public IEnumerable<PopulationInMunicipality> Parse(DataRow[] rows, int year)
         {
             foreach (DataRow row in rows)
             {
-                var teritoryCode = row.Columns[0] as string;
-                if (teritoryCode == null)
+                var territoryCode = row.Columns[0] as string;
+                if (territoryCode == null)
                     continue;
 
-                if (!teritoryCode.StartsWith("CZ"))
+                if (!territoryCode.StartsWith("CZ"))
                     continue;
 
                 yield return Parse(row, year);
             }
         }
 
-        private PopulationInMunicipalitity Parse(DataRow row, int year)
+        private PopulationInMunicipality Parse(DataRow row, int year)
         {
-            return new PopulationInMunicipalitity
+            return new PopulationInMunicipality
             {
                 MunicipalityCode = Parser.ParseString(row.Columns[1]),
                 Year = year,

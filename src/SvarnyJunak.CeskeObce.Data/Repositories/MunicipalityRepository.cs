@@ -8,7 +8,7 @@ namespace SvarnyJunak.CeskeObce.Data.Repositories
     public interface IMunicipalityRepository : IRepository<Municipality>
     {
         Municipality GetByCode(string code);
-        IEnumerable<Municipality> GetClosests(decimal longitude, decimal latitude, int count = 5);
+        IEnumerable<Municipality> GetClosest(decimal longitude, decimal latitude, int count = 5);
         Municipality GetRandom();
     }
 
@@ -28,7 +28,7 @@ namespace SvarnyJunak.CeskeObce.Data.Repositories
             return result;
         }
 
-        public IEnumerable<Municipality> GetClosests(decimal longitude, decimal latitude, int count = 5)
+        public IEnumerable<Municipality> GetClosest(decimal longitude, decimal latitude, int count = 5)
         {
             return Data
                 .OrderBy(m => GeoCoordinateUtils.GetDistance(longitude, latitude, m.Longitude, m.Latitude))

@@ -37,16 +37,16 @@ namespace SvarnyJunak.CeskeObce.DataParser.Test
             Assert.Equal(2, result.Count());
         }
 
-        private IEnumerable<PopulationInMunicipalitity> CreateDataWithTwoFramesAndOneMunicipality()
+        private IEnumerable<PopulationInMunicipality> CreateDataWithTwoFramesAndOneMunicipality()
         {
-            yield return new PopulationInMunicipalitity
+            yield return new PopulationInMunicipality
             {
                 MunicipalityCode = "1",
                 TotalCount = 10,
                 Year = 2000,
             };
 
-            yield return new PopulationInMunicipalitity
+            yield return new PopulationInMunicipality
             {
                 MunicipalityCode = "1",
                 TotalCount = 20,
@@ -54,16 +54,16 @@ namespace SvarnyJunak.CeskeObce.DataParser.Test
             };
         }
 
-        private IEnumerable<PopulationInMunicipalitity> CreateDataWithTwoFramesAndTwoMunicipalities()
+        private IEnumerable<PopulationInMunicipality> CreateDataWithTwoFramesAndTwoMunicipalities()
         {
-            yield return new PopulationInMunicipalitity
+            yield return new PopulationInMunicipality
             {
                 MunicipalityCode = "1",
                 TotalCount = 1,
                 Year = 2000,
             };
 
-            yield return new PopulationInMunicipalitity
+            yield return new PopulationInMunicipality
             {
                 MunicipalityCode = "2",
                 TotalCount = 1,
