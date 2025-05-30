@@ -97,23 +97,14 @@
         </div>
 
     </main>
-
-    <div id="map-canvas-container">
-
-        <div id="map-canvas">
-        </div>
-    </div>
 </div>
 <div id="fb-root"></div>
 
 @section scripts {
-    <script type="text/javascript" src="https://api.mapy.cz/loader.js"></script>
-
     <environment names="Development">
         <script src="~/lib/pixabay-autocompleted/auto-complete.js" asp-append-version="true"></script>
         <script src="~/js/search.js" asp-append-version="true"></script>
         <script src="~/js/chart.js" asp-append-version="true"></script>
-        <script src="~/js/map.js" asp-append-version="true"></script>
     </environment>
     <environment names="Staging,Production">
         <script src="~/js/site.min.js" asp-append-version="true"></script>

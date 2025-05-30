@@ -71,20 +71,7 @@ input {
     .grid {
         width: 100%;
         margin-top: 1em;
-        display: grid;
-        grid-template-columns: 600px 1fr;
-        grid-template-areas:
-            "a b";
     }
-
-        .grid main {
-            grid-area: a;
-        }
-
-        .grid #map-canvas-container {
-            height: 0px;
-            grid-area: b;
-        }
 }
 
 .content {
@@ -92,10 +79,6 @@ input {
 }
 
 @media (max-width: 500px), (max-height: 700px) {
-    #map-canvas-container {
-        visibility: hidden;
-    }
-
     main {
         margin-top: 1em;
     }

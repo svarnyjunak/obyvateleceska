@@ -11,8 +11,7 @@
     "inputFiles": [
         "../src/SvarnyJunak.CeskeObce.Web/wwwroot/lib/pixabay-autocompleted/auto-complete.js",
         "../src/SvarnyJunak.CeskeObce.Web/wwwroot/js/search.js",
-        "../src/SvarnyJunak.CeskeObce.Web/wwwroot/js/chart.js",
-        "../src/SvarnyJunak.CeskeObce.Web/wwwroot/js/map.js"
+        "../src/SvarnyJunak.CeskeObce.Web/wwwroot/js/chart.js"
     ],
     "minify": {
       "enabled": true,

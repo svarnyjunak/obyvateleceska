@@ -54,7 +54,6 @@ public static class MiddlewaresUtils
         var js = new[]
         {
                 "'self'",
-                "https://api.mapy.cz",
                 "https://www.google-analytics.com/analytics.js",
                 "https://pagead2.googlesyndication.com",
                 "https://adservice.google.cz/adsid/integrator.js",
@@ -67,8 +66,6 @@ public static class MiddlewaresUtils
                 "https://csi.gstatic.com",
                 "https://www.google-analytics.com",
                 "https://*.googleapis.com",
-                "http://api.mapy.cz",
-                "http://mapserver.mapy.cz",
                 "https://stats.g.doubleclick.net",
             };
 
